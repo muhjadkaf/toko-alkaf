@@ -31,6 +31,7 @@ class OverlayConfig:
     width: int = 1920
     height: int = 1080
     transparent: bool = True
+    voice: bool = True
 
 
 @dataclass(frozen=True)
@@ -90,6 +91,7 @@ class Config:
                 width=_bilangan(overlay_raw, "width", default=1920),
                 height=_bilangan(overlay_raw, "height", default=1080),
                 transparent=bool(_ambil(overlay_raw, "transparent", default=True)),
+                voice=bool(_ambil(overlay_raw, "voice", default=True)),
             ),
             gift_tiers=tiers,
             quote_keyword=str(
@@ -116,6 +118,7 @@ class Config:
                 "width": self.overlay.width,
                 "height": self.overlay.height,
                 "transparent": self.overlay.transparent,
+                "voice": self.overlay.voice,
             },
             "giftTiers": {k: list(v) for k, v in self.gift_tiers.items()},
             "demo": {

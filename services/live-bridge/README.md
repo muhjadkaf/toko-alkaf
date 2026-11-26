@@ -42,7 +42,7 @@ services/live-bridge/
 │   ├── config.py         # loader JSON/dict tanpa PyYAML
 │   ├── events.py         # LiveEvent + normalisasi + eventId SHA-256
 │   ├── orchestrator.py   # state machine + dedupe + filter streak gift
-│   ├── overlay.py        # OverlayState, render_json, render_html
+│   ├── overlay.py        # OverlayState + adapter lima scene Clean Lab
 │   └── main.py           # demo JSONL
 └── tests/
     ├── test_events.py
@@ -82,7 +82,12 @@ file ditulis ke `build/`:
 
 - `build/overlay.json` — snapshot state.
 - `build/overlay.html` — halaman 1920×1080 background transparan untuk
-  OBS Browser Source. Buka sebagai file lokal; tidak memerlukan server.
+  OBS Browser Source. Memakai lima scene Clean Lab (`boot`, `scan`, `mix`,
+  `analyze`, `result`) dan menyalin `build/audio/` untuk narasi MP3. Narasi
+  bisa dimatikan dengan `"overlay": {"voice": false}` pada konfigurasi.
+  Buka sebagai file lokal; tidak memerlukan server.
+
+Catatan: `build/` adalah hasil demo lokal dan sengaja tidak di-commit.
 
 Contoh urutan pada `examples/events.jsonl`:
 

@@ -13,6 +13,9 @@ venv/
 odoo.conf
 *.sqlite3
 
+# Hasil demo live-bridge (dibuat ulang oleh main.py)
+services/live-bridge/build/
+
 # LibreOffice / spreadsheet locks
 .~lock.*
 *.tmp

@@ -44,6 +44,7 @@
     background:radial-gradient(ellipse at 50% 48%,transparent 46%,rgba(0,0,0,.58) 100%)}
   .bars{position:absolute;left:0;right:0;z-index:19;height:52px;background:#030806;pointer-events:none}
   .bars.top{top:0}.bars.bottom{bottom:0}
+  .overlay-hidden #stage{opacity:0;pointer-events:none}
 
   /* ---------- shared physical screen ---------- */
   .narr{margin:14px 0 0;font-size:28px;line-height:1.42;color:#e7fff7;
@@ -545,6 +546,8 @@
   var timer = null, typeTimer = null, outTimer = null, warpTimer = null;
   var current = "boot";
   var audioEl = null;
+  var narrations = {};
+  var sequence = null;
 
   function typeAll(text){
     var els = document.querySelectorAll("[data-narr]");
@@ -611,21 +614,42 @@
     clearTimeout(warpTimer);
     warpTimer = setTimeout(function(){ stage.classList.remove("warping"); }, 880);
 
-    typeAll(COPY[scene].narration);
-    speak(scene, COPY[scene].narration);
+    var text = narrations[scene] || COPY[scene].narration;
+    typeAll(text);
+    speak(scene, text);
 
     if (auto !== false && durations[scene] > 0) {
       timer = setTimeout(function(){
-        var nxt = order[order.indexOf(scene) + 1];
+        var nxt = nextScene(scene);
         if (nxt) go(nxt, true);
       }, durations[scene]);
     }
   }
 
+  function nextScene(scene){
+    if (sequence && sequence.length) {
+      var i = sequence.indexOf(scene);
+      return i >= 0 ? (sequence[i + 1] || null) : null;
+    }
+    return order[order.indexOf(scene) + 1] || null;
+  }
+
   window.addEventListener("message", function(e){
     if (!e.data) return;
+    if (e.data.narrations && typeof e.data.narrations === "object") {
+      Object.keys(e.data.narrations).forEach(function(k){
+        if (order.indexOf(k) !== -1) narrations[k] = String(e.data.narrations[k]);
+      });
+    }
+    if (Array.isArray(e.data.sequence)) {
+      sequence = e.data.sequence.filter(function(s){ return order.indexOf(s) !== -1; });
+      if (!sequence.length) sequence = null;
+    }
+    if (typeof e.data.visible === "boolean") {
+      body.classList.toggle("overlay-hidden", !e.data.visible);
+    }
     if (e.data.scene) go(e.data.scene, e.data.auto === true);
-    if (e.data.voice === true) { voiceOn = true; speak(current, COPY[current].narration); }
+    if (e.data.voice === true) { voiceOn = true; speak(current, narrations[current] || COPY[current].narration); }
     if (e.data.voice === false) { voiceOn = false; stopVoice(); }
   });
 

@@ -58,6 +58,27 @@ sebagai fallback bila MP3 gagal diputar.
 mengirim `postMessage` ke iframe, sehingga kontrol tidak pernah tampil di
 LIVE/OBS. Untuk OBS gunakan `index.html?obs=1`.
 
+## Dipakai oleh live-bridge
+
+`alkaff_live.overlay` memakai `index.html` ini sebagai template untuk
+`build/overlay.html`. Status orchestrator dikirim lewat `postMessage` lokal
+dengan bentuk:
+
+```js
+{
+  scene: "mix",
+  auto: true,
+  sequence: ["mix", "analyze"],
+  narrations: { mix: "Meracik ALK-01 ...", analyze: "Analisis profil ..." },
+  visible: true,
+  voice: true
+}
+```
+
+Pemutar menerima `scene`, `sequence`, `narrations`, `visible`, dan `voice`;
+urutan `PROCESSING` otomatis lanjut `mix → analyze`. Narasi per scene
+menggantikan teks demo bawaan. Folder `audio/` ikut disalin ke `build/`.
+
 ## Batasan
 
 - Ini mock visual, bukan koneksi TikTok dan bukan AI generatif sungguhan.

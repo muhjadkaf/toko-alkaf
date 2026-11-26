@@ -69,7 +69,8 @@ class OrchestratorTest(unittest.TestCase):
 
         overlay = build_overlay_state(snapshot, Config())
         self.assertEqual(overlay.status, "READY")
-        self.assertEqual(overlay.scene, "quote-cta")
+        self.assertEqual(overlay.scene, "result")
+        self.assertEqual(overlay.sequence, ("result",))
         self.assertTrue(overlay.visible)
         self.assertIn("QUOTE", overlay.cta or "")
         self.assertIn("ALK-01", render_json(overlay))
@@ -149,7 +150,8 @@ class OrchestratorTest(unittest.TestCase):
 
         orchestrator.apply(buat_event("control.reset", "e3"))
         self.assertEqual(orchestrator.state, State.IDLE)
-        self.assertEqual(build_overlay_state(orchestrator.snapshot()).scene, "idle")
+        self.assertEqual(build_overlay_state(orchestrator.snapshot()).scene, "boot")
+        self.assertFalse(build_overlay_state(orchestrator.snapshot()).visible)
 
 
 if __name__ == "__main__":

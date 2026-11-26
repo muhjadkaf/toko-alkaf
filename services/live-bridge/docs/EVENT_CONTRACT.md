@@ -99,33 +99,55 @@ IDLE --streamStart--> LIVE --chat--> COLLECTING --control.submit--> PROCESSING
 ```json
 {
   "status": "READY",
-  "scene": "quote-cta",
+  "scene": "result",
   "visible": true,
   "message": "Quotation ALK-01 · EDT siap.",
   "detail": "ALK-01 · EDT",
   "cta": "DM kata kunci QUOTE ke akun Alkaff",
   "updatedAt": "2026-11-26T09:31:26Z",
-  "eventCount": 4
+  "eventCount": 4,
+  "sequence": ["result"],
+  "narrations": {
+    "result": "Profil ALK-01 · EDT siap. DM kata kunci QUOTE untuk detail quotation."
+  }
 }
 ```
 
 | Field | Tipe | Keterangan |
 |---|---|---|
 | `status` | string | Sama dengan status orchestrator. |
-| `scene` | string | `idle`, `live`, `collect`, `mixer`, `quote-cta`, `reconnecting`, `hidden`. |
+| `scene` | string | Scene Clean Lab pertama: `boot`, `scan`, `mix`, `analyze`, `result`. |
 | `visible` | boolean | `false` pada `IDLE`/`ENDED`; overlay disembunyikan. |
-| `message`, `detail` | string | Teks tampilan, sudah di-escape saat dirender HTML. |
+| `message`, `detail` | string | Teks tampilan, sudah di-escape saat dirender fallback HTML. |
 | `cta` | string/null | Hanya ada pada `READY`; berupa ajakan DM keyword. |
 | `updatedAt` | string | Waktu render dalam UTC `Z`. |
 | `eventCount` | integer | Jumlah event unik yang diproses. |
+| `sequence` | array | Urutan scene otomatis. `PROCESSING` memutar `mix` lalu `analyze`. |
+| `narrations` | object | Teks narasi per scene, menggantikan narasi demo bawaan. |
+
+Pemetaan status ke scene:
+
+| Status | Scene | Urutan otomatis |
+|---|---|---|
+| `IDLE` | `boot` | `boot` (tersembunyi) |
+| `LIVE` | `boot` | `boot` |
+| `COLLECTING` | `scan` | `scan` |
+| `PROCESSING` | `mix` | `mix` → `analyze` |
+| `READY` | `result` | `result` |
+| `ERROR` | `boot` | `boot` (narasi gangguan) |
+| `ENDED` | `boot` | `boot` (tersembunyi) |
 
 `write_overlay()` menulis dua file lokal:
 
 - `overlay.json` — snapshot untuk konsumen lain. Transport (SSE/Socket.IO)
   **sengaja belum diimplementasikan**.
 - `overlay.html` — halaman transparan 1920×1080 untuk OBS Browser Source.
-  Data disematkan di dalam dokumen (`<script type="application/json">`),
-  tanpa `fetch`, tanpa font/CDN eksternal.
+  Diambil dari template `overlay-demo-clean-lab/index.html`, sehingga lima scene
+  sinematik dipakai langsung tanpa `fetch` atau CDN. Data disematkan di dalam
+  dokumen (`<script type="application/json">`) lalu dikirim ke pemutar scene
+  lewat `postMessage` lokal. Folder `audio/` ikut disalin agar narasi MP3
+  tetap berjalan dari hasil build. Narasi bisa dimatikan lewat
+  `overlay.voice = false` pada konfigurasi.
 
 ## 4. Batas platform TikTok
 

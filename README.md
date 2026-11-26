@@ -75,6 +75,11 @@ PYTHONPATH=src python3 -m alkaff_live.main \
 
 Demo menghasilkan `build/overlay.json` dan `build/overlay.html` (transparan, bisa dibuka sebagai OBS Browser Source lokal). Ini **bukan** koneksi TikTok: tidak ada WebSocket, HTTP, auto-DM, atau kredensial. Rincian kontrak ada di [`services/live-bridge/docs/EVENT_CONTRACT.md`](services/live-bridge/docs/EVENT_CONTRACT.md).
 
+Dua demo visual mandiri juga tersedia:
+
+- [`services/live-bridge/overlay-demo/`](services/live-bridge/overlay-demo/) — Dark Emerald Atelier.
+- [`services/live-bridge/overlay-demo-clean-lab/`](services/live-bridge/overlay-demo-clean-lab/) — **Virtual Clean Lab**: ruang virtual 3D full-screen dengan mesin presisi dan narasi AI bahasa Indonesia. Teks hanya menempel pada objek fisik (layar monitor, label botol/vial, plakat meja, panel mesin); tidak ada teks mengambang. Buka `preview.html` untuk pratinjau, atau `index.html?obs=1` untuk OBS.
+
 Sebelum produksi, tetap ikuti dokumentasi LIVE: endpoint `/internal/*` wajib dilindungi, token disimpan di secret manager, dan uji memakai akun TikTok uji dengan moderator manual.
 
 ## Peringatan: repo ini publik

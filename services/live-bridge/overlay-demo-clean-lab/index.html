@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alkaff Scent Lab — Virtual Clean Lab</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a1310;
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+  body.obs{background:transparent}
+  .stage{position:absolute;width:1920px;height:1080px;transform-origin:top left;overflow:hidden;background:#dbe6e2}
+  .room{position:absolute;inset:0;width:1920px;height:1080px;display:block}
+  .vignette{position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(ellipse at 50% 44%,transparent 42%,rgba(5,18,14,.30) 100%)}
+  .floor-shine{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,transparent 62%,rgba(255,255,255,.10) 74%,transparent 88%)}
+
+  /* ---------- screen on the physical monitor ---------- */
+  .screen{position:absolute;left:1406px;top:176px;width:468px;height:418px;
+    border-radius:6px;overflow:hidden;color:#d9f5ec;
+    background:radial-gradient(700px 340px at 78% -10%,rgba(47,179,148,.20),transparent 62%),
+      linear-gradient(160deg,#0a231d,#0d3329 60%,#092018)}
+  .screen::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(180deg,rgba(255,255,255,.035) 0 1px,transparent 1px 4px)}
+  .s-head{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px 11px;font-size:10px;letter-spacing:.16em;font-weight:800;color:#8fe0cc;
+    border-bottom:1px solid rgba(143,224,204,.14)}
+  .s-head b{color:#fff;letter-spacing:.10em;font-size:11px}
+  .s-body{position:relative;z-index:1;padding:14px 18px 0;height:264px}
+  .wave{display:flex;align-items:flex-end;gap:3px;height:62px}
+  .wave i{flex:1;height:14%;border-radius:2px 2px 0 0;
+    background:linear-gradient(180deg,#7ee3cb,#1d8a72);opacity:.72;transition:height .3s}
+  body[data-scene="analyze"] .wave i,body[data-scene="result"] .wave i,
+  body[data-scene="scan"] .wave i,body[data-scene="mix"] .wave i{animation:wave 1.3s ease-in-out infinite}
+  @keyframes wave{0%,100%{height:14%}50%{height:94%}}
+  .s-notes{margin-top:12px;display:grid;gap:5px}
+  .s-notes div{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.04em;color:#bfe8db}
+  .s-notes div::before{content:"";width:5px;height:5px;border-radius:50%;background:#2fb394;
+    box-shadow:0 0 8px rgba(47,179,148,.8);flex:none}
+  .s-narr{margin:12px 0 0;font-size:13px;line-height:1.5;color:#f2fbf8;min-height:74px}
+  .s-narr .cursor{display:inline-block;width:2px;height:14px;background:#7ee3cb;
+    vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .s-foot{position:relative;z-index:1;padding:10px 18px;font-size:9px;letter-spacing:.18em;
+    color:#7fc9b6;border-top:1px solid rgba(143,224,204,.14);display:flex;justify-content:space-between}
+  .s-foot span:last-child{color:#bfe8db}
+
+  /* ---------- physical sample card on the bench ---------- */
+  .card{position:absolute;left:1266px;top:684px;width:168px;height:132px;
+    transform:rotate(-3deg) skewX(-3deg);transform-origin:50% 100%;
+    padding:12px 12px 10px;color:#17352d;
+    background:linear-gradient(145deg,#fbfdfc,#e9f1ee);
+    border:1px solid rgba(12,74,59,.22);border-radius:5px;
+    box-shadow:5px 10px 18px rgba(12,40,32,.22),inset 0 1px 0 #fff}
+  .card .bar{width:26px;height:3px;border-radius:2px;background:#0c7a63;margin-bottom:7px}
+  .card .k{font-size:7px;letter-spacing:.20em;font-weight:900;color:#0c7a63}
+  .card .n{font-size:17px;font-weight:800;letter-spacing:.02em;margin-top:2px}
+  .card .d{font-size:7px;letter-spacing:.10em;color:#6b827b;margin-top:3px}
+  .card .price{font-size:13px;font-weight:800;color:#0c7a63;margin-top:8px;opacity:0;transition:.5s}
+  .card .cta{margin-top:6px;font-size:8px;letter-spacing:.12em;font-weight:900;color:#fff;
+    background:#0c7a63;border-radius:4px;padding:5px 6px;text-align:center;opacity:0;transition:.5s}
+  body[data-scene="result"] .card .price,body[data-scene="result"] .card .cta{opacity:1}
+  body[data-scene="result"] .card{box-shadow:5px 10px 26px rgba(12,122,99,.28),inset 0 1px 0 #fff}
+
+  /* ---------- animated machine parts ---------- */
+  #scanBeam{opacity:0;transform-box:view-box;transform-origin:300px 620px}
+  body[data-scene="scan"] #scanBeam{opacity:1;animation:sweep 2.6s ease-in-out infinite}
+  @keyframes sweep{0%,100%{transform:translateY(-24px);opacity:.25}50%{transform:translateY(38px);opacity:.85}}
+
+  .vial-glow{opacity:0}
+  body[data-scene="scan"] .vial-glow{animation:vialPulse 2.4s ease-in-out infinite}
+  body[data-scene="scan"] .vial-glow.v2{animation-delay:.5s}
+  body[data-scene="scan"] .vial-glow.v3{animation-delay:1s}
+  @keyframes vialPulse{0%,100%{opacity:0}45%{opacity:.95}}
+  body[data-scene="mix"] .vial-fill{animation:empty 4.4s ease forwards}
+  @keyframes empty{to{transform:scaleY(.16);transform-origin:center bottom}}
+
+  #liquid{transform-box:view-box;transform-origin:600px 758px;transform:scaleY(.07);transition:transform 3s cubic-bezier(.2,.8,.2,1)}
+  body[data-scene="mix"] #liquid,body[data-scene="analyze"] #liquid,
+  body[data-scene="result"] #liquid{transform:scaleY(1)}
+  #meniscus{opacity:0;transform-box:view-box;transform-origin:600px 758px;transform:translateY(220px);transition:transform 3s,opacity 1s}
+  body[data-scene="mix"] #meniscus,body[data-scene="analyze"] #meniscus,
+  body[data-scene="result"] #meniscus{opacity:.85;transform:translateY(0)}
+  #vortex{opacity:0;transform-box:view-box;transform-origin:600px 660px}
+  body[data-scene="mix"] #vortex{opacity:1;animation:spinV 2.6s linear infinite}
+  @keyframes spinV{to{transform:rotate(360deg)}}
+  .bub{opacity:0}
+  body[data-scene="mix"] .bub{animation:bubble 2.6s ease-in infinite}
+  body[data-scene="mix"] .bub.b2{animation-delay:.9s}
+  body[data-scene="mix"] .bub.b3{animation-delay:1.6s}
+  @keyframes bubble{0%{transform:translateY(0) scale(.5);opacity:0}
+    20%{opacity:.85}100%{transform:translateY(-150px) scale(1);opacity:0}}
+  #drops{opacity:0}
+  body[data-scene="mix"] #drops{opacity:1}
+  .drop{transform-box:view-box}
+  body[data-scene="mix"] .drop{animation:fall 1.6s ease-in infinite}
+  body[data-scene="mix"] .drop.d2{animation-delay:.5s}
+  body[data-scene="mix"] .drop.d3{animation-delay:1s}
+  @keyframes fall{0%{transform:translateY(0) scale(.4);opacity:0}
+    12%{opacity:1}82%{transform:translateY(150px) scale(1);opacity:1}
+    100%{transform:translateY(170px) scale(.2);opacity:0}}
+
+  #armUpper{transform-box:view-box;transform-origin:920px 780px}
+  #armFore{transform-box:view-box;transform-origin:820px 540px}
+  #armGrip{transform-box:view-box;transform-origin:660px 450px}
+  body[data-scene="mix"] #armUpper{animation:armU 4.2s ease-in-out infinite}
+  body[data-scene="mix"] #armFore{animation:armF 4.2s ease-in-out infinite}
+  body[data-scene="mix"] #armGrip{animation:armG 4.2s ease-in-out infinite}
+  @keyframes armU{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(7deg)}}
+  @keyframes armF{0%,100%{transform:rotate(4deg)}50%{transform:rotate(-8deg)}}
+  @keyframes armG{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(6deg)}}
+
+  #bottleGlow{opacity:0;transition:opacity .8s}
+  body[data-scene="result"] #bottleGlow{opacity:1}
+  #bottle{transform-box:view-box;transform-origin:1150px 800px;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+  body[data-scene="result"] #bottle{transform:translateY(-6px) scale(1.04)}
+  #ceilGlow{opacity:.55;transition:opacity 1.2s}
+  body[data-scene="result"] #ceilGlow{opacity:1}
+
+  /* ---------- no floating text: controls live in preview.html ---------- */
+  @media (max-width:1100px){.stage{transform:scale(.55);transform-origin:top left}}
+</style>
+</head>
+<body data-scene="boot">
+<div class="stage" id="stage">
+
+  <svg class="room" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#cbd9d5"/><stop offset=".55" stop-color="#e7efec"/><stop offset="1" stop-color="#c3d2cd"/>
+      </linearGradient>
+      <linearGradient id="gWallSide" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#aebfba"/><stop offset="1" stop-color="#dbe7e3"/>
+      </linearGradient>
+      <linearGradient id="gWallSideR" x1="1" y1="0" x2="0" y2="0">
+        <stop offset="0" stop-color="#aebfba"/><stop offset="1" stop-color="#dbe7e3"/>
+      </linearGradient>
+      <linearGradient id="gCeil" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#8fa39d"/><stop offset="1" stop-color="#d3e0dc"/>
+      </linearGradient>
+      <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#b6c6c1"/><stop offset="1" stop-color="#e4ece9"/>
+      </linearGradient>
+      <linearGradient id="gBenchTop" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f4f8f6"/><stop offset=".45" stop-color="#d7e2de"/><stop offset="1" stop-color="#b9c9c4"/>
+      </linearGradient>
+      <linearGradient id="gBenchFront" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#a7b8b3"/><stop offset="1" stop-color="#7f938e"/>
+      </linearGradient>
+      <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="rgba(255,255,255,.78)"/><stop offset=".18" stop-color="rgba(255,255,255,.24)"/>
+        <stop offset=".55" stop-color="rgba(255,255,255,.08)"/><stop offset=".86" stop-color="rgba(255,255,255,.40)"/>
+        <stop offset="1" stop-color="rgba(47,179,148,.24)"/>
+      </linearGradient>
+      <linearGradient id="gLiquid" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f6dc9f"/><stop offset=".55" stop-color="#d3a45a"/><stop offset="1" stop-color="#94632a"/>
+      </linearGradient>
+      <linearGradient id="gMetal" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#eef4f2"/><stop offset=".5" stop-color="#c2d1cc"/><stop offset="1" stop-color="#94a8a2"/>
+      </linearGradient>
+      <linearGradient id="gBezel" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#3d5550"/><stop offset=".5" stop-color="#1e322c"/><stop offset="1" stop-color="#0d211b"/>
+      </linearGradient>
+      <linearGradient id="gScan" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="rgba(47,179,148,.42)"/><stop offset="1" stop-color="rgba(47,179,148,0)"/>
+      </linearGradient>
+      <radialGradient id="gLamp"><stop offset="0" stop-color="rgba(255,255,244,.95)"/><stop offset="1" stop-color="rgba(255,255,244,0)"/></radialGradient>
+      <radialGradient id="gBottle"><stop offset="0" stop-color="rgba(47,179,148,.55)"/><stop offset="1" stop-color="rgba(47,179,148,0)"/></radialGradient>
+      <filter id="blurBig" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="18"/></filter>
+      <filter id="blurSmall" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="6"/></filter>
+      <clipPath id="vesselClip">
+        <path d="M532 502 C532 484 668 484 668 502 L668 744 C668 764 532 764 532 744 Z"/>
+      </clipPath>
+    </defs>
+
+    <!-- ===== room shell ===== -->
+    <rect width="1920" height="1080" fill="url(#gWall)"/>
+    <polygon points="0,96 236,188 236,760 0,1080" fill="url(#gWallSide)"/>
+    <polygon points="1920,96 1684,188 1684,760 1920,1080" fill="url(#gWallSideR)"/>
+    <rect width="1920" height="96" fill="url(#gCeil)"/>
+    <g stroke="rgba(20,60,50,.10)" stroke-width="1">
+      <path d="M236 188 V760 M1684 188 V760"/>
+      <path d="M420 150 V760 M604 138 V760 M788 128 V760 M972 122 V760 M1156 128 V760 M1340 138 V760 M1524 150 V760"/>
+      <path d="M236 300 H1684 M236 470 H1684 M236 640 H1684"/>
+    </g>
+    <!-- ceiling lights -->
+    <g id="ceilGlow">
+      <rect x="180" y="30" width="360" height="18" rx="9" fill="#fffdf0" opacity=".95"/>
+      <rect x="780" y="30" width="360" height="18" rx="9" fill="#fffdf0" opacity=".95"/>
+      <rect x="1380" y="30" width="360" height="18" rx="9" fill="#fffdf0" opacity=".95"/>
+      <ellipse cx="360" cy="80" rx="230" ry="90" fill="url(#gLamp)" opacity=".5"/>
+      <ellipse cx="960" cy="80" rx="230" ry="90" fill="url(#gLamp)" opacity=".5"/>
+      <ellipse cx="1560" cy="80" rx="230" ry="90" fill="url(#gLamp)" opacity=".5"/>
+    </g>
+    <!-- floor -->
+    <polygon points="236,760 1684,760 1920,1080 0,1080" fill="url(#gFloor)"/>
+    <g stroke="rgba(20,62,50,.13)" stroke-width="1" fill="none">
+      <path d="M236 792 H1684 M210 828 H1710 M180 874 H1740 M140 934 H1780 M88 1010 H1832"/>
+      <path d="M960 760 L-160 1080 M960 760 L140 1080 M960 760 L460 1080 M960 760 L720 1080 M960 760 L960 1080
+               M960 760 L1200 1080 M960 760 L1460 1080 M960 760 L1780 1080 M960 760 L2080 1080"/>
+    </g>
+    <ellipse cx="960" cy="800" rx="760" ry="70" fill="#0a2a20" opacity=".10" filter="url(#blurBig)"/>
+
+    <!-- ===== bench ===== -->
+    <polygon points="60,852 1860,852 1860,1080 60,1080" fill="url(#gBenchFront)"/>
+    <polygon points="200,766 1720,766 1860,852 60,852" fill="url(#gBenchTop)"/>
+    <path d="M60 852 H1860" stroke="rgba(255,255,255,.72)" stroke-width="3"/>
+    <path d="M200 766 H1720" stroke="rgba(255,255,255,.55)" stroke-width="2"/>
+    <g opacity=".5" stroke="rgba(18,56,46,.24)" stroke-width="1" fill="none">
+      <rect x="116" y="902" width="420" height="132" rx="8"/>
+      <rect x="570" y="902" width="420" height="132" rx="8"/>
+      <rect x="1024" y="902" width="420" height="132" rx="8"/>
+      <rect x="1478" y="902" width="326" height="132" rx="8"/>
+      <path d="M250 930 H402 M704 930 H856 M1158 930 H1310 M1588 930 H1694"/>
+    </g>
+    <g fill="rgba(255,255,255,.35)">
+      <rect x="206" y="770" width="1500" height="4" rx="2"/>
+    </g>
+
+    <!-- shadows under instruments -->
+    <g fill="#0b2e24" filter="url(#blurSmall)" opacity=".26">
+      <ellipse cx="310" cy="800" rx="160" ry="15"/>
+      <ellipse cx="600" cy="806" rx="120" ry="14"/>
+      <ellipse cx="920" cy="802" rx="110" ry="13"/>
+      <ellipse cx="1150" cy="812" rx="100" ry="14"/>
+      <ellipse cx="1636" cy="754" rx="130" ry="16"/>
+    </g>
+
+    <!-- ===== vial rack ===== -->
+    <g>
+      <rect x="168" y="786" width="288" height="26" rx="6" fill="url(#gMetal)" stroke="rgba(12,74,59,.25)"/>
+      <rect x="168" y="786" width="288" height="5" rx="2" fill="rgba(255,255,255,.6)"/>
+      <g class="vial-glow v1"><rect x="196" y="674" width="52" height="116" rx="10" fill="none" stroke="#2fb394" stroke-width="3" opacity=".9" filter="url(#blurSmall)"/></g>
+      <g class="vial-glow v2"><rect x="286" y="674" width="52" height="116" rx="10" fill="none" stroke="#2fb394" stroke-width="3" opacity=".9" filter="url(#blurSmall)"/></g>
+      <g class="vial-glow v3"><rect x="376" y="674" width="52" height="116" rx="10" fill="none" stroke="#2fb394" stroke-width="3" opacity=".9" filter="url(#blurSmall)"/></g>
+      <!-- vial 1 -->
+      <g>
+        <rect x="196" y="680" width="52" height="108" rx="9" fill="url(#gGlass)" stroke="rgba(12,74,59,.30)"/>
+        <g clip-path="url(#v1clip)"><rect class="vial-fill" x="200" y="716" width="44" height="70" fill="url(#gLiquid)" opacity=".94"/></g>
+        <clipPath id="v1clip"><rect x="196" y="680" width="52" height="108" rx="9"/></clipPath>
+        <rect x="204" y="666" width="36" height="14" rx="3" fill="#c9d8d3" stroke="#9fb4ae"/>
+        <rect x="202" y="730" width="40" height="24" rx="2" fill="rgba(255,255,255,.86)" stroke="rgba(12,74,59,.20)"/>
+        <text x="222" y="746" text-anchor="middle" font-size="8" letter-spacing="1" font-weight="800" fill="#0c7a63">CITRUS</text>
+        <path d="M204 692 V772" stroke="rgba(255,255,255,.7)" stroke-width="2" fill="none"/>
+      </g>
+      <!-- vial 2 -->
+      <g>
+        <rect x="286" y="680" width="52" height="108" rx="9" fill="url(#gGlass)" stroke="rgba(12,74,59,.30)"/>
+        <g clip-path="url(#v2clip)"><rect class="vial-fill" x="290" y="716" width="44" height="70" fill="#7ec9ad" opacity=".92"/></g>
+        <clipPath id="v2clip"><rect x="286" y="680" width="52" height="108" rx="9"/></clipPath>
+        <rect x="294" y="666" width="36" height="14" rx="3" fill="#c9d8d3" stroke="#9fb4ae"/>
+        <rect x="292" y="730" width="40" height="24" rx="2" fill="rgba(255,255,255,.86)" stroke="rgba(12,74,59,.20)"/>
+        <text x="312" y="746" text-anchor="middle" font-size="7" letter-spacing=".6" font-weight="800" fill="#0c7a63">LAVENDER</text>
+        <path d="M294 692 V772" stroke="rgba(255,255,255,.7)" stroke-width="2" fill="none"/>
+      </g>
+      <!-- vial 3 -->
+      <g>
+        <rect x="376" y="680" width="52" height="108" rx="9" fill="url(#gGlass)" stroke="rgba(12,74,59,.30)"/>
+        <g clip-path="url(#v3clip)"><rect class="vial-fill" x="380" y="726" width="44" height="60" fill="#eef3f0" opacity=".9"/></g>
+        <clipPath id="v3clip"><rect x="376" y="680" width="52" height="108" rx="9"/></clipPath>
+        <rect x="384" y="666" width="36" height="14" rx="3" fill="#c9d8d3" stroke="#9fb4ae"/>
+        <rect x="382" y="730" width="40" height="24" rx="2" fill="rgba(255,255,255,.86)" stroke="rgba(12,74,59,.20)"/>
+        <text x="402" y="746" text-anchor="middle" font-size="8" letter-spacing="1" font-weight="800" fill="#0c7a63">MUSK</text>
+        <path d="M384 692 V772" stroke="rgba(255,255,255,.7)" stroke-width="2" fill="none"/>
+      </g>
+    </g>
+
+    <!-- ===== scanner gantry ===== -->
+    <g>
+      <rect x="148" y="596" width="20" height="194" rx="5" fill="url(#gMetal)" stroke="rgba(12,74,59,.25)"/>
+      <rect x="452" y="596" width="20" height="194" rx="5" fill="url(#gMetal)" stroke="rgba(12,74,59,.25)"/>
+      <rect x="140" y="580" width="340" height="28" rx="9" fill="url(#gMetal)" stroke="rgba(12,74,59,.28)"/>
+      <rect x="140" y="580" width="340" height="5" rx="2" fill="rgba(255,255,255,.65)"/>
+      <rect x="276" y="606" width="72" height="22" rx="6" fill="#173c32"/>
+      <circle cx="312" cy="617" r="6" fill="#7ee3cb"/>
+      <text x="312" y="592" text-anchor="middle" font-size="8" letter-spacing="2" font-weight="800" fill="rgba(11,58,47,.62)">SCAN·01</text>
+      <polygon id="scanBeam" points="282,630 342,630 392,784 232,784" fill="url(#gScan)"/>
+    </g>
+
+    <!-- ===== vortex mixing chamber ===== -->
+    <g>
+      <rect x="486" y="766" width="228" height="30" rx="8" fill="url(#gMetal)" stroke="rgba(12,74,59,.28)"/>
+      <rect x="486" y="766" width="228" height="5" rx="2" fill="rgba(255,255,255,.6)"/>
+      <text x="600" y="786" text-anchor="middle" font-size="8" letter-spacing="2" font-weight="800" fill="rgba(11,58,47,.62)">MIX·02</text>
+      <path d="M532 502 C532 484 668 484 668 502 L668 744 C668 764 532 764 532 744 Z"
+            fill="url(#gGlass)" stroke="rgba(12,74,59,.34)" stroke-width="1.5"/>
+      <g clip-path="url(#vesselClip)">
+        <rect id="liquid" x="534" y="500" width="132" height="260" fill="url(#gLiquid)" opacity=".95"/>
+        <g id="vortex" opacity=".9">
+          <ellipse cx="600" cy="660" rx="56" ry="15" fill="none" stroke="#ffffff" stroke-width="4" opacity=".75"/>
+          <ellipse cx="600" cy="660" rx="40" ry="11" fill="none" stroke="#7ee3cb" stroke-width="3" opacity=".85"/>
+          <ellipse cx="600" cy="660" rx="24" ry="7" fill="none" stroke="#ffffff" stroke-width="3" opacity=".65"/>
+        </g>
+        <circle class="bub" cx="566" cy="742" r="4" fill="rgba(255,255,255,.8)"/>
+        <circle class="bub b2" cx="600" cy="746" r="5" fill="rgba(255,255,255,.75)"/>
+        <circle class="bub b3" cx="632" cy="740" r="3.5" fill="rgba(255,255,255,.8)"/>
+        <ellipse id="meniscus" cx="600" cy="660" rx="64" ry="9" fill="rgba(255,255,255,.42)"/>
+      </g>
+      <ellipse cx="600" cy="502" rx="68" ry="12" fill="rgba(255,255,255,.5)" stroke="rgba(12,74,59,.26)"/>
+      <rect x="562" y="466" width="76" height="16" rx="5" fill="#c9d8d3" stroke="#9fb4ae"/>
+      <path d="M548 520 V738" stroke="rgba(255,255,255,.68)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </g>
+
+    <!-- ===== robotic arm ===== -->
+    <g>
+      <rect x="844" y="770" width="152" height="28" rx="8" fill="url(#gMetal)" stroke="rgba(12,74,59,.28)"/>
+      <text x="920" y="789" text-anchor="middle" font-size="8" letter-spacing="2" font-weight="800" fill="rgba(11,58,47,.62)">ARM·03</text>
+      <g id="armUpper">
+        <line x1="920" y1="770" x2="820" y2="540" stroke="#7f9892" stroke-width="26" stroke-linecap="round"/>
+        <line x1="920" y1="770" x2="820" y2="540" stroke="#d5e2de" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="920" cy="770" r="24" fill="url(#gMetal)" stroke="#8fa8a1" stroke-width="2"/>
+        <circle cx="920" cy="770" r="8" fill="#6f8a83"/>
+        <g id="armFore">
+          <line x1="820" y1="540" x2="660" y2="450" stroke="#7f9892" stroke-width="20" stroke-linecap="round"/>
+          <line x1="820" y1="540" x2="660" y2="450" stroke="#d5e2de" stroke-width="8" stroke-linecap="round"/>
+          <circle cx="820" cy="540" r="20" fill="url(#gMetal)" stroke="#8fa8a1" stroke-width="2"/>
+          <g id="armGrip">
+            <rect x="642" y="440" width="38" height="16" rx="6" fill="#c9d8d3" stroke="#8fa8a1"/>
+            <path d="M650 456 l-4 22 M672 456 l4 22" stroke="#7f9892" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="661" cy="448" r="4" fill="#0c7a63"/>
+          </g>
+        </g>
+      </g>
+      <g id="drops">
+        <circle class="drop d1" cx="650" cy="476" r="5" fill="#d3a45a"/>
+        <circle class="drop d2" cx="650" cy="476" r="5" fill="#2fb394"/>
+        <circle class="drop d3" cx="650" cy="476" r="4.5" fill="#eef3f0"/>
+      </g>
+    </g>
+
+    <!-- ===== finished bottle on pedestal ===== -->
+    <g>
+      <ellipse id="bottleGlow" cx="1150" cy="700" rx="120" ry="170" fill="url(#gBottle)" filter="url(#blurBig)"/>
+      <ellipse cx="1150" cy="810" rx="92" ry="18" fill="#0b2e24" opacity=".22" filter="url(#blurSmall)"/>
+      <rect x="1068" y="792" width="164" height="20" rx="9" fill="url(#gMetal)" stroke="rgba(12,74,59,.25)"/>
+      <rect x="1068" y="792" width="164" height="4" rx="2" fill="rgba(255,255,255,.65)"/>
+      <g id="bottle">
+        <rect x="1124" y="584" width="52" height="28" rx="6" fill="#d9b36c" stroke="#f0d9a8"/>
+        <rect x="1132" y="608" width="36" height="16" rx="3" fill="rgba(255,255,255,.6)" stroke="rgba(12,74,59,.2)"/>
+        <path d="M1094 636 C1094 624 1106 616 1120 612 L1120 596 L1180 596 L1180 612 C1194 616 1206 624 1206 636 L1210 776 C1210 794 1198 804 1180 804 L1120 804 C1102 804 1090 794 1090 776 Z"
+              fill="url(#gGlass)" stroke="rgba(12,74,59,.32)"/>
+        <g clip-path="url(#bClip)">
+          <rect x="1088" y="636" width="124" height="168" fill="url(#gLiquid)" opacity=".94"/>
+          <path d="M1088 644 Q1116 634 1150 644 T1212 644 L1212 656 L1088 656 Z" fill="rgba(255,255,255,.34)"/>
+        </g>
+        <clipPath id="bClip"><path d="M1094 636 C1094 624 1106 616 1120 612 L1120 596 L1180 596 L1180 612 C1194 616 1206 624 1206 636 L1210 776 C1210 794 1198 804 1180 804 L1120 804 C1102 804 1090 794 1090 776 Z"/></clipPath>
+        <rect x="1110" y="690" width="80" height="66" rx="4" fill="rgba(255,255,255,.88)" stroke="rgba(12,74,59,.26)"/>
+        <text x="1150" y="710" text-anchor="middle" font-size="12" letter-spacing="2.4" font-weight="800" fill="#0c7a63">ALKAFF</text>
+        <path d="M1124 718 H1176" stroke="rgba(12,74,59,.3)"/>
+        <text x="1150" y="734" text-anchor="middle" font-size="9" letter-spacing="1.2" fill="#10241f">MARBELLA</text>
+        <text x="1150" y="748" text-anchor="middle" font-size="5.6" letter-spacing=".8" fill="#5c716b">EXTRAIT DE PARFUM</text>
+        <path d="M1106 650 C1102 706 1104 760 1108 790" stroke="rgba(255,255,255,.78)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </g>
+    </g>
+
+    <!-- ===== monitor: physical bezel and stand ===== -->
+    <g>
+      <ellipse cx="1636" cy="748" rx="124" ry="18" fill="#0b2e24" opacity=".24" filter="url(#blurSmall)"/>
+      <ellipse cx="1636" cy="742" rx="118" ry="14" fill="url(#gMetal)" stroke="rgba(12,74,59,.25)"/>
+      <rect x="1624" y="602" width="24" height="140" rx="6" fill="url(#gMetal)" stroke="rgba(12,74,59,.25)"/>
+      <rect x="1390" y="160" width="500" height="452" rx="18" fill="url(#gBezel)" stroke="#0a1c17" stroke-width="2"/>
+      <rect x="1396" y="166" width="488" height="436" rx="12" fill="#06150f"/>
+      <rect x="1406" y="176" width="468" height="418" rx="6" fill="#0a231d"/>
+      <text x="1640" y="600" text-anchor="middle" font-size="9" letter-spacing="3" font-weight="800" fill="#4f6e64">ALKaff</text>
+      <circle cx="1436" cy="600" r="3" fill="#2fb394"/>
+      <path d="M1400 168 H1880" stroke="rgba(255,255,255,.18)" stroke-width="2"/>
+    </g>
+  </svg>
+
+  <!-- screen content is painted on the monitor surface -->
+  <div class="screen" aria-live="polite">
+    <div class="s-head"><span>ALKaff · AI OLFACTORY UNIT</span><b id="screenState">BOOT</b></div>
+    <div class="s-body">
+      <div class="wave" id="wave"></div>
+      <div class="s-notes" id="notes"></div>
+      <p class="s-narr" id="narration"></p>
+    </div>
+    <div class="s-foot"><span id="screenFoot">MENYALAKAN SISTEM</span><span>BAHASA INDONESIA</span></div>
+  </div>
+
+  <div class="card">
+    <div class="bar"></div>
+    <div class="k" id="plateK">SAMPLE 01</div>
+    <div class="n" id="plateN">MARBELLA</div>
+    <div class="d" id="plateD">EXTRAIT DE PARFUM</div>
+    <div class="price" id="plateP">Rp449.000</div>
+    <div class="cta" id="plateC">DM · QUOTE</div>
+  </div>
+
+  <div class="floor-shine"></div>
+  <div class="vignette"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var params = new URLSearchParams(location.search);
+  var obs = params.get("obs") === "1";
+  var forced = params.get("scene");
+  var freeze = params.get("freeze") === "1";
+  var at = parseFloat(params.get("at") || "0");
+  var body = document.body;
+  var stage = document.getElementById("stage");
+  var voiceOn = params.get("voice") === "1";
+
+  if (obs) body.classList.add("obs");
+
+  function fit(){
+    if (obs) { stage.style.transform = "none"; return; }
+    var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    stage.style.transform = "scale(" + s + ")";
+    stage.style.left = Math.max(0, (window.innerWidth - 1920 * s) / 2) + "px";
+    stage.style.top = Math.max(0, (window.innerHeight - 1080 * s) / 2) + "px";
+  }
+  window.addEventListener("resize", fit); fit();
+
+  var wave = document.getElementById("wave");
+  for (var i = 0; i < 30; i++) {
+    var b = document.createElement("i");
+    b.style.animationDelay = (i * 0.045) + "s";
+    b.style.height = (16 + Math.random() * 36) + "%";
+    wave.appendChild(b);
+  }
+
+  var COPY = {
+    boot: {
+      state:"BOOT", foot:"MENYALAKAN SISTEM",
+      notes:["Inisialisasi laboratorium","Kalibrasi sensor","Memuat sampel"],
+      narration:"Sistem lab Alkaff aktif. Saya AI perfumer. Mari kita racik Marbella.",
+      plate:["SAMPLE 01","MARBELLA","EXTRAIT DE PARFUM"]
+    },
+    scan: {
+      state:"SCAN", foot:"3 LAPISAN TERDETEKSI",
+      notes:["TOP · Lemon Amalfi","HEART · Lavender","BASE · White Musk"],
+      narration:"Memindai Marbella. Top note lemon Amalfi, heart lavender, base white musk. Segar, lapang, bersih.",
+      plate:["ANALISIS","MARBELLA","TOP · HEART · BASE"]
+    },
+    mix: {
+      state:"MIX", foot:"VORTEX · 2.400 RPM",
+      notes:["01 · Jeruk","02 · Lavender","03 · Musk","Homogenisasi"],
+      narration:"Meneteskan jeruk, lavender, dan musk. Konsentrasi presisi, lalu diputar hingga homogen.",
+      plate:["PROSES RACIK","MARBELLA","PRESISI · 2.400 RPM"]
+    },
+    analyze: {
+      state:"AI", foot:"PROFIL SELESAI",
+      notes:["Segar","Lapang","Bersih"],
+      narration:"Marbella segar seperti udara laut. Cocok untuk siang hari dan setelah mandi.",
+      plate:["PROFIL AROMA","MARBELLA","SIANG · SETELAH MANDI"]
+    },
+    result: {
+      state:"DONE", foot:"READY TO QUOTE",
+      notes:["Extrait de Parfum","50 ml","Stok tersedia"],
+      narration:"Profil selesai. Marbella siap. DM kata kunci QUOTE untuk detail.",
+      plate:["SIAP","MARBELLA","Rp449.000"]
+    }
+  };
+  var durations = { boot:7000, scan:10500, mix:9500, analyze:7000, result:0 };
+  var order = ["boot","scan","mix","analyze","result"];
+  var timer = null, current = "boot", typeTimer = null;
+
+  function typeText(text){
+    var el = document.getElementById("narration");
+    if (typeTimer) clearInterval(typeTimer);
+    el.textContent = "";
+    var i = 0;
+    typeTimer = setInterval(function(){
+      el.textContent = text.slice(0, i);
+      i++;
+      if (i > text.length) {
+        clearInterval(typeTimer); typeTimer = null;
+        el.innerHTML = text + '<span class="cursor"></span>';
+      }
+    }, 18);
+  }
+
+  var AUDIO = {
+    boot:"audio/boot.mp3", scan:"audio/scan.mp3", mix:"audio/mix.mp3",
+    analyze:"audio/analyze.mp3", result:"audio/result.mp3"
+  };
+  var audioEl = null;
+  function stopVoice(){
+    if (audioEl) { try { audioEl.pause(); audioEl.currentTime = 0; } catch (e) {} audioEl = null; }
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  }
+  function fallbackSpeech(text){
+    if (!("speechSynthesis" in window)) return;
+    try {
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = "id-ID"; u.rate = .96; u.pitch = 1.02;
+      var voices = window.speechSynthesis.getVoices();
+      var id = voices.filter(function(v){ return /id[-_]ID/i.test(v.lang); })[0];
+      if (id) u.voice = id;
+      window.speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+  function speak(scene, text){
+    if (!voiceOn) return;
+    stopVoice();
+    try {
+      audioEl = new Audio(AUDIO[scene]);
+      audioEl.volume = .95;
+      var p = audioEl.play();
+      if (p && p.catch) p.catch(function(){ fallbackSpeech(text); });
+    } catch (e) { fallbackSpeech(text); }
+  }
+
+  function render(scene){
+    var c = COPY[scene];
+    document.getElementById("screenState").textContent = c.state;
+    document.getElementById("screenFoot").textContent = c.foot;
+    var n = document.getElementById("notes");
+    n.innerHTML = "";
+    c.notes.forEach(function(line){
+      var d = document.createElement("div");
+      d.textContent = line;
+      n.appendChild(d);
+    });
+    document.getElementById("plateK").textContent = c.plate[0];
+    document.getElementById("plateN").textContent = c.plate[1];
+    document.getElementById("plateD").textContent = c.plate[2];
+    typeText(c.narration);
+    body.dataset.scene = scene;
+  }
+
+  function setScene(scene, auto){
+    if (timer) { clearTimeout(timer); timer = null; }
+    if (order.indexOf(scene) === -1) scene = "boot";
+    current = scene;
+    render(scene);
+    speak(scene, COPY[scene].narration);
+    if (auto !== false && durations[scene] > 0) {
+      timer = setTimeout(function(){
+        var next = order[order.indexOf(scene) + 1];
+        if (next) setScene(next, true);
+      }, durations[scene]);
+    }
+  }
+
+  window.addEventListener("message", function(e){
+    if (!e.data) return;
+    if (e.data.scene) setScene(e.data.scene, e.data.auto === true);
+    if (e.data.voice === true) {
+      voiceOn = true;
+      speak(current, COPY[current].narration);
+    }
+    if (e.data.voice === false) { voiceOn = false; stopVoice(); }
+  });
+
+  if (freeze) {
+    var st = document.createElement("style");
+    st.textContent = "*{animation-play-state:paused !important;transition:none !important}";
+    document.head.appendChild(st);
+  }
+  function freezeAt(seconds){
+    if (!(seconds > 0)) return;
+    setTimeout(function(){
+      document.getAnimations().forEach(function(a){ try { a.pause(); a.currentTime = seconds * 1000; } catch (e) {} });
+    }, 250);
+  }
+
+  if (forced && COPY[forced]) {
+    render(forced);
+    freezeAt(at);
+  } else {
+    setTimeout(function(){ setScene("boot", true); }, 300);
+  }
+})();
+</script>
+</body>
+</html>

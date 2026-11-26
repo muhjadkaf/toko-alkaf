@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Parfum adalah induk dari semua kategori katalog parfum. -->
+    <record id="category_parfum" model="product.category">
+        <field name="name">Parfum</field>
+    </record>
+
+    <record id="category_parfum_attar_oud" model="product.category">
+        <field name="name">Parfum / Attar &amp; Oud</field>
+        <field name="parent_id" ref="category_parfum"/>
+    </record>
+
+    <record id="category_parfum_gourmand" model="product.category">
+        <field name="name">Parfum / Gourmand</field>
+        <field name="parent_id" ref="category_parfum"/>
+    </record>
+
+    <record id="category_parfum_laundry" model="product.category">
+        <field name="name">Parfum / Laundry</field>
+        <field name="parent_id" ref="category_parfum"/>
+    </record>
+
+    <record id="category_parfum_lokal_indonesia" model="product.category">
+        <field name="name">Parfum / Lokal Indonesia</field>
+        <field name="parent_id" ref="category_parfum"/>
+    </record>
+
+    <!-- Slash pada nama dipertahankan karena persis mengikuti label di CSV. -->
+    <record id="category_bahan_baku_bibit_parfum" model="product.category">
+        <field name="name">Bahan Baku / Bibit Parfum</field>
+        <field name="parent_id" ref="category_parfum"/>
+    </record>
+</odoo>

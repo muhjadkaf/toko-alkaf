@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contoh.invalid/schemas/live_event.schema.json",
+  "title": "Alkaff LIVE Event",
+  "description": "Envelope event minimal untuk pipeline lokal live-bridge. Bukan skema API TikTok.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["eventId", "type", "occurredAt", "payload"],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Idempotency key; bila tidak diberikan dihitung SHA-256 dari envelope."
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "streamStart",
+        "streamEnd",
+        "chat",
+        "gift",
+        "member",
+        "like",
+        "share",
+        "follow",
+        "questionNew",
+        "control.submit",
+        "control.result",
+        "control.error",
+        "control.retry",
+        "control.reset"
+      ],
+      "description": "Tipe event publik atau event kontrol internal."
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC dengan akhiran Z, mis. 2026-11-26T09:31:12Z."
+    },
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string"},
+        "uniqueId": {"type": "string"},
+        "nickname": {"type": "string"}
+      }
+    },
+    "payload": {
+      "type": "object",
+      "description": "Isi event; untuk chat minimal {comment}, untuk gift objek {gift}."
+    }
+  }
+}

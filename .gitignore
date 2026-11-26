@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Odoo / runtime
+*.log
+*.pid
+.odoo/
+odoo.conf
+*.sqlite3
+
+# LibreOffice / spreadsheet locks
+.~lock.*
+*.tmp
+
+# Secrets: jangan pernah commit token, password, atau kredensial
+.env
+*.pem
+*.key
+credentials.json
+token.txt
+secrets/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

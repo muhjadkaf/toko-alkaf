@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_alkaff_catalog_import_log_user,alkaff.catalog.import.log user,model_alkaff_catalog_import_log,base.group_user,1,0,1,0
+access_alkaff_catalog_import_log_system,alkaff.catalog.import.log system,model_alkaff_catalog_import_log,base.group_system,1,1,1,0
+access_alkaff_catalog_import_wizard_system,alkaff.catalog.import.wizard system,model_alkaff_catalog_import_wizard,base.group_system,1,1,1,0

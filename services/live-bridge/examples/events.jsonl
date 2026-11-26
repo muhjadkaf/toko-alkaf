@@ -1,0 +1,6 @@
+{"type":"streamStart","occurredAt":"2026-11-26T09:30:00Z","payload":{}}
+{"type":"chat","occurredAt":"2026-11-26T09:31:12Z","user":{"id":"6776663624629974021","uniqueId":"alkaff_fan","nickname":"Fan Alkaff"},"payload":{"comment":"oud dong kak"}}
+{"type":"gift","occurredAt":"2026-11-26T09:31:20Z","user":{"uniqueId":"alkaff_fan","nickname":"Fan Alkaff"},"payload":{"gift":{"giftId":5655,"name":"Universe","giftType":1,"repeatCount":1,"repeatEnd":1,"diamondCount":34999}}}
+{"type":"control.submit","occurredAt":"2026-11-26T09:31:25Z","user":{"id":"6776663624629974021","uniqueId":"alkaff_fan"},"payload":{"sku":"ALK-01","variant":"EDT"}}
+{"type":"control.result","occurredAt":"2026-11-26T09:31:26Z","user":{"id":"6776663624629974021","uniqueId":"alkaff_fan"},"payload":{"quoteId":"Q-DEMO-001","quoteUrl":"https://contoh.invalid/quote/ALK-01?variant=EDT"}}
+{"type":"streamEnd","occurredAt":"2026-11-26T09:45:00Z","payload":{}}

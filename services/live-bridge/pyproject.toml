@@ -1,0 +1,10 @@
+[project]
+name = "alkaff-live-bridge"
+version = "0.1.0"
+description = "Skeleton lokal pipeline event TikTok LIVE ke overlay OBS untuk Toko Alkaff"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+# Sengaja tidak mendefinisikan [build-system]: tidak ada dependency pihak ketiga.
+# Jalankan langsung dari direktori services/live-bridge dengan PYTHONPATH=src.

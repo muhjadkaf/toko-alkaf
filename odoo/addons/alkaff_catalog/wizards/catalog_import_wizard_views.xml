@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_catalog_import_wizard_form" model="ir.ui.view">
+        <field name="name">alkaff.catalog.import.wizard.form</field>
+        <field name="model">alkaff.catalog.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Katalog Parfum Alkaff">
+                <group>
+                    <field name="state" invisible="1"/>
+                    <field name="csv_file" filename="csv_filename"/>
+                    <field name="csv_filename" invisible="1"/>
+                </group>
+                <group invisible="state != 'done'">
+                    <field name="result_text" readonly="1" nolabel="1"/>
+                    <field name="log_id" readonly="1"/>
+                </group>
+                <footer>
+                    <button name="action_import" type="object" string="Import CSV" class="btn-primary"/>
+                    <button string="Tutup" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_catalog_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Katalog Parfum Alkaff</field>
+        <field name="res_model">alkaff.catalog.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_catalog_import_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_alkaff_catalog_root" name="Alkaff" sequence="200" groups="base.group_system"/>
+    <menuitem id="menu_alkaff_catalog_import" name="Import Katalog Parfum"
+              parent="menu_alkaff_catalog_root"
+              action="action_catalog_import_wizard"
+              groups="base.group_system"/>
+</odoo>

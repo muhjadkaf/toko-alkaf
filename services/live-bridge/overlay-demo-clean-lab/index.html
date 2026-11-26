@@ -3,393 +3,489 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Alkaff Scent Lab — Virtual Clean Lab</title>
+<title>Alkaff Scent Lab — Cinematic Virtual Lab</title>
 <style>
   *{box-sizing:border-box}
-  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a1310;
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050b09;
     font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
   body.obs{background:transparent}
-  .stage{position:absolute;width:1920px;height:1080px;transform-origin:top left;overflow:hidden;background:#dbe6e2}
-  .room{position:absolute;inset:0;width:1920px;height:1080px;display:block}
-  .vignette{position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(ellipse at 50% 44%,transparent 42%,rgba(5,18,14,.30) 100%)}
-  .floor-shine{position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(180deg,transparent 62%,rgba(255,255,255,.10) 74%,transparent 88%)}
+  .stage{position:absolute;width:1920px;height:1080px;transform-origin:top left;overflow:hidden;background:#07110d}
 
-  /* ---------- screen on the physical monitor ---------- */
-  .screen{position:absolute;left:1406px;top:176px;width:468px;height:418px;
-    border-radius:6px;overflow:hidden;color:#d9f5ec;
-    background:radial-gradient(700px 340px at 78% -10%,rgba(47,179,148,.20),transparent 62%),
-      linear-gradient(160deg,#0a231d,#0d3329 60%,#092018)}
-  .screen::after{content:"";position:absolute;inset:0;pointer-events:none;
-    background:repeating-linear-gradient(180deg,rgba(255,255,255,.035) 0 1px,transparent 1px 4px)}
-  .s-head{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;
-    padding:14px 18px 11px;font-size:10px;letter-spacing:.16em;font-weight:800;color:#8fe0cc;
-    border-bottom:1px solid rgba(143,224,204,.14)}
-  .s-head b{color:#fff;letter-spacing:.10em;font-size:11px}
-  .s-body{position:relative;z-index:1;padding:14px 18px 0;height:264px}
-  .wave{display:flex;align-items:flex-end;gap:3px;height:62px}
-  .wave i{flex:1;height:14%;border-radius:2px 2px 0 0;
-    background:linear-gradient(180deg,#7ee3cb,#1d8a72);opacity:.72;transition:height .3s}
-  body[data-scene="analyze"] .wave i,body[data-scene="result"] .wave i,
-  body[data-scene="scan"] .wave i,body[data-scene="mix"] .wave i{animation:wave 1.3s ease-in-out infinite}
-  @keyframes wave{0%,100%{height:14%}50%{height:94%}}
-  .s-notes{margin-top:12px;display:grid;gap:5px}
-  .s-notes div{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.04em;color:#bfe8db}
-  .s-notes div::before{content:"";width:5px;height:5px;border-radius:50%;background:#2fb394;
-    box-shadow:0 0 8px rgba(47,179,148,.8);flex:none}
-  .s-narr{margin:12px 0 0;font-size:13px;line-height:1.5;color:#f2fbf8;min-height:74px}
-  .s-narr .cursor{display:inline-block;width:2px;height:14px;background:#7ee3cb;
-    vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  /* shared cinematic ambience */
+  .ambient{position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(1100px 700px at 50% 42%,rgba(24,92,73,.30),transparent 68%),
+      radial-gradient(700px 520px at 12% 92%,rgba(198,150,67,.12),transparent 66%),
+      linear-gradient(180deg,#06100c,#0a1712 60%,#040906)}
+  .ambient::after{content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 1px,transparent 1px 96px)}
+  .bokeh{position:absolute;inset:0;pointer-events:none;filter:blur(26px);opacity:.5}
+  .bokeh i{position:absolute;border-radius:50%;background:#7ee3cb;opacity:.22}
+  .bokeh i:nth-child(1){width:190px;height:190px;left:8%;top:14%}
+  .bokeh i:nth-child(2){width:130px;height:130px;right:12%;top:22%;background:#d3a45a;opacity:.18}
+  .bokeh i:nth-child(3){width:220px;height:220px;right:5%;bottom:8%;opacity:.12}
+  .bokeh i:nth-child(4){width:150px;height:150px;left:22%;bottom:6%;background:#d3a45a;opacity:.12}
+
+  /* ---------- scenes and motion transition ---------- */
+  .scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:46px;
+    opacity:0;visibility:hidden;transform:scale(1.05) translateX(34px);filter:blur(12px);
+    transition:opacity .5s ease,transform .72s cubic-bezier(.2,.8,.2,1),filter .72s ease;
+    pointer-events:none}
+  .scene.active{opacity:1;visibility:visible;transform:none;filter:none;z-index:3}
+  .scene.out{opacity:0;visibility:visible;transform:scale(.93) translateX(-38px);filter:blur(16px);z-index:2}
+  .warp{position:absolute;inset:0;z-index:20;pointer-events:none;opacity:0;
+    background:linear-gradient(90deg,transparent 0%,rgba(126,227,203,.10) 24%,rgba(2,10,7,.92) 48%,rgba(126,227,203,.10) 72%,transparent 100%)}
+  .warp::after{content:"";position:absolute;inset:-20%;
+    background:repeating-linear-gradient(90deg,transparent 0 44px,rgba(126,227,203,.13) 44px 46px);
+    transform:skewX(-18deg)}
+  .stage.warping .warp{animation:warpSweep .85s ease-in-out}
+  @keyframes warpSweep{0%{opacity:0;transform:translateX(-70%)}
+    28%{opacity:1}55%{opacity:1}100%{opacity:0;transform:translateX(70%)}}
+  .cinema{position:absolute;inset:0;z-index:18;pointer-events:none;
+    background:radial-gradient(ellipse at 50% 48%,transparent 46%,rgba(0,0,0,.58) 100%)}
+  .bars{position:absolute;left:0;right:0;z-index:19;height:52px;background:#030806;pointer-events:none}
+  .bars.top{top:0}.bars.bottom{bottom:0}
+
+  /* ---------- shared physical screen ---------- */
+  .narr{margin:14px 0 0;font-size:28px;line-height:1.42;color:#e7fff7;
+    text-shadow:0 0 18px rgba(126,227,203,.25)}
+  .narr .cursor{display:inline-block;width:3px;height:22px;background:#7ee3cb;
+    vertical-align:-3px;animation:blink 1s steps(1) infinite}
   @keyframes blink{50%{opacity:0}}
-  .s-foot{position:relative;z-index:1;padding:10px 18px;font-size:9px;letter-spacing:.18em;
-    color:#7fc9b6;border-top:1px solid rgba(143,224,204,.14);display:flex;justify-content:space-between}
-  .s-foot span:last-child{color:#bfe8db}
+  .kbd{display:inline-block;padding:6px 12px;border-radius:8px;background:rgba(47,179,148,.16);
+    border:1px solid rgba(126,227,203,.35);font-size:20px;font-weight:900;letter-spacing:.10em;color:#bff6e6}
 
-  /* ---------- physical sample card on the bench ---------- */
-  .card{position:absolute;left:1266px;top:684px;width:168px;height:132px;
-    transform:rotate(-3deg) skewX(-3deg);transform-origin:50% 100%;
-    padding:12px 12px 10px;color:#17352d;
-    background:linear-gradient(145deg,#fbfdfc,#e9f1ee);
-    border:1px solid rgba(12,74,59,.22);border-radius:5px;
-    box-shadow:5px 10px 18px rgba(12,40,32,.22),inset 0 1px 0 #fff}
-  .card .bar{width:26px;height:3px;border-radius:2px;background:#0c7a63;margin-bottom:7px}
-  .card .k{font-size:7px;letter-spacing:.20em;font-weight:900;color:#0c7a63}
-  .card .n{font-size:17px;font-weight:800;letter-spacing:.02em;margin-top:2px}
-  .card .d{font-size:7px;letter-spacing:.10em;color:#6b827b;margin-top:3px}
-  .card .price{font-size:13px;font-weight:800;color:#0c7a63;margin-top:8px;opacity:0;transition:.5s}
-  .card .cta{margin-top:6px;font-size:8px;letter-spacing:.12em;font-weight:900;color:#fff;
-    background:#0c7a63;border-radius:4px;padding:5px 6px;text-align:center;opacity:0;transition:.5s}
-  body[data-scene="result"] .card .price,body[data-scene="result"] .card .cta{opacity:1}
-  body[data-scene="result"] .card{box-shadow:5px 10px 26px rgba(12,122,99,.28),inset 0 1px 0 #fff}
+  /* ================= SCENE 1 : BOOT ================= */
+  .console{width:1240px;filter:drop-shadow(0 50px 70px rgba(0,0,0,.65))}
+  .console .bezel{position:relative;padding:26px;border-radius:28px;
+    background:linear-gradient(150deg,#435d55,#10231c 46%,#07120e);
+    border:2px solid rgba(190,230,216,.16);
+    box-shadow:inset 0 2px 0 rgba(255,255,255,.22),inset 0 -3px 10px rgba(0,0,0,.6)}
+  .console .bezel::before{content:"";position:absolute;inset:14px;border-radius:18px;
+    border:1px solid rgba(126,227,203,.10);pointer-events:none}
+  .console .glass-screen{position:relative;height:620px;border-radius:14px;padding:58px 66px;overflow:hidden;
+    background:radial-gradient(900px 420px at 76% -10%,rgba(47,179,148,.24),transparent 62%),
+      linear-gradient(160deg,#071d16,#0c3227 58%,#061a14);
+    box-shadow:inset 0 0 60px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.08)}
+  .console .glass-screen::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(180deg,rgba(255,255,255,.035) 0 1px,transparent 1px 5px)}
+  .c-brand{font-size:17px;letter-spacing:.34em;font-weight:800;color:#7ee3cb}
+  .c-big{margin-top:26px;font-size:118px;line-height:.86;font-weight:800;letter-spacing:-.045em;color:#f2fff9;
+    text-shadow:0 0 44px rgba(126,227,203,.28)}
+  .c-rule{width:180px;height:4px;border-radius:2px;margin:30px 0 22px;
+    background:linear-gradient(90deg,#7ee3cb,#d3a45a)}
+  .c-status{font-size:28px;font-weight:800;letter-spacing:.14em;color:#bff6e6;display:flex;align-items:center;gap:14px}
+  .c-status i{width:14px;height:14px;border-radius:50%;background:#7ee3cb;
+    box-shadow:0 0 22px rgba(126,227,203,.9);animation:pulse 1.3s infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+  .console .foot{display:flex;justify-content:space-between;align-items:center;margin-top:28px;
+    padding-top:20px;border-top:1px solid rgba(126,227,203,.18);font-size:18px;letter-spacing:.14em;color:#8ad9c4}
+  .console .neck{width:150px;height:88px;margin:0 auto;
+    background:linear-gradient(90deg,#20362f,#547068 45%,#162921);border-radius:0 0 10px 10px}
+  .console .base{width:440px;height:26px;margin:0 auto;border-radius:50%;
+    background:radial-gradient(ellipse,rgba(126,227,203,.28),transparent 70%)}
 
-  /* ---------- animated machine parts ---------- */
-  #scanBeam{opacity:0;transform-box:view-box;transform-origin:300px 620px}
-  body[data-scene="scan"] #scanBeam{opacity:1;animation:sweep 2.6s ease-in-out infinite}
-  @keyframes sweep{0%,100%{transform:translateY(-24px);opacity:.25}50%{transform:translateY(38px);opacity:.85}}
-
-  .vial-glow{opacity:0}
-  body[data-scene="scan"] .vial-glow{animation:vialPulse 2.4s ease-in-out infinite}
-  body[data-scene="scan"] .vial-glow.v2{animation-delay:.5s}
-  body[data-scene="scan"] .vial-glow.v3{animation-delay:1s}
+  /* ================= SCENE 2 : SCAN ================= */
+  .scan-wrap{width:1180px;display:flex;flex-direction:column;align-items:center;gap:28px}
+  .scan-head{width:100%;padding:26px 34px;border-radius:18px;
+    background:linear-gradient(150deg,#29463c,#10231c 60%,#091611);
+    border:1px solid rgba(126,227,203,.22);box-shadow:inset 0 2px 0 rgba(255,255,255,.14),0 22px 46px rgba(0,0,0,.5)}
+  .scan-head .row{display:flex;align-items:baseline;justify-content:space-between;gap:20px}
+  .scan-head .k{font-size:17px;letter-spacing:.26em;font-weight:800;color:#7ee3cb}
+  .scan-head .big{font-size:52px;font-weight:800;letter-spacing:-.02em;color:#f2fff9;margin-top:8px}
+  .notes{display:flex;gap:14px;margin-top:16px;flex-wrap:wrap}
+  .notes span{padding:9px 15px;border-radius:9px;background:rgba(47,179,148,.14);
+    border:1px solid rgba(126,227,203,.26);font-size:19px;font-weight:700;color:#d8fff1}
+  .rack{position:relative;width:1000px;height:520px;display:flex;align-items:flex-end;justify-content:center;gap:54px}
+  .rack .deck{position:absolute;left:60px;right:60px;bottom:0;height:54px;border-radius:14px;
+    background:linear-gradient(180deg,#7d968e,#3d564e 55%,#1d3029);
+    border:1px solid rgba(190,230,216,.24);box-shadow:0 26px 40px rgba(0,0,0,.55),inset 0 2px 0 rgba(255,255,255,.3)}
+  .vial{position:relative;width:214px;height:470px;filter:drop-shadow(0 26px 24px rgba(0,0,0,.5))}
+  .vial svg{width:100%;height:100%;overflow:visible}
+  .vial .glow{position:absolute;inset:8% 6% 4%;border-radius:40%;
+    box-shadow:0 0 60px 16px rgba(126,227,203,.45);opacity:0;pointer-events:none}
+  body[data-scene="scan"] .vial .glow{animation:vialPulse 3s ease-in-out infinite}
+  body[data-scene="scan"] .vial:nth-child(3) .glow{animation-delay:.7s}
+  body[data-scene="scan"] .vial:nth-child(4) .glow{animation-delay:1.4s}
   @keyframes vialPulse{0%,100%{opacity:0}45%{opacity:.95}}
-  body[data-scene="mix"] .vial-fill{animation:empty 4.4s ease forwards}
-  @keyframes empty{to{transform:scaleY(.16);transform-origin:center bottom}}
+  .laser{position:absolute;left:6%;right:6%;top:90px;height:5px;border-radius:4px;
+    background:linear-gradient(90deg,transparent,#7ee3cb,transparent);
+    box-shadow:0 0 34px 8px rgba(126,227,203,.55);opacity:0}
+  body[data-scene="scan"] .laser{opacity:1;animation:laserSweep 2.8s ease-in-out infinite}
+  @keyframes laserSweep{0%,100%{transform:translateY(0)}50%{transform:translateY(330px)}}
 
-  #liquid{transform-box:view-box;transform-origin:600px 758px;transform:scaleY(.07);transition:transform 3s cubic-bezier(.2,.8,.2,1)}
-  body[data-scene="mix"] #liquid,body[data-scene="analyze"] #liquid,
-  body[data-scene="result"] #liquid{transform:scaleY(1)}
-  #meniscus{opacity:0;transform-box:view-box;transform-origin:600px 758px;transform:translateY(220px);transition:transform 3s,opacity 1s}
-  body[data-scene="mix"] #meniscus,body[data-scene="analyze"] #meniscus,
-  body[data-scene="result"] #meniscus{opacity:.85;transform:translateY(0)}
-  #vortex{opacity:0;transform-box:view-box;transform-origin:600px 660px}
-  body[data-scene="mix"] #vortex{opacity:1;animation:spinV 2.6s linear infinite}
+  /* ================= SCENE 3 : MIX ================= */
+  .mix-hero{position:relative;width:1320px;height:830px;display:flex;align-items:center;justify-content:center;gap:30px}
+  .chamber{position:relative;width:530px;height:790px;filter:drop-shadow(0 46px 60px rgba(0,0,0,.62))}
+  .chamber svg{width:100%;height:100%;overflow:visible}
+  .vortex{transform-box:view-box;transform-origin:265px 470px}
+  body[data-scene="mix"] .vortex{animation:spinV 2.4s linear infinite}
   @keyframes spinV{to{transform:rotate(360deg)}}
   .bub{opacity:0}
-  body[data-scene="mix"] .bub{animation:bubble 2.6s ease-in infinite}
-  body[data-scene="mix"] .bub.b2{animation-delay:.9s}
-  body[data-scene="mix"] .bub.b3{animation-delay:1.6s}
-  @keyframes bubble{0%{transform:translateY(0) scale(.5);opacity:0}
-    20%{opacity:.85}100%{transform:translateY(-150px) scale(1);opacity:0}}
-  #drops{opacity:0}
-  body[data-scene="mix"] #drops{opacity:1}
-  .drop{transform-box:view-box}
-  body[data-scene="mix"] .drop{animation:fall 1.6s ease-in infinite}
+  body[data-scene="mix"] .bub{animation:bubble 2.5s ease-in infinite}
+  body[data-scene="mix"] .bub.b2{animation-delay:.8s}
+  body[data-scene="mix"] .bub.b3{animation-delay:1.5s}
+  @keyframes bubble{0%{transform:translateY(0) scale(.5);opacity:0}18%{opacity:.9}
+    100%{transform:translateY(-230px) scale(1);opacity:0}}
+  .pipette{position:absolute;left:610px;top:36px;width:310px;height:330px;
+    transform-box:fill-box;transform-origin:20% 10%}
+  body[data-scene="mix"] .pipette{animation:pip 4s ease-in-out infinite}
+  @keyframes pip{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(5deg)}}
+  .pipette svg{width:100%;height:100%;overflow:visible}
+  .drop{opacity:0}
+  body[data-scene="mix"] .drop{animation:fall 1.5s ease-in infinite}
   body[data-scene="mix"] .drop.d2{animation-delay:.5s}
   body[data-scene="mix"] .drop.d3{animation-delay:1s}
   @keyframes fall{0%{transform:translateY(0) scale(.4);opacity:0}
-    12%{opacity:1}82%{transform:translateY(150px) scale(1);opacity:1}
-    100%{transform:translateY(170px) scale(.2);opacity:0}}
+    14%{opacity:1}82%{transform:translateY(190px) scale(1);opacity:1}
+    100%{transform:translateY(215px) scale(.2);opacity:0}}
+  .mix-panel{width:600px;padding:34px 36px;border-radius:20px;
+    background:linear-gradient(150deg,#2b473d,#10231c 58%,#08140f);
+    border:1px solid rgba(126,227,203,.24);box-shadow:inset 0 2px 0 rgba(255,255,255,.14),0 26px 54px rgba(0,0,0,.55)}
+  .mix-panel .k{font-size:17px;letter-spacing:.26em;font-weight:800;color:#7ee3cb}
+  .mix-panel .big{font-size:50px;font-weight:800;color:#f2fff9;letter-spacing:-.02em;margin-top:10px}
+  .mix-panel .sub{font-size:21px;color:#8ad9c4;margin-top:8px;letter-spacing:.08em}
+  .rpm{margin-top:22px;display:flex;align-items:center;gap:16px}
+  .rpm .ring{width:74px;height:74px;border-radius:50%;border:4px dashed #7ee3cb;
+    box-shadow:0 0 28px rgba(126,227,203,.45)}
+  body[data-scene="mix"] .rpm .ring{animation:spinV 3.2s linear infinite}
+  .rpm .val{font-size:30px;font-weight:800;color:#d3a45a}
 
-  #armUpper{transform-box:view-box;transform-origin:920px 780px}
-  #armFore{transform-box:view-box;transform-origin:820px 540px}
-  #armGrip{transform-box:view-box;transform-origin:660px 450px}
-  body[data-scene="mix"] #armUpper{animation:armU 4.2s ease-in-out infinite}
-  body[data-scene="mix"] #armFore{animation:armF 4.2s ease-in-out infinite}
-  body[data-scene="mix"] #armGrip{animation:armG 4.2s ease-in-out infinite}
-  @keyframes armU{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(7deg)}}
-  @keyframes armF{0%,100%{transform:rotate(4deg)}50%{transform:rotate(-8deg)}}
-  @keyframes armG{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(6deg)}}
+  /* ================= SCENE 4 : ANALYZE ================= */
+  .ai-monitor{width:1500px;padding:30px;border-radius:30px;
+    background:linear-gradient(150deg,#405b53,#0e211a 50%,#06110d);
+    border:2px solid rgba(190,230,216,.16);
+    box-shadow:inset 0 2px 0 rgba(255,255,255,.2),0 50px 80px rgba(0,0,0,.7)}
+  .ai-screen{height:720px;border-radius:16px;padding:48px 58px;overflow:hidden;
+    background:radial-gradient(900px 460px at 80% -10%,rgba(47,179,148,.24),transparent 62%),
+      linear-gradient(160deg,#061b14,#0b3226 60%,#051711);
+    box-shadow:inset 0 0 70px rgba(0,0,0,.8)}
+  .ai-screen::after{content:"";position:absolute;inset:30px;pointer-events:none;
+    background:repeating-linear-gradient(180deg,rgba(255,255,255,.03) 0 1px,transparent 1px 6px)}
+  .ai-top{display:flex;justify-content:space-between;align-items:center;
+    font-size:17px;letter-spacing:.26em;font-weight:800;color:#7ee3cb}
+  .ai-top b{color:#fff;font-size:19px}
+  .ai-wave{display:flex;align-items:flex-end;gap:5px;height:130px;margin-top:26px}
+  .ai-wave i{flex:1;height:12%;border-radius:3px 3px 0 0;
+    background:linear-gradient(180deg,#7ee3cb,#1d8a72);opacity:.78}
+  body[data-scene="analyze"] .ai-wave i{animation:wave 1.2s ease-in-out infinite}
+  @keyframes wave{0%,100%{height:12%}50%{height:96%}}
+  .ai-title{margin-top:22px;font-size:76px;font-weight:800;letter-spacing:-.03em;color:#f2fff9}
+  .chips{display:flex;gap:16px;margin-top:14px}
+  .chips span{padding:14px 24px;border-radius:12px;font-size:26px;font-weight:800;color:#0a2119;
+    background:linear-gradient(135deg,#9ff0d8,#2fb394)}
+  .ai-screen .narr{font-size:30px;max-width:1240px}
 
-  #bottleGlow{opacity:0;transition:opacity .8s}
-  body[data-scene="result"] #bottleGlow{opacity:1}
-  #bottle{transform-box:view-box;transform-origin:1150px 800px;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
-  body[data-scene="result"] #bottle{transform:translateY(-6px) scale(1.04)}
-  #ceilGlow{opacity:.55;transition:opacity 1.2s}
-  body[data-scene="result"] #ceilGlow{opacity:1}
+  /* ================= SCENE 5 : RESULT ================= */
+  .result-wrap{width:1400px;display:flex;align-items:center;justify-content:center;gap:70px}
+  .result-info{width:680px;padding:36px 40px;border-radius:22px;
+    background:radial-gradient(600px 300px at 80% -10%,rgba(47,179,148,.18),transparent 62%),
+      linear-gradient(155deg,#1a332a,#091710 62%,#050d09);
+    border:2px solid rgba(190,230,216,.18);
+    box-shadow:inset 0 2px 0 rgba(255,255,255,.14),0 34px 64px rgba(0,0,0,.65)}
+  .result-info .k{font-size:17px;letter-spacing:.28em;font-weight:800;color:#7ee3cb}
+  .result-info .big{font-size:104px;line-height:.9;font-weight:800;letter-spacing:-.05em;color:#f6fff9;margin-top:18px}
+  .result-info .desc{margin-top:16px;font-size:24px;letter-spacing:.06em;color:#9fd8c7}
+  .price-card{margin-top:32px;padding:26px 30px;border-radius:18px;
+    background:linear-gradient(145deg,#f8fbf9,#dfeae6);color:#0c2c22;
+    box-shadow:0 26px 48px rgba(0,0,0,.5),inset 0 2px 0 #fff;transform:rotate(-1.2deg)}
+  .price-card .p{font-size:60px;font-weight:800;letter-spacing:-.03em}
+  .price-card .q{display:inline-block;margin-top:12px;padding:12px 20px;border-radius:10px;
+    background:#0c7a63;color:#fff;font-size:25px;font-weight:900;letter-spacing:.08em}
+  .result-info .narr{font-size:27px;color:#c8f2e5}
+  .bottle-hero{position:relative;width:560px;height:880px;filter:drop-shadow(0 50px 60px rgba(0,0,0,.7))}
+  .bottle-hero svg{width:100%;height:100%;overflow:visible}
+  .bottle-hero .halo{position:absolute;left:12%;right:12%;top:16%;bottom:8%;border-radius:46%;
+    background:radial-gradient(circle,rgba(211,164,90,.30),transparent 70%);filter:blur(38px);opacity:0;transition:opacity .8s}
+  body[data-scene="result"] .bottle-hero .halo{opacity:1}
+  .sweep{position:absolute;left:16%;top:10%;width:70px;height:76%;transform:skewX(-16deg);
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.20),transparent);
+    animation:sweepGlass 5s ease-in-out infinite;pointer-events:none}
+  @keyframes sweepGlass{0%,100%{transform:translateX(-90px) skewX(-16deg);opacity:0}
+    45%{opacity:.9}60%{transform:translateX(300px) skewX(-16deg);opacity:0}}
 
-  /* ---------- no floating text: controls live in preview.html ---------- */
   @media (max-width:1100px){.stage{transform:scale(.55);transform-origin:top left}}
 </style>
 </head>
 <body data-scene="boot">
 <div class="stage" id="stage">
+  <div class="ambient"></div>
+  <div class="bokeh"><i></i><i></i><i></i><i></i></div>
 
-  <svg class="room" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true">
-    <defs>
-      <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#cbd9d5"/><stop offset=".55" stop-color="#e7efec"/><stop offset="1" stop-color="#c3d2cd"/>
-      </linearGradient>
-      <linearGradient id="gWallSide" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#aebfba"/><stop offset="1" stop-color="#dbe7e3"/>
-      </linearGradient>
-      <linearGradient id="gWallSideR" x1="1" y1="0" x2="0" y2="0">
-        <stop offset="0" stop-color="#aebfba"/><stop offset="1" stop-color="#dbe7e3"/>
-      </linearGradient>
-      <linearGradient id="gCeil" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#8fa39d"/><stop offset="1" stop-color="#d3e0dc"/>
-      </linearGradient>
-      <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#b6c6c1"/><stop offset="1" stop-color="#e4ece9"/>
-      </linearGradient>
-      <linearGradient id="gBenchTop" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#f4f8f6"/><stop offset=".45" stop-color="#d7e2de"/><stop offset="1" stop-color="#b9c9c4"/>
-      </linearGradient>
-      <linearGradient id="gBenchFront" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#a7b8b3"/><stop offset="1" stop-color="#7f938e"/>
-      </linearGradient>
-      <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="rgba(255,255,255,.78)"/><stop offset=".18" stop-color="rgba(255,255,255,.24)"/>
-        <stop offset=".55" stop-color="rgba(255,255,255,.08)"/><stop offset=".86" stop-color="rgba(255,255,255,.40)"/>
-        <stop offset="1" stop-color="rgba(47,179,148,.24)"/>
-      </linearGradient>
-      <linearGradient id="gLiquid" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#f6dc9f"/><stop offset=".55" stop-color="#d3a45a"/><stop offset="1" stop-color="#94632a"/>
-      </linearGradient>
-      <linearGradient id="gMetal" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#eef4f2"/><stop offset=".5" stop-color="#c2d1cc"/><stop offset="1" stop-color="#94a8a2"/>
-      </linearGradient>
-      <linearGradient id="gBezel" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#3d5550"/><stop offset=".5" stop-color="#1e322c"/><stop offset="1" stop-color="#0d211b"/>
-      </linearGradient>
-      <linearGradient id="gScan" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="rgba(47,179,148,.42)"/><stop offset="1" stop-color="rgba(47,179,148,0)"/>
-      </linearGradient>
-      <radialGradient id="gLamp"><stop offset="0" stop-color="rgba(255,255,244,.95)"/><stop offset="1" stop-color="rgba(255,255,244,0)"/></radialGradient>
-      <radialGradient id="gBottle"><stop offset="0" stop-color="rgba(47,179,148,.55)"/><stop offset="1" stop-color="rgba(47,179,148,0)"/></radialGradient>
-      <filter id="blurBig" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="18"/></filter>
-      <filter id="blurSmall" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="6"/></filter>
-      <clipPath id="vesselClip">
-        <path d="M532 502 C532 484 668 484 668 502 L668 744 C668 764 532 764 532 744 Z"/>
-      </clipPath>
-    </defs>
-
-    <!-- ===== room shell ===== -->
-    <rect width="1920" height="1080" fill="url(#gWall)"/>
-    <polygon points="0,96 236,188 236,760 0,1080" fill="url(#gWallSide)"/>
-    <polygon points="1920,96 1684,188 1684,760 1920,1080" fill="url(#gWallSideR)"/>
-    <rect width="1920" height="96" fill="url(#gCeil)"/>
-    <g stroke="rgba(20,60,50,.10)" stroke-width="1">
-      <path d="M236 188 V760 M1684 188 V760"/>
-      <path d="M420 150 V760 M604 138 V760 M788 128 V760 M972 122 V760 M1156 128 V760 M1340 138 V760 M1524 150 V760"/>
-      <path d="M236 300 H1684 M236 470 H1684 M236 640 H1684"/>
-    </g>
-    <!-- ceiling lights -->
-    <g id="ceilGlow">
-      <rect x="180" y="30" width="360" height="18" rx="9" fill="#fffdf0" opacity=".95"/>
-      <rect x="780" y="30" width="360" height="18" rx="9" fill="#fffdf0" opacity=".95"/>
-      <rect x="1380" y="30" width="360" height="18" rx="9" fill="#fffdf0" opacity=".95"/>
-      <ellipse cx="360" cy="80" rx="230" ry="90" fill="url(#gLamp)" opacity=".5"/>
-      <ellipse cx="960" cy="80" rx="230" ry="90" fill="url(#gLamp)" opacity=".5"/>
-      <ellipse cx="1560" cy="80" rx="230" ry="90" fill="url(#gLamp)" opacity=".5"/>
-    </g>
-    <!-- floor -->
-    <polygon points="236,760 1684,760 1920,1080 0,1080" fill="url(#gFloor)"/>
-    <g stroke="rgba(20,62,50,.13)" stroke-width="1" fill="none">
-      <path d="M236 792 H1684 M210 828 H1710 M180 874 H1740 M140 934 H1780 M88 1010 H1832"/>
-      <path d="M960 760 L-160 1080 M960 760 L140 1080 M960 760 L460 1080 M960 760 L720 1080 M960 760 L960 1080
-               M960 760 L1200 1080 M960 760 L1460 1080 M960 760 L1780 1080 M960 760 L2080 1080"/>
-    </g>
-    <ellipse cx="960" cy="800" rx="760" ry="70" fill="#0a2a20" opacity=".10" filter="url(#blurBig)"/>
-
-    <!-- ===== bench ===== -->
-    <polygon points="60,852 1860,852 1860,1080 60,1080" fill="url(#gBenchFront)"/>
-    <polygon points="200,766 1720,766 1860,852 60,852" fill="url(#gBenchTop)"/>
-    <path d="M60 852 H1860" stroke="rgba(255,255,255,.72)" stroke-width="3"/>
-    <path d="M200 766 H1720" stroke="rgba(255,255,255,.55)" stroke-width="2"/>
-    <g opacity=".5" stroke="rgba(18,56,46,.24)" stroke-width="1" fill="none">
-      <rect x="116" y="902" width="420" height="132" rx="8"/>
-      <rect x="570" y="902" width="420" height="132" rx="8"/>
-      <rect x="1024" y="902" width="420" height="132" rx="8"/>
-      <rect x="1478" y="902" width="326" height="132" rx="8"/>
-      <path d="M250 930 H402 M704 930 H856 M1158 930 H1310 M1588 930 H1694"/>
-    </g>
-    <g fill="rgba(255,255,255,.35)">
-      <rect x="206" y="770" width="1500" height="4" rx="2"/>
-    </g>
-
-    <!-- shadows under instruments -->
-    <g fill="#0b2e24" filter="url(#blurSmall)" opacity=".26">
-      <ellipse cx="310" cy="800" rx="160" ry="15"/>
-      <ellipse cx="600" cy="806" rx="120" ry="14"/>
-      <ellipse cx="920" cy="802" rx="110" ry="13"/>
-      <ellipse cx="1150" cy="812" rx="100" ry="14"/>
-      <ellipse cx="1636" cy="754" rx="130" ry="16"/>
-    </g>
-
-    <!-- ===== vial rack ===== -->
-    <g>
-      <rect x="168" y="786" width="288" height="26" rx="6" fill="url(#gMetal)" stroke="rgba(12,74,59,.25)"/>
-      <rect x="168" y="786" width="288" height="5" rx="2" fill="rgba(255,255,255,.6)"/>
-      <g class="vial-glow v1"><rect x="196" y="674" width="52" height="116" rx="10" fill="none" stroke="#2fb394" stroke-width="3" opacity=".9" filter="url(#blurSmall)"/></g>
-      <g class="vial-glow v2"><rect x="286" y="674" width="52" height="116" rx="10" fill="none" stroke="#2fb394" stroke-width="3" opacity=".9" filter="url(#blurSmall)"/></g>
-      <g class="vial-glow v3"><rect x="376" y="674" width="52" height="116" rx="10" fill="none" stroke="#2fb394" stroke-width="3" opacity=".9" filter="url(#blurSmall)"/></g>
-      <!-- vial 1 -->
-      <g>
-        <rect x="196" y="680" width="52" height="108" rx="9" fill="url(#gGlass)" stroke="rgba(12,74,59,.30)"/>
-        <g clip-path="url(#v1clip)"><rect class="vial-fill" x="200" y="716" width="44" height="70" fill="url(#gLiquid)" opacity=".94"/></g>
-        <clipPath id="v1clip"><rect x="196" y="680" width="52" height="108" rx="9"/></clipPath>
-        <rect x="204" y="666" width="36" height="14" rx="3" fill="#c9d8d3" stroke="#9fb4ae"/>
-        <rect x="202" y="730" width="40" height="24" rx="2" fill="rgba(255,255,255,.86)" stroke="rgba(12,74,59,.20)"/>
-        <text x="222" y="746" text-anchor="middle" font-size="8" letter-spacing="1" font-weight="800" fill="#0c7a63">CITRUS</text>
-        <path d="M204 692 V772" stroke="rgba(255,255,255,.7)" stroke-width="2" fill="none"/>
-      </g>
-      <!-- vial 2 -->
-      <g>
-        <rect x="286" y="680" width="52" height="108" rx="9" fill="url(#gGlass)" stroke="rgba(12,74,59,.30)"/>
-        <g clip-path="url(#v2clip)"><rect class="vial-fill" x="290" y="716" width="44" height="70" fill="#7ec9ad" opacity=".92"/></g>
-        <clipPath id="v2clip"><rect x="286" y="680" width="52" height="108" rx="9"/></clipPath>
-        <rect x="294" y="666" width="36" height="14" rx="3" fill="#c9d8d3" stroke="#9fb4ae"/>
-        <rect x="292" y="730" width="40" height="24" rx="2" fill="rgba(255,255,255,.86)" stroke="rgba(12,74,59,.20)"/>
-        <text x="312" y="746" text-anchor="middle" font-size="7" letter-spacing=".6" font-weight="800" fill="#0c7a63">LAVENDER</text>
-        <path d="M294 692 V772" stroke="rgba(255,255,255,.7)" stroke-width="2" fill="none"/>
-      </g>
-      <!-- vial 3 -->
-      <g>
-        <rect x="376" y="680" width="52" height="108" rx="9" fill="url(#gGlass)" stroke="rgba(12,74,59,.30)"/>
-        <g clip-path="url(#v3clip)"><rect class="vial-fill" x="380" y="726" width="44" height="60" fill="#eef3f0" opacity=".9"/></g>
-        <clipPath id="v3clip"><rect x="376" y="680" width="52" height="108" rx="9"/></clipPath>
-        <rect x="384" y="666" width="36" height="14" rx="3" fill="#c9d8d3" stroke="#9fb4ae"/>
-        <rect x="382" y="730" width="40" height="24" rx="2" fill="rgba(255,255,255,.86)" stroke="rgba(12,74,59,.20)"/>
-        <text x="402" y="746" text-anchor="middle" font-size="8" letter-spacing="1" font-weight="800" fill="#0c7a63">MUSK</text>
-        <path d="M384 692 V772" stroke="rgba(255,255,255,.7)" stroke-width="2" fill="none"/>
-      </g>
-    </g>
-
-    <!-- ===== scanner gantry ===== -->
-    <g>
-      <rect x="148" y="596" width="20" height="194" rx="5" fill="url(#gMetal)" stroke="rgba(12,74,59,.25)"/>
-      <rect x="452" y="596" width="20" height="194" rx="5" fill="url(#gMetal)" stroke="rgba(12,74,59,.25)"/>
-      <rect x="140" y="580" width="340" height="28" rx="9" fill="url(#gMetal)" stroke="rgba(12,74,59,.28)"/>
-      <rect x="140" y="580" width="340" height="5" rx="2" fill="rgba(255,255,255,.65)"/>
-      <rect x="276" y="606" width="72" height="22" rx="6" fill="#173c32"/>
-      <circle cx="312" cy="617" r="6" fill="#7ee3cb"/>
-      <text x="312" y="592" text-anchor="middle" font-size="8" letter-spacing="2" font-weight="800" fill="rgba(11,58,47,.62)">SCAN·01</text>
-      <polygon id="scanBeam" points="282,630 342,630 392,784 232,784" fill="url(#gScan)"/>
-    </g>
-
-    <!-- ===== vortex mixing chamber ===== -->
-    <g>
-      <rect x="486" y="766" width="228" height="30" rx="8" fill="url(#gMetal)" stroke="rgba(12,74,59,.28)"/>
-      <rect x="486" y="766" width="228" height="5" rx="2" fill="rgba(255,255,255,.6)"/>
-      <text x="600" y="786" text-anchor="middle" font-size="8" letter-spacing="2" font-weight="800" fill="rgba(11,58,47,.62)">MIX·02</text>
-      <path d="M532 502 C532 484 668 484 668 502 L668 744 C668 764 532 764 532 744 Z"
-            fill="url(#gGlass)" stroke="rgba(12,74,59,.34)" stroke-width="1.5"/>
-      <g clip-path="url(#vesselClip)">
-        <rect id="liquid" x="534" y="500" width="132" height="260" fill="url(#gLiquid)" opacity=".95"/>
-        <g id="vortex" opacity=".9">
-          <ellipse cx="600" cy="660" rx="56" ry="15" fill="none" stroke="#ffffff" stroke-width="4" opacity=".75"/>
-          <ellipse cx="600" cy="660" rx="40" ry="11" fill="none" stroke="#7ee3cb" stroke-width="3" opacity=".85"/>
-          <ellipse cx="600" cy="660" rx="24" ry="7" fill="none" stroke="#ffffff" stroke-width="3" opacity=".65"/>
-        </g>
-        <circle class="bub" cx="566" cy="742" r="4" fill="rgba(255,255,255,.8)"/>
-        <circle class="bub b2" cx="600" cy="746" r="5" fill="rgba(255,255,255,.75)"/>
-        <circle class="bub b3" cx="632" cy="740" r="3.5" fill="rgba(255,255,255,.8)"/>
-        <ellipse id="meniscus" cx="600" cy="660" rx="64" ry="9" fill="rgba(255,255,255,.42)"/>
-      </g>
-      <ellipse cx="600" cy="502" rx="68" ry="12" fill="rgba(255,255,255,.5)" stroke="rgba(12,74,59,.26)"/>
-      <rect x="562" y="466" width="76" height="16" rx="5" fill="#c9d8d3" stroke="#9fb4ae"/>
-      <path d="M548 520 V738" stroke="rgba(255,255,255,.68)" stroke-width="3" fill="none" stroke-linecap="round"/>
-    </g>
-
-    <!-- ===== robotic arm ===== -->
-    <g>
-      <rect x="844" y="770" width="152" height="28" rx="8" fill="url(#gMetal)" stroke="rgba(12,74,59,.28)"/>
-      <text x="920" y="789" text-anchor="middle" font-size="8" letter-spacing="2" font-weight="800" fill="rgba(11,58,47,.62)">ARM·03</text>
-      <g id="armUpper">
-        <line x1="920" y1="770" x2="820" y2="540" stroke="#7f9892" stroke-width="26" stroke-linecap="round"/>
-        <line x1="920" y1="770" x2="820" y2="540" stroke="#d5e2de" stroke-width="10" stroke-linecap="round"/>
-        <circle cx="920" cy="770" r="24" fill="url(#gMetal)" stroke="#8fa8a1" stroke-width="2"/>
-        <circle cx="920" cy="770" r="8" fill="#6f8a83"/>
-        <g id="armFore">
-          <line x1="820" y1="540" x2="660" y2="450" stroke="#7f9892" stroke-width="20" stroke-linecap="round"/>
-          <line x1="820" y1="540" x2="660" y2="450" stroke="#d5e2de" stroke-width="8" stroke-linecap="round"/>
-          <circle cx="820" cy="540" r="20" fill="url(#gMetal)" stroke="#8fa8a1" stroke-width="2"/>
-          <g id="armGrip">
-            <rect x="642" y="440" width="38" height="16" rx="6" fill="#c9d8d3" stroke="#8fa8a1"/>
-            <path d="M650 456 l-4 22 M672 456 l4 22" stroke="#7f9892" stroke-width="6" stroke-linecap="round"/>
-            <circle cx="661" cy="448" r="4" fill="#0c7a63"/>
-          </g>
-        </g>
-      </g>
-      <g id="drops">
-        <circle class="drop d1" cx="650" cy="476" r="5" fill="#d3a45a"/>
-        <circle class="drop d2" cx="650" cy="476" r="5" fill="#2fb394"/>
-        <circle class="drop d3" cx="650" cy="476" r="4.5" fill="#eef3f0"/>
-      </g>
-    </g>
-
-    <!-- ===== finished bottle on pedestal ===== -->
-    <g>
-      <ellipse id="bottleGlow" cx="1150" cy="700" rx="120" ry="170" fill="url(#gBottle)" filter="url(#blurBig)"/>
-      <ellipse cx="1150" cy="810" rx="92" ry="18" fill="#0b2e24" opacity=".22" filter="url(#blurSmall)"/>
-      <rect x="1068" y="792" width="164" height="20" rx="9" fill="url(#gMetal)" stroke="rgba(12,74,59,.25)"/>
-      <rect x="1068" y="792" width="164" height="4" rx="2" fill="rgba(255,255,255,.65)"/>
-      <g id="bottle">
-        <rect x="1124" y="584" width="52" height="28" rx="6" fill="#d9b36c" stroke="#f0d9a8"/>
-        <rect x="1132" y="608" width="36" height="16" rx="3" fill="rgba(255,255,255,.6)" stroke="rgba(12,74,59,.2)"/>
-        <path d="M1094 636 C1094 624 1106 616 1120 612 L1120 596 L1180 596 L1180 612 C1194 616 1206 624 1206 636 L1210 776 C1210 794 1198 804 1180 804 L1120 804 C1102 804 1090 794 1090 776 Z"
-              fill="url(#gGlass)" stroke="rgba(12,74,59,.32)"/>
-        <g clip-path="url(#bClip)">
-          <rect x="1088" y="636" width="124" height="168" fill="url(#gLiquid)" opacity=".94"/>
-          <path d="M1088 644 Q1116 634 1150 644 T1212 644 L1212 656 L1088 656 Z" fill="rgba(255,255,255,.34)"/>
-        </g>
-        <clipPath id="bClip"><path d="M1094 636 C1094 624 1106 616 1120 612 L1120 596 L1180 596 L1180 612 C1194 616 1206 624 1206 636 L1210 776 C1210 794 1198 804 1180 804 L1120 804 C1102 804 1090 794 1090 776 Z"/></clipPath>
-        <rect x="1110" y="690" width="80" height="66" rx="4" fill="rgba(255,255,255,.88)" stroke="rgba(12,74,59,.26)"/>
-        <text x="1150" y="710" text-anchor="middle" font-size="12" letter-spacing="2.4" font-weight="800" fill="#0c7a63">ALKAFF</text>
-        <path d="M1124 718 H1176" stroke="rgba(12,74,59,.3)"/>
-        <text x="1150" y="734" text-anchor="middle" font-size="9" letter-spacing="1.2" fill="#10241f">MARBELLA</text>
-        <text x="1150" y="748" text-anchor="middle" font-size="5.6" letter-spacing=".8" fill="#5c716b">EXTRAIT DE PARFUM</text>
-        <path d="M1106 650 C1102 706 1104 760 1108 790" stroke="rgba(255,255,255,.78)" stroke-width="3" fill="none" stroke-linecap="round"/>
-      </g>
-    </g>
-
-    <!-- ===== monitor: physical bezel and stand ===== -->
-    <g>
-      <ellipse cx="1636" cy="748" rx="124" ry="18" fill="#0b2e24" opacity=".24" filter="url(#blurSmall)"/>
-      <ellipse cx="1636" cy="742" rx="118" ry="14" fill="url(#gMetal)" stroke="rgba(12,74,59,.25)"/>
-      <rect x="1624" y="602" width="24" height="140" rx="6" fill="url(#gMetal)" stroke="rgba(12,74,59,.25)"/>
-      <rect x="1390" y="160" width="500" height="452" rx="18" fill="url(#gBezel)" stroke="#0a1c17" stroke-width="2"/>
-      <rect x="1396" y="166" width="488" height="436" rx="12" fill="#06150f"/>
-      <rect x="1406" y="176" width="468" height="418" rx="6" fill="#0a231d"/>
-      <text x="1640" y="600" text-anchor="middle" font-size="9" letter-spacing="3" font-weight="800" fill="#4f6e64">ALKaff</text>
-      <circle cx="1436" cy="600" r="3" fill="#2fb394"/>
-      <path d="M1400 168 H1880" stroke="rgba(255,255,255,.18)" stroke-width="2"/>
-    </g>
-  </svg>
-
-  <!-- screen content is painted on the monitor surface -->
-  <div class="screen" aria-live="polite">
-    <div class="s-head"><span>ALKaff · AI OLFACTORY UNIT</span><b id="screenState">BOOT</b></div>
-    <div class="s-body">
-      <div class="wave" id="wave"></div>
-      <div class="s-notes" id="notes"></div>
-      <p class="s-narr" id="narration"></p>
+  <!-- ==================== SCENE 1 ==================== -->
+  <section class="scene active" data-key="boot">
+    <div class="console">
+      <div class="bezel">
+        <div class="glass-screen">
+          <div class="c-brand">ALKaff · AI PERFUMERY SYSTEM</div>
+          <div class="c-big">SCENT<br>LAB</div>
+          <div class="c-rule"></div>
+          <div class="c-status"><i></i> SYSTEM ONLINE</div>
+          <p class="narr" data-narr></p>
+          <div class="foot"><span>PRECISION BLENDING</span><span>REAL-TIME · BAHASA INDONESIA</span></div>
+        </div>
+      </div>
+      <div class="neck"></div>
+      <div class="base"></div>
     </div>
-    <div class="s-foot"><span id="screenFoot">MENYALAKAN SISTEM</span><span>BAHASA INDONESIA</span></div>
-  </div>
+  </section>
 
-  <div class="card">
-    <div class="bar"></div>
-    <div class="k" id="plateK">SAMPLE 01</div>
-    <div class="n" id="plateN">MARBELLA</div>
-    <div class="d" id="plateD">EXTRAIT DE PARFUM</div>
-    <div class="price" id="plateP">Rp449.000</div>
-    <div class="cta" id="plateC">DM · QUOTE</div>
-  </div>
+  <!-- ==================== SCENE 2 ==================== -->
+  <section class="scene" data-key="scan">
+    <div class="scan-wrap">
+      <div class="scan-head">
+        <div class="row"><span class="k">MOLECULAR SCAN · 01</span><span class="kbd">ALKaff</span></div>
+        <div class="big">TOP · HEART · BASE</div>
+        <div class="notes"><span>TOP · Lemon Amalfi</span><span>HEART · Lavender</span><span>BASE · White Musk</span></div>
+        <p class="narr" data-narr></p>
+      </div>
+      <div class="rack">
+        <div class="laser"></div>
+        <div class="deck"></div>
+        <div class="vial">
+          <div class="glow"></div>
+          <svg viewBox="0 0 214 470">
+            <defs>
+              <linearGradient id="vGlass" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="rgba(255,255,255,.86)"/><stop offset=".16" stop-color="rgba(255,255,255,.26)"/>
+                <stop offset=".52" stop-color="rgba(255,255,255,.06)"/><stop offset=".85" stop-color="rgba(255,255,255,.42)"/>
+                <stop offset="1" stop-color="rgba(126,227,203,.28)"/>
+              </linearGradient>
+              <linearGradient id="vAmber" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f8dea6"/><stop offset=".6" stop-color="#d3a45a"/><stop offset="1" stop-color="#8d5d27"/>
+              </linearGradient>
+              <clipPath id="vClip1"><path d="M40 92 C40 70 60 60 82 56 L82 38 L132 38 L132 56 C154 60 174 70 174 92 L178 410 C178 438 160 454 132 456 L82 456 C54 454 36 438 36 410 Z"/></clipPath>
+            </defs>
+            <rect x="84" y="12" width="46" height="30" rx="7" fill="#c99a4d" stroke="#f4dca4"/>
+            <path d="M40 92 C40 70 60 60 82 56 L82 38 L132 38 L132 56 C154 60 174 70 174 92 L178 410 C178 438 160 454 132 456 L82 456 C54 454 36 438 36 410 Z"
+                  fill="url(#vGlass)" stroke="rgba(190,230,216,.55)" stroke-width="2"/>
+            <g clip-path="url(#vClip1)">
+              <rect x="34" y="176" width="148" height="286" fill="url(#vAmber)" opacity=".95"/>
+              <ellipse cx="107" cy="178" rx="72" ry="12" fill="rgba(255,255,255,.48)"/>
+              <rect x="52" y="90" width="10" height="340" rx="5" fill="rgba(255,255,255,.66)"/>
+              <rect x="150" y="110" width="6" height="300" rx="3" fill="rgba(255,255,255,.36)"/>
+            </g>
+            <rect x="54" y="292" width="106" height="86" rx="5" fill="rgba(250,252,249,.93)" stroke="rgba(12,74,59,.35)"/>
+            <text x="107" y="326" text-anchor="middle" font-size="24" letter-spacing="2" font-weight="800" fill="#0c7a63">CITRUS</text>
+            <text x="107" y="352" text-anchor="middle" font-size="13" letter-spacing="1" fill="#46726a">TOP NOTE</text>
+          </svg>
+        </div>
+        <div class="vial">
+          <div class="glow"></div>
+          <svg viewBox="0 0 214 470">
+            <defs>
+              <linearGradient id="vGlass2" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="rgba(255,255,255,.86)"/><stop offset=".16" stop-color="rgba(255,255,255,.26)"/>
+                <stop offset=".52" stop-color="rgba(255,255,255,.06)"/><stop offset=".85" stop-color="rgba(255,255,255,.42)"/>
+                <stop offset="1" stop-color="rgba(126,227,203,.28)"/>
+              </linearGradient>
+              <linearGradient id="vGreen" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#cdeadd"/><stop offset=".6" stop-color="#7ec9ad"/><stop offset="1" stop-color="#3d856c"/>
+              </linearGradient>
+              <clipPath id="vClip2"><path d="M40 92 C40 70 60 60 82 56 L82 38 L132 38 L132 56 C154 60 174 70 174 92 L178 410 C178 438 160 454 132 456 L82 456 C54 454 36 438 36 410 Z"/></clipPath>
+            </defs>
+            <rect x="84" y="12" width="46" height="30" rx="7" fill="#c99a4d" stroke="#f4dca4"/>
+            <path d="M40 92 C40 70 60 60 82 56 L82 38 L132 38 L132 56 C154 60 174 70 174 92 L178 410 C178 438 160 454 132 456 L82 456 C54 454 36 438 36 410 Z"
+                  fill="url(#vGlass2)" stroke="rgba(190,230,216,.55)" stroke-width="2"/>
+            <g clip-path="url(#vClip2)">
+              <rect x="34" y="176" width="148" height="286" fill="url(#vGreen)" opacity=".95"/>
+              <ellipse cx="107" cy="178" rx="72" ry="12" fill="rgba(255,255,255,.5)"/>
+              <rect x="52" y="90" width="10" height="340" rx="5" fill="rgba(255,255,255,.66)"/>
+              <rect x="150" y="110" width="6" height="300" rx="3" fill="rgba(255,255,255,.36)"/>
+            </g>
+            <rect x="54" y="292" width="106" height="86" rx="5" fill="rgba(250,252,249,.93)" stroke="rgba(12,74,59,.35)"/>
+            <text x="107" y="326" text-anchor="middle" font-size="20" letter-spacing="1" font-weight="800" fill="#0c7a63">LAVENDER</text>
+            <text x="107" y="352" text-anchor="middle" font-size="13" letter-spacing="1" fill="#46726a">HEART NOTE</text>
+          </svg>
+        </div>
+        <div class="vial">
+          <div class="glow"></div>
+          <svg viewBox="0 0 214 470">
+            <defs>
+              <linearGradient id="vGlass3" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="rgba(255,255,255,.86)"/><stop offset=".16" stop-color="rgba(255,255,255,.26)"/>
+                <stop offset=".52" stop-color="rgba(255,255,255,.06)"/><stop offset=".85" stop-color="rgba(255,255,255,.42)"/>
+                <stop offset="1" stop-color="rgba(126,227,203,.28)"/>
+              </linearGradient>
+              <linearGradient id="vWhite" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#e7efeb"/><stop offset="1" stop-color="#b7c9c2"/>
+              </linearGradient>
+              <clipPath id="vClip3"><path d="M40 92 C40 70 60 60 82 56 L82 38 L132 38 L132 56 C154 60 174 70 174 92 L178 410 C178 438 160 454 132 456 L82 456 C54 454 36 438 36 410 Z"/></clipPath>
+            </defs>
+            <rect x="84" y="12" width="46" height="30" rx="7" fill="#c99a4d" stroke="#f4dca4"/>
+            <path d="M40 92 C40 70 60 60 82 56 L82 38 L132 38 L132 56 C154 60 174 70 174 92 L178 410 C178 438 160 454 132 456 L82 456 C54 454 36 438 36 410 Z"
+                  fill="url(#vGlass3)" stroke="rgba(190,230,216,.55)" stroke-width="2"/>
+            <g clip-path="url(#vClip3)">
+              <rect x="34" y="176" width="148" height="286" fill="url(#vWhite)" opacity=".94"/>
+              <ellipse cx="107" cy="178" rx="72" ry="12" fill="rgba(255,255,255,.7)"/>
+              <rect x="52" y="90" width="10" height="340" rx="5" fill="rgba(255,255,255,.66)"/>
+              <rect x="150" y="110" width="6" height="300" rx="3" fill="rgba(255,255,255,.36)"/>
+            </g>
+            <rect x="54" y="292" width="106" height="86" rx="5" fill="rgba(250,252,249,.93)" stroke="rgba(12,74,59,.35)"/>
+            <text x="107" y="326" text-anchor="middle" font-size="24" letter-spacing="2" font-weight="800" fill="#0c7a63">MUSK</text>
+            <text x="107" y="352" text-anchor="middle" font-size="13" letter-spacing="1" fill="#46726a">BASE NOTE</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="floor-shine"></div>
-  <div class="vignette"></div>
+  <!-- ==================== SCENE 3 ==================== -->
+  <section class="scene" data-key="mix">
+    <div class="mix-hero">
+      <div class="chamber">
+        <svg viewBox="0 0 530 790">
+          <defs>
+            <linearGradient id="cGlass" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="rgba(255,255,255,.80)"/><stop offset=".12" stop-color="rgba(255,255,255,.22)"/>
+              <stop offset=".5" stop-color="rgba(255,255,255,.05)"/><stop offset=".86" stop-color="rgba(255,255,255,.38)"/>
+              <stop offset="1" stop-color="rgba(126,227,203,.26)"/>
+            </linearGradient>
+            <linearGradient id="cLiquid" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f7dca4"/><stop offset=".45" stop-color="#d3a45a"/><stop offset="1" stop-color="#8a5a24"/>
+            </linearGradient>
+            <radialGradient id="cCaustic"><stop offset="0" stop-color="rgba(255,238,190,.85)"/><stop offset="1" stop-color="rgba(255,238,190,0)"/></radialGradient>
+            <clipPath id="cClip"><path d="M120 176 C120 148 410 148 410 176 L410 648 C410 700 120 700 120 648 Z"/></clipPath>
+          </defs>
+          <ellipse cx="265" cy="742" rx="200" ry="30" fill="rgba(0,0,0,.55)"/>
+          <rect x="70" y="710" width="390" height="46" rx="14" fill="#4d675e" stroke="rgba(190,230,216,.3)"/>
+          <rect x="70" y="710" width="390" height="8" rx="4" fill="rgba(255,255,255,.3)"/>
+          <text x="265" y="742" text-anchor="middle" font-size="19" letter-spacing="4" font-weight="800" fill="#a9d8c9">MIX·02</text>
+          <path d="M120 176 C120 148 410 148 410 176 L410 648 C410 700 120 700 120 648 Z"
+                fill="url(#cGlass)" stroke="rgba(190,230,216,.55)" stroke-width="2"/>
+          <g clip-path="url(#cClip)">
+            <rect x="118" y="198" width="294" height="500" fill="url(#cLiquid)" opacity=".96"/>
+            <ellipse cx="265" cy="664" rx="160" ry="52" fill="url(#cCaustic)"/>
+            <g class="vortex">
+              <ellipse cx="265" cy="470" rx="130" ry="36" fill="none" stroke="rgba(255,255,255,.78)" stroke-width="9"/>
+              <ellipse cx="265" cy="470" rx="96" ry="26" fill="none" stroke="#7ee3cb" stroke-width="7" opacity=".9"/>
+              <ellipse cx="265" cy="470" rx="58" ry="16" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="6"/>
+            </g>
+            <ellipse cx="265" cy="470" rx="146" ry="22" fill="rgba(255,255,255,.34)"/>
+            <circle class="bub" cx="190" cy="640" r="9" fill="rgba(255,255,255,.75)"/>
+            <circle class="bub b2" cx="265" cy="652" r="12" fill="rgba(255,255,255,.7)"/>
+            <circle class="bub b3" cx="340" cy="640" r="8" fill="rgba(255,255,255,.75)"/>
+            <rect x="146" y="190" width="16" height="470" rx="8" fill="rgba(255,255,255,.6)"/>
+            <rect x="368" y="220" width="10" height="430" rx="5" fill="rgba(255,255,255,.32)"/>
+          </g>
+          <ellipse cx="265" cy="176" rx="145" ry="26" fill="rgba(255,255,255,.44)" stroke="rgba(190,230,216,.5)"/>
+          <rect x="214" y="122" width="102" height="28" rx="8" fill="#b5c9c2" stroke="#7f9990"/>
+        </svg>
+      </div>
+      <div class="pipette">
+        <svg viewBox="0 0 310 330">
+          <defs><linearGradient id="pMetal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#f0f6f4"/><stop offset=".45" stop-color="#9db4ad"/><stop offset="1" stop-color="#506b62"/>
+          </linearGradient></defs>
+          <ellipse cx="34" cy="40" rx="46" ry="34" fill="url(#pMetal)" stroke="#284237"/>
+          <rect x="14" y="38" width="40" height="150" rx="16" fill="url(#pMetal)" stroke="#284237"/>
+          <circle cx="34" cy="120" r="20" fill="#20382f" stroke="#7ee3cb" stroke-width="2"/>
+          <path d="M34 188 L170 268" stroke="#7f9892" stroke-width="30" stroke-linecap="round"/>
+          <path d="M34 188 L170 268" stroke="#d5e2de" stroke-width="11" stroke-linecap="round"/>
+          <circle cx="170" cy="268" r="24" fill="url(#pMetal)" stroke="#284237"/>
+          <rect x="164" y="284" width="16" height="26" rx="5" fill="#b5c9c2" stroke="#506b62"/>
+          <circle class="drop d1" cx="172" cy="314" r="9" fill="#d3a45a"/>
+          <circle class="drop d2" cx="172" cy="314" r="9" fill="#7ee3cb"/>
+          <circle class="drop d3" cx="172" cy="314" r="8" fill="#f3e5c4"/>
+        </svg>
+      </div>
+      <div class="mix-panel">
+        <div class="k">PRECISION BLENDING · 02</div>
+        <div class="big">MERACIK PRESISI</div>
+        <div class="sub">Tetesan aksen · vortex homogen</div>
+        <div class="rpm"><div class="ring"></div><div class="val">2.400 RPM</div></div>
+        <p class="narr" data-narr></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SCENE 4 ==================== -->
+  <section class="scene" data-key="analyze">
+    <div class="ai-monitor">
+      <div class="ai-screen">
+        <div class="ai-top"><span>AI OLFACTORY ANALYSIS · 03</span><b>PROFIL SELESAI</b></div>
+        <div class="ai-wave" id="aiWave"></div>
+        <div class="ai-title">KARAKTER AROMA</div>
+        <div class="chips"><span>SEGAR</span><span>LAPANG</span><span>BERSIH</span></div>
+        <p class="narr" data-narr></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SCENE 5 ==================== -->
+  <section class="scene" data-key="result">
+    <div class="result-wrap">
+      <div class="result-info">
+        <div class="k">SCENT PROFILE READY · 04</div>
+        <div class="big">MARBELLA</div>
+        <div class="desc">EXTRAIT DE PARFUM · 50 ML</div>
+        <div class="price-card"><div class="p">Rp449.000</div><div class="q">DM · QUOTE</div></div>
+        <p class="narr" data-narr></p>
+      </div>
+      <div class="bottle-hero">
+        <div class="halo"></div>
+        <div class="sweep"></div>
+        <svg viewBox="0 0 560 880">
+          <defs>
+            <linearGradient id="bCap" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#7a5420"/><stop offset=".18" stop-color="#e6c17d"/>
+              <stop offset=".38" stop-color="#fff0c4"/><stop offset=".56" stop-color="#c99a4d"/>
+              <stop offset=".78" stop-color="#8a6028"/><stop offset="1" stop-color="#e8c885"/>
+            </linearGradient>
+            <linearGradient id="bGlass" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="rgba(255,255,255,.82)"/><stop offset=".10" stop-color="rgba(255,255,255,.30)"/>
+              <stop offset=".34" stop-color="rgba(255,255,255,.05)"/><stop offset=".62" stop-color="rgba(255,255,255,.02)"/>
+              <stop offset=".86" stop-color="rgba(255,255,255,.38)"/><stop offset="1" stop-color="rgba(126,227,203,.22)"/>
+            </linearGradient>
+            <linearGradient id="bLiquid" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f9e2ab"/><stop offset=".35" stop-color="#e3b96d"/>
+              <stop offset=".72" stop-color="#b98438"/><stop offset="1" stop-color="#7d4d1c"/>
+            </linearGradient>
+            <radialGradient id="bCaustic"><stop offset="0" stop-color="rgba(255,232,176,.9)"/><stop offset="1" stop-color="rgba(255,232,176,0)"/></radialGradient>
+            <linearGradient id="bLabel" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#f2f4ee"/><stop offset="1" stop-color="#d9ded3"/>
+            </linearGradient>
+            <clipPath id="bClip">
+              <path d="M168 214 C168 174 200 154 236 148 L236 126 L324 126 L324 148 C360 154 392 174 392 214 L404 730 C404 798 372 832 318 838 L242 838 C188 832 156 798 156 730 Z"/>
+            </clipPath>
+          </defs>
+          <ellipse cx="280" cy="852" rx="212" ry="30" fill="rgba(0,0,0,.6)"/>
+          <ellipse cx="280" cy="790" rx="190" ry="80" fill="rgba(126,227,203,.14)"/>
+          <rect x="228" y="34" width="104" height="86" rx="12" fill="url(#bCap)" stroke="#5c3f18" stroke-width="2"/>
+          <ellipse cx="280" cy="34" rx="52" ry="13" fill="#f5dca1" stroke="#8a6028"/>
+          <g stroke="rgba(90,60,20,.35)" stroke-width="2">
+            <path d="M248 40 V116 M266 38 V118 M294 38 V118 M312 40 V116"/>
+          </g>
+          <rect x="252" y="120" width="56" height="14" rx="4" fill="#d9b36c"/>
+          <path d="M168 214 C168 174 200 154 236 148 L236 126 L324 126 L324 148 C360 154 392 174 392 214 L404 730 C404 798 372 832 318 838 L242 838 C188 832 156 798 156 730 Z"
+                fill="url(#bGlass)" stroke="rgba(190,230,216,.65)" stroke-width="3"/>
+          <g clip-path="url(#bClip)">
+            <rect x="154" y="236" width="252" height="606" fill="url(#bLiquid)" opacity=".96"/>
+            <ellipse cx="280" cy="796" rx="176" ry="70" fill="url(#bCaustic)"/>
+            <ellipse cx="280" cy="238" rx="124" ry="20" fill="rgba(255,255,255,.46)"/>
+            <path d="M186 220 C178 400 180 700 190 812" stroke="rgba(255,255,255,.78)" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <path d="M372 244 C378 420 376 690 370 796" stroke="rgba(255,255,255,.32)" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <g fill="rgba(255,255,255,.62)">
+              <circle cx="214" cy="300" r="4"/><circle cx="340" cy="352" r="3"/><circle cx="228" cy="520" r="3.5"/>
+              <circle cx="352" cy="596" r="4"/><circle cx="204" cy="690" r="3"/><circle cx="330" cy="742" r="3.5"/>
+            </g>
+          </g>
+          <rect x="206" y="446" width="148" height="206" rx="6" fill="url(#bLabel)" stroke="rgba(12,74,59,.36)" stroke-width="2"/>
+          <rect x="214" y="454" width="132" height="190" rx="3" fill="none" stroke="rgba(12,74,59,.18)"/>
+          <text x="280" y="500" text-anchor="middle" font-size="30" letter-spacing="4" font-weight="800" fill="#0c7a63">ALKAFF</text>
+          <path d="M238 514 H322" stroke="rgba(12,74,59,.35)" stroke-width="2"/>
+          <text x="280" y="556" text-anchor="middle" font-size="23" letter-spacing="2" font-weight="800" fill="#10241f">MARBELLA</text>
+          <text x="280" y="586" text-anchor="middle" font-size="12" letter-spacing="2" fill="#4d6d64">EXTRAIT DE PARFUM</text>
+          <text x="280" y="612" text-anchor="middle" font-size="12" letter-spacing="2" fill="#4d6d64">50 ML · 1.7 FL OZ</text>
+          <path d="M176 240 C170 430 172 700 182 806" stroke="rgba(255,255,255,.55)" stroke-width="3" fill="none"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <div class="warp"></div>
+  <div class="cinema"></div>
+  <div class="bars top"></div>
+  <div class="bars bottom"></div>
 </div>
 
 <script>
@@ -400,12 +496,10 @@
   var forced = params.get("scene");
   var freeze = params.get("freeze") === "1";
   var at = parseFloat(params.get("at") || "0");
-  var body = document.body;
-  var stage = document.getElementById("stage");
   var voiceOn = params.get("voice") === "1";
+  var body = document.body, stage = document.getElementById("stage");
 
   if (obs) body.classList.add("obs");
-
   function fit(){
     if (obs) { stage.style.transform = "none"; return; }
     var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
@@ -415,70 +509,58 @@
   }
   window.addEventListener("resize", fit); fit();
 
-  var wave = document.getElementById("wave");
-  for (var i = 0; i < 30; i++) {
+  var wave = document.getElementById("aiWave");
+  for (var i = 0; i < 46; i++) {
     var b = document.createElement("i");
-    b.style.animationDelay = (i * 0.045) + "s";
-    b.style.height = (16 + Math.random() * 36) + "%";
+    b.style.animationDelay = (i * 0.035) + "s";
+    b.style.height = (12 + Math.random() * 38) + "%";
     wave.appendChild(b);
   }
 
   var COPY = {
     boot: {
-      state:"BOOT", foot:"MENYALAKAN SISTEM",
-      notes:["Inisialisasi laboratorium","Kalibrasi sensor","Memuat sampel"],
-      narration:"Sistem lab Alkaff aktif. Saya AI perfumer. Mari kita racik Marbella.",
-      plate:["SAMPLE 01","MARBELLA","EXTRAIT DE PARFUM"]
+      narration:"Sistem lab Alkaff aktif. Saya AI perfumer. Mari kita racik Marbella."
     },
     scan: {
-      state:"SCAN", foot:"3 LAPISAN TERDETEKSI",
-      notes:["TOP · Lemon Amalfi","HEART · Lavender","BASE · White Musk"],
-      narration:"Memindai Marbella. Top note lemon Amalfi, heart lavender, base white musk. Segar, lapang, bersih.",
-      plate:["ANALISIS","MARBELLA","TOP · HEART · BASE"]
+      narration:"Memindai Marbella. Top note lemon Amalfi, heart lavender, base white musk. Segar, lapang, bersih."
     },
     mix: {
-      state:"MIX", foot:"VORTEX · 2.400 RPM",
-      notes:["01 · Jeruk","02 · Lavender","03 · Musk","Homogenisasi"],
-      narration:"Meneteskan jeruk, lavender, dan musk. Konsentrasi presisi, lalu diputar hingga homogen.",
-      plate:["PROSES RACIK","MARBELLA","PRESISI · 2.400 RPM"]
+      narration:"Meneteskan jeruk, lavender, dan musk. Konsentrasi presisi, lalu diputar hingga homogen."
     },
     analyze: {
-      state:"AI", foot:"PROFIL SELESAI",
-      notes:["Segar","Lapang","Bersih"],
-      narration:"Marbella segar seperti udara laut. Cocok untuk siang hari dan setelah mandi.",
-      plate:["PROFIL AROMA","MARBELLA","SIANG · SETELAH MANDI"]
+      narration:"Marbella segar seperti udara laut. Cocok untuk siang hari dan setelah mandi."
     },
     result: {
-      state:"DONE", foot:"READY TO QUOTE",
-      notes:["Extrait de Parfum","50 ml","Stok tersedia"],
-      narration:"Profil selesai. Marbella siap. DM kata kunci QUOTE untuk detail.",
-      plate:["SIAP","MARBELLA","Rp449.000"]
+      narration:"Profil selesai. Marbella siap. DM kata kunci QUOTE untuk detail."
     }
   };
-  var durations = { boot:7000, scan:10500, mix:9500, analyze:7000, result:0 };
   var order = ["boot","scan","mix","analyze","result"];
-  var timer = null, current = "boot", typeTimer = null;
-
-  function typeText(text){
-    var el = document.getElementById("narration");
-    if (typeTimer) clearInterval(typeTimer);
-    el.textContent = "";
-    var i = 0;
-    typeTimer = setInterval(function(){
-      el.textContent = text.slice(0, i);
-      i++;
-      if (i > text.length) {
-        clearInterval(typeTimer); typeTimer = null;
-        el.innerHTML = text + '<span class="cursor"></span>';
-      }
-    }, 18);
-  }
-
+  var durations = { boot:7000, scan:10500, mix:9500, analyze:7000, result:0 };
   var AUDIO = {
     boot:"audio/boot.mp3", scan:"audio/scan.mp3", mix:"audio/mix.mp3",
     analyze:"audio/analyze.mp3", result:"audio/result.mp3"
   };
+
+  var activeEl = document.querySelector('.scene.active');
+  var timer = null, typeTimer = null, outTimer = null, warpTimer = null;
+  var current = "boot";
   var audioEl = null;
+
+  function typeAll(text){
+    var els = document.querySelectorAll("[data-narr]");
+    if (typeTimer) clearInterval(typeTimer);
+    els.forEach(function(el){ el.textContent = ""; });
+    var i = 0;
+    typeTimer = setInterval(function(){
+      els.forEach(function(el){ el.textContent = text.slice(0, i); });
+      i++;
+      if (i > text.length) {
+        clearInterval(typeTimer); typeTimer = null;
+        els.forEach(function(el){ el.innerHTML = text + '<span class="cursor"></span>'; });
+      }
+    }, 18);
+  }
+
   function stopVoice(){
     if (audioEl) { try { audioEl.pause(); audioEl.currentTime = 0; } catch (e) {} audioEl = null; }
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
@@ -488,8 +570,7 @@
     try {
       var u = new SpeechSynthesisUtterance(text);
       u.lang = "id-ID"; u.rate = .96; u.pitch = 1.02;
-      var voices = window.speechSynthesis.getVoices();
-      var id = voices.filter(function(v){ return /id[-_]ID/i.test(v.lang); })[0];
+      var id = window.speechSynthesis.getVoices().filter(function(v){ return /id[-_]ID/i.test(v.lang); })[0];
       if (id) u.voice = id;
       window.speechSynthesis.speak(u);
     } catch (e) {}
@@ -505,45 +586,46 @@
     } catch (e) { fallbackSpeech(text); }
   }
 
-  function render(scene){
-    var c = COPY[scene];
-    document.getElementById("screenState").textContent = c.state;
-    document.getElementById("screenFoot").textContent = c.foot;
-    var n = document.getElementById("notes");
-    n.innerHTML = "";
-    c.notes.forEach(function(line){
-      var d = document.createElement("div");
-      d.textContent = line;
-      n.appendChild(d);
-    });
-    document.getElementById("plateK").textContent = c.plate[0];
-    document.getElementById("plateN").textContent = c.plate[1];
-    document.getElementById("plateD").textContent = c.plate[2];
-    typeText(c.narration);
-    body.dataset.scene = scene;
-  }
-
-  function setScene(scene, auto){
-    if (timer) { clearTimeout(timer); timer = null; }
+  function go(scene, auto){
     if (order.indexOf(scene) === -1) scene = "boot";
+    if (timer) { clearTimeout(timer); timer = null; }
     current = scene;
-    render(scene);
+    var next = document.querySelector('.scene[data-key="' + scene + '"]');
+    if (!next) return;
+
+    if (activeEl && activeEl !== next) {
+      activeEl.classList.remove("active");
+      activeEl.classList.add("out");
+      clearTimeout(outTimer);
+      var old = activeEl;
+      outTimer = setTimeout(function(){ old.classList.remove("out"); }, 820);
+    }
+    next.classList.remove("out");
+    next.classList.add("active");
+    activeEl = next;
+    body.dataset.scene = scene;
+
+    stage.classList.remove("warping");
+    void stage.offsetWidth;
+    stage.classList.add("warping");
+    clearTimeout(warpTimer);
+    warpTimer = setTimeout(function(){ stage.classList.remove("warping"); }, 880);
+
+    typeAll(COPY[scene].narration);
     speak(scene, COPY[scene].narration);
+
     if (auto !== false && durations[scene] > 0) {
       timer = setTimeout(function(){
-        var next = order[order.indexOf(scene) + 1];
-        if (next) setScene(next, true);
+        var nxt = order[order.indexOf(scene) + 1];
+        if (nxt) go(nxt, true);
       }, durations[scene]);
     }
   }
 
   window.addEventListener("message", function(e){
     if (!e.data) return;
-    if (e.data.scene) setScene(e.data.scene, e.data.auto === true);
-    if (e.data.voice === true) {
-      voiceOn = true;
-      speak(current, COPY[current].narration);
-    }
+    if (e.data.scene) go(e.data.scene, e.data.auto === true);
+    if (e.data.voice === true) { voiceOn = true; speak(current, COPY[current].narration); }
     if (e.data.voice === false) { voiceOn = false; stopVoice(); }
   });
 
@@ -560,10 +642,15 @@
   }
 
   if (forced && COPY[forced]) {
-    render(forced);
+    current = forced;
+    body.dataset.scene = forced;
+    activeEl.classList.remove("active");
+    activeEl = document.querySelector('.scene[data-key="' + forced + '"]');
+    activeEl.classList.add("active");
+    typeAll(COPY[forced].narration);
     freezeAt(at);
   } else {
-    setTimeout(function(){ setScene("boot", true); }, 300);
+    setTimeout(function(){ go("boot", true); }, 300);
   }
 })();
 </script>

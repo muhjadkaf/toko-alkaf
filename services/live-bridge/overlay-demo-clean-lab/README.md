@@ -1,63 +1,66 @@
-# Virtual Clean Lab — AI Perfumer
+# Virtual Clean Lab — Sinematik
 
-Overlay TikTok LIVE Alkaff versi **ruang virtual 3D full-screen (1920×1080)**.
-Fokus pada proses mixing dan perfilman aroma dengan mesin presisi, tanpa sosok
-manusia. Narasi AI berbahasa Indonesia diputar dari file MP3 dan juga tampil
-sebagai teks — tetapi **hanya menempel pada benda fisik** (layar monitor, label
-vial, plakat meja, dan panel mesin). Tidak ada teks yang melayang di ruangan.
+Overlay TikTok LIVE Alkaff berupa **ruang virtual realistis 1920×1080**. Setiap
+langkah kerja memakai **scene terpisah dengan framing sinematik**, bukan satu
+ruangan statis. Kamera seolah bergerak masuk ke ruang berikutnya lewat efek
+warp/zoom saat transisi.
 
-Buka `preview.html` untuk pratinjau. Untuk OBS gunakan `index.html?obs=1`
-(kontrol tidak ikut tampil, background transparan).
+## Prinsip visual
 
-## Ruang dan properti
+- **Satu aktivitas utama di tengah per scene**, latar diburamkan (depth of field)
+  sehingga hampir tidak ada ruang kosong.
+- **Teks besar** (27–30 px) dan **hanya menempel pada benda fisik**: layar
+  konsol, panel scanner, panel kontrol mixer, monitor AI, plakat hasil, label
+  vial, dan label botol. Tidak ada teks mengambang.
+- Botol hasil dirender detail tinggi dengan SVG: kaca tebal, refraksi,
+  caustic, tetesan kondensasi, cap logam berfacet, label kertas, dan sapuan
+  cahaya — bukan bentuk vektor/kartun.
+- Tanpa sosok manusia. Narasi AI berbahasa Indonesia dari file MP3, dengan
+  teks pada panel fisik sebagai fallback.
 
-- Lantai dan dinding dengan perspektif, garis lantai konvergen, pencahayaan
-  langit-langit, bayangan, dan pantulan meja.
-- Meja kerja dengan laci, rak sampel, gantry scanner, vortex chamber, robot
-  arm, pedestal botol, kartu spesimen, dan monitor AI.
-- Teks hanya pada: layar monitor, label tiga vial, plakat kartu di meja,
-  serta engraving `SCAN·01`, `MIX·02`, `ARM·03` pada badan mesin dan label
-  botol `ALKAFF / MARBELLA`.
+## Lima scene
 
-## Alur
+| Scene | Fokus utama | Permukaan teks |
+|---|---|---|
+| `boot` | Konsol menyala, "SCENT LAB" | Layar konsol |
+| `scan` | Tiga vial besar disapu laser | Panel scanner + label vial |
+| `mix` | Vortex chamber + pipet robot menetes | Panel kontrol mixer |
+| `analyze` | Monitor AI ber-waveform, chip karakter | Layar monitor |
+| `result` | Botol Marbella fotorealistik di tengah | Plakat hasil + label botol |
 
-| Adegan | Durasi | Gerak mesin | Narasi AI |
-|---|---|---|---|
-| `boot` | 7 dtk | Lampu menyala, monitor inisialisasi | Perkenalan AI perfumer |
-| `scan` | 10,5 dtk | Beam pemindai menyapu vial | Membaca top/heart/base notes |
-| `mix` | 9,5 dtk | Robot arm menetes, cairan ber-vortex | Menjelaskan racik presisi |
-| `analyze` | 7 dtk | Waveform pada layar monitor | Mendeskripsikan karakter aroma |
-| `result` | — | Botol tersorot, kartu menampilkan harga | CTA DM `QUOTE` |
+Transisi antarscene: scene lama mengecil & blur, scene baru masuk dengan
+zoom, disertai sapangan `warp` berarah dan garis perspektif yang melaju.
 
-## Suara AI
+## Durasi dan audio
 
-- Narasi adalah 5 file MP3 di `audio/` yang dibuat dengan `gTTS` (`lang='id'`),
-  bukan Web Speech API murni. Browser sesi tertentu tidak memiliki voice
-  `id-ID`, sehingga MP3 dipakai sebagai sumber utama.
-- Aktifkan dari tombol **🔊 Suara AI** di bilah pratinjau (di luar adegan),
-  atau tambahkan `?voice=1` pada URL. Fallback Web Speech tetap ada bila file
-  audio gagal diputar.
-- Autoplay audio biasanya diblokir browser sampai ada interaksi. Karena itu
-  teks di layar monitor selalu menjadi fallback.
-- Durasi klip: boot 6,5 dtk · scan 9,9 dtk · mix 8,7 dtk · analyze 6,5 dtk ·
-  result 7,3 dtk. Durasi adegan disetel lebih panjang agar narasi tidak terpotong.
+| Scene | Durasi | Audio |
+|---|---|---|
+| `boot` | 7 dtk | 6,5 dtk |
+| `scan` | 10,5 dtk | 9,9 dtk |
+| `mix` | 9,5 dtk | 8,7 dtk |
+| `analyze` | 7 dtk | 6,5 dtk |
+| `result` | — | 7,3 dtk |
+
+File MP3 ada di `audio/` (`gTTS`, `lang='id'`). Aktifkan lewat tombol
+**🔊 Suara AI** di bilah pratinjau atau `?voice=1`. Web Speech dipakai hanya
+sebagai fallback bila MP3 gagal diputar.
 
 ## Parameter URL
 
-- `?scene=boot|scan|mix|analyze|result` — lompat ke adegan tertentu.
-- `?freeze=1&at=2` — bekukan animasi pada detik tertentu (untuk screenshot).
+- `?scene=boot|scan|mix|analyze|result` — langsung ke scene tertentu.
+- `?freeze=1&at=2` — bekukan animasi pada detik tertentu (screenshot).
 - `?obs=1` — mode OBS: tanpa kontrol, latar transparan.
-- `?voice=1` — aktifkan narasi MP3 sejak awal (masih tergantung kebijakan autoplay).
+- `?voice=1` — nyalakan narasi MP3 sejak awal.
 
 ## Pratinjau
 
-`preview.html` memuat adegan dalam iframe dan menaruh kontrol di bilah terpisah
-di bawah adegan. Tombol-tombol itu mengirim `postMessage` ke iframe, sehingga
-tidak pernah muncul di dalam ruang virtual maupun di OBS.
+`preview.html` menaruh kontrol di bilah terpisah **di luar** adegan. Tombol
+mengirim `postMessage` ke iframe, sehingga kontrol tidak pernah tampil di
+LIVE/OBS. Untuk OBS gunakan `index.html?obs=1`.
 
 ## Batasan
 
 - Ini mock visual, bukan koneksi TikTok dan bukan AI generatif sungguhan.
-  Narasi ditulis tetap; MP3 hanya membacakannya.
+- Narasi ditulis tetap; MP3 hanya membacakannya.
 - Harga `Rp449.000` adalah referensi resmi Marbella; harga jual final milik toko.
-- Klaim “AI” pada layar adalah gaya presentasi, bukan sertifikasi laboratorium.
+- Realisme dibangun dari gradien/filter SVG/CSS, bukan foto atau video.

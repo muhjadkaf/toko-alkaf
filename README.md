@@ -14,6 +14,7 @@ Seluruh tulisan menggunakan bahasa Indonesia. Repository ini masih tahap fondasi
 |---|---|
 | `docs/` | Empat dokumen sumber sudah disalin, ditambah [`docs/ARSITEKTUR.md`](docs/ARSITEKTUR.md) |
 | `data/katalog-alkaff-odoo/` | XLSX, CSV siap import Odoo, README katalog, dan `tambah_parfum_lokal.py` sudah disalin |
+| `data/pengetahuan-parfum/` | Basis pengetahuan turunan: 14 keluarga, 56 notes, 55 deskriptor, 24 accord, 24 tema layanan |
 | `odoo/addons/alkaff_catalog/` | Addon Odoo 20: kategori, field aroma/notes, log, dan wizard import CSV (belum dijalankan di Odoo produksi) |
 | `services/live-bridge/` | Skeleton Python stdlib: normalisasi event, state machine, dedupe, dan overlay lokal (16 tes lulus) |
 | Interaksi TikTok LIVE | Punya rencana teknis + skeleton lokal; **belum terhubung ke API TikTok**, tanpa auto-DM |
@@ -28,7 +29,7 @@ Angka di atas bersumber dari [`data/katalog-alkaff-odoo/README.md`](data/katalog
 | `README.md` | Penjelasan repo, struktur, quickstart, status, dan peringatan privasi (file ini) |
 | `ROADMAP.md` | Rencana Fase 0–5: fondasi, katalog, event ingest, orchestrator/overlay, integrasi Odoo/DM, hardening |
 | `docs/` | Dokumentasi LIVE TikTok, arsitektur, rencana perbaikan Odoo Namlah, dan catatan riset Biharul Anwar |
-| `data/` | Data katalog parfum untuk Odoo, termasuk file XLSX/CSV dan skrip pembuatnya |
+| `data/` | Data katalog parfum untuk Odoo, termasuk file XLSX/CSV dan skrip pembuatnya; lihat [`data/pengetahuan-parfum/README.md`](data/pengetahuan-parfum/README.md) untuk kosakata, resep, dan tema layanan |
 | `odoo/` | Addon Odoo untuk operasional toko; lihat [`odoo/addons/alkaff_catalog/README.md`](odoo/addons/alkaff_catalog/README.md) |
 | `services/` | Layanan pendukung; lihat [`services/live-bridge/README.md`](services/live-bridge/README.md). Quotation/DM gateway masih rencana, bukan kode |
 
@@ -55,7 +56,21 @@ Mulai dari [`docs/DOKUMENTASI-LIVE-TIKTOK-ALKAFF.md`](docs/DOKUMENTASI-LIVE-TIKT
 
 Detail validasi supplier ada pada sheet `Supplier_Lokal` di XLSX; baca catatan verifikasinya sebelum melakukan order.
 
-### 3. Menjalankan skeleton yang sudah ada
+### 3. Memakai basis pengetahuan parfum
+
+Baca [`data/pengetahuan-parfum/README.md`](data/pengetahuan-parfum/README.md).
+Data ini memakai `Internal Reference` katalog sebagai kunci gabung, jadi bisa
+dipakai untuk rekomendasi tema, copywriting, dan konten edukasi tanpa mengubah
+CSV import Odoo. Perbarui data dengan:
+
+```bash
+python3 data/pengetahuan-parfum/build_kb.py
+```
+
+Resep accord dan angka ketahanan bersifat edukatif, bukan formula produksi atau
+klaim produk.
+
+### 4. Menjalankan skeleton yang sudah ada
 
 **Addon Odoo** (Odoo 20, lisensi LGPL-3):
 

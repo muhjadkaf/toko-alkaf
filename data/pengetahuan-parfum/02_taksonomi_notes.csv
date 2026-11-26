@@ -1,10 +1,10 @@
 Note,Kunci,Alias,Layer Dominan,Keluarga Note,Intensitas (1-5),Ketahanan,Deskripsi Aroma,Pasangan Umum,Jumlah Produk,Contoh Internal Reference
 Bergamot,bergamot,jeruk pahit,Top,Citrus,3,2–3 jam,"Asam-manis cerah, pembuka klasik","Lavender, jasmine, cedar",115,ALK-L-002 · ALK-L-006 · ALK-L-011 · ALK-L-015 · ALK-L-016 · ALK-L-017
-Lemon,lemon,jeruk lemon,Top,Citrus,3,2–3 jam,"Asam segar, tajam, energik","Lavender, marine, musk",19,ALK-L-002 · ALK-L-011 · ALK-L-020 · ALK-L-026 · ALK-L-037 · ALK-P-005
+Lemon,lemon,jeruk lemon,Top,Citrus,3,2–3 jam,"Asam segar, tajam, energik","Lavender, marine, musk",20,ALK-L-001 · ALK-L-002 · ALK-L-011 · ALK-L-020 · ALK-L-026 · ALK-L-037
 Lime,lime,jeruk nipis,Top,Citrus,3,2 jam,"Asam hijau, lebih tajam dari lemon","Ginger, mint, musk",2,ALK-P-063 · LZ0037
 Mandarin,mandarin,jeruk keprok,Top,Citrus,2,2–3 jam,"Manis juicy, lembut, ramah","Rose, vanilla, musk",6,ESEN0002 · ALK-P-060 · ALK-P-068 · ALK-P-122 · IBC0089 · MCB0050
-Marine / Sea Notes,marine,"aroma laut, sea notes",Heart,Aquatic,2,3–4 jam,"Sejuk, berair, seperti angin laut","Bergamot, cedar, white musk",5,ALK-L-015 · ALK-L-026 · ALK-P-005 · ALK-P-085 · ESEN0002
-Green Notes,green notes,aroma hijau,Top,Green,2,2–3 jam,"Daun segar, baru dipetik","Lavender, pear, jasmine",4,ALK-L-037 · ALK-P-009 · ALK-P-035 · PG002
+Marine / Sea Notes,marine,"aroma laut, sea notes",Heart,Aquatic,2,3–4 jam,"Sejuk, berair, seperti angin laut","Bergamot, cedar, white musk",7,ALK-L-015 · ALK-L-026 · ALK-P-005 · ALK-P-085 · ESEN0002 · LZ0019
+Green Notes,green notes,aroma hijau,Top,Green,2,2–3 jam,"Daun segar, baru dipetik","Lavender, pear, jasmine",6,ALK-L-035 · ALK-L-037 · ALK-P-009 · ALK-P-035 · PG002
 Pear,pear,pir,Top,Fruity,2,2–3 jam,"Manis air, lembut, transparan","Jasmine, musk, vanilla",21,ALK-L-006 · ALK-L-014 · ALK-L-022 · ALK-L-025 · ALK-L-036 · ALK-L-042
 Apple,apple,apel,Top,Fruity,2,2–3 jam,"Manis renyah, familiar","Cinnamon, cedar, vanilla",6,ALK-L-029 · ALK-L-038 · BELL0029 · IBC0006 · MCB0006 · MCB0045
 Peach,peach,persik,Top,Fruity,2,2–3 jam,"Manis lembut, sedikit berbulu","Rose, jasmine, musk",14,ALK-L-016 · ALK-L-035 · ALK-L-038 · ALK-L-040 · ALK-L-044 · ALK-L-013
@@ -16,7 +16,7 @@ Melon,melon,melon,Top,Fruity,2,2 jam,"Manis air, lembut","Lotus, jasmine, musk",
 Kiwi,kiwi,kiwi,Top,Fruity,2,2 jam,Asam-manis hijau,"Lime, pear, green notes",2,IBC0041 · IBC0079
 Plum,plum,plum,Top,Fruity,3,3–4 jam,"Manis gelap, berair","Rose, amber, vanilla",2,ALK-L-035 · ALK-P-106
 Jasmine,jasmine,melati,Heart,Floral,4,5–8 jam,"Bunga putih manis, kuat, feminin","Bergamot, cedar, musk",128,ALK-L-002 · ALK-L-006 · ALK-L-014 · ALK-L-015 · ALK-L-016 · ALK-L-018
-Rose,rose,mawar,Heart,Floral,4,5–8 jam,"Bunga klasik, romantis, bisa pedas","Saffron, oud, vanilla",84,ALK-L-014 · ALK-L-017 · ALK-L-018 · ALK-L-019 · ALK-L-025 · ALK-L-040
+Rose,rose,mawar,Heart,Floral,4,5–8 jam,"Bunga klasik, romantis, bisa pedas","Saffron, oud, vanilla",85,ALK-L-014 · ALK-L-017 · ALK-L-018 · ALK-L-019 · ALK-L-025 · ALK-L-040
 Lily,lily,lili,Heart,Floral,3,4–6 jam,"Bunga putih lembut, sedikit hijau","Jasmine, musk, peony",10,ALK-L-036 · ALK-P-048 · ALK-P-061 · ALK-P-065 · GIV0045 · IBC0041
 Peony,peony,peoni,Heart,Floral,2,3–5 jam,"Bunga merah muda, ringan","Pear, rose, musk",4,ALK-L-006 · IBC0006 · IBC0069 · LZ0120
 Geranium,geranium,geranium,Heart,Floral,3,4–6 jam,"Hijau-rosy, agak pedas","Rose, cedar, bergamot",4,ALK-L-011 · ALK-L-020 · BELL0049 · GA0018
@@ -33,25 +33,67 @@ Cardamom,cardamom,kapulaga,Top,Spice,3,5–6 jam,"Pedas hijau, hangat","Rose, sa
 Pink Pepper,pink pepper,lada merah muda,Top,Spice,3,4–6 jam,"Pedas ringan, buah, cerah","Rose, bergamot, musk",7,ALK-L-014 · ALK-L-018 · ALK-L-042 · ALK-L-033 · ALK-P-106 · ESEN0054
 Cinnamon,cinnamon,kayu manis,Top,Spice,4,6–8 jam,"Hangat, manis-pedas","Apple, vanilla, amber",2,ALK-P-018 · ALK-P-089
 Ginger,ginger,jahe,Top,Spice,3,4–5 jam,"Pedas segar, menghangatkan","Lime, lemongrass, musk",1,LZ0037
-Saffron,saffron,kunyit kasmir,Top,Spice,4,8–10 jam,"Pedas-manis, kuning, mewah","Rose, amber, oud",13,ALK-L-019 · ALK-L-041 · SRT009 · ALK-L-005 · ALK-L-007 · ALK-L-030
+Saffron,saffron,kunyit kasmir,Top,Spice,4,8–10 jam,"Pedas-manis, kuning, mewah","Rose, amber, oud",14,ALK-L-019 · ALK-L-041 · ESEN0009 · SRT009 · ALK-L-005 · ALK-L-007
 Spices,spices,rempah campuran,Heart,Spice,3,5–7 jam,"Hangat, kompleks, dewasa","Vanilla, cedar, amber",13,ALK-L-017 · ALK-L-008 · ALK-P-011 · ALK-P-064 · ALK-P-070 · ALK-P-072
 Vanilla,vanilla,vanili,Base,Gourmand,4,8–12 jam,"Manis krim, hangat, populer","Tonka, caramel, musk",53,ALK-L-006 · ALK-L-014 · ALK-L-016 · ALK-L-022 · ALK-L-023 · ALK-L-025
 Tonka,tonka,tonka,Base,Gourmand,4,8–12 jam,"Manis almond, balsam, stabil","Vanilla, amber, lavender",11,ALK-L-021 · KV0002 · ALK-L-010 · ALK-L-012 · ALK-P-006 · ALK-P-018
 Caramel,caramel,karamel,Heart,Gourmand,4,7–10 jam,Manis gula hangat,"Vanilla, coffee, salt",6,ALK-L-041 · ALK-L-045 · ALK-L-012 · MANE0031 · MCB0051 · PRFX0074
-Coffee,coffee,kopi,Heart,Gourmand,4,7–10 jam,"Pahit-manis, gelap, energik","Vanilla, tonka, hazelnut",3,ALK-L-042 · LZ0130
-Chocolate,chocolate,cokelat,Heart,Gourmand,4,7–10 jam,"Manis gelap, creamy","Vanilla, almond, tonka",1,IBC0041
-Almond,almond,almond,Heart,Gourmand,3,6–8 jam,"Manis kacang, lembut","Cherry, vanilla, tonka",2,MCB0051 · PRFX0074
+Coffee,coffee,kopi,Heart,Gourmand,4,7–10 jam,"Pahit-manis, gelap, energik","Vanilla, tonka, hazelnut",4,ALK-L-042 · ESEN0054 · LZ0130
+Chocolate,chocolate,cokelat,Top,Gourmand,4,7–10 jam,"Manis gelap, creamy","Vanilla, almond, tonka",2,IBC0032 · IBC0041
+Almond,almond,almond,Heart,Gourmand,3,6–8 jam,"Manis kacang, lembut","Cherry, vanilla, tonka",3,ESEN0054 · MCB0051 · PRFX0074
 Cream,cream,krim,Top,Gourmand,2,4–6 jam,"Lembut, susu, menenangkan","Vanilla, iris, musk",2,ALK-L-039 · PRFX0074
 Whipped Cream,whipped cream,krim kocok,Heart,Gourmand,2,4–6 jam,"Manis ringan, berbusa","Vanilla, caramel, berry",2,ALK-L-022 · ALK-L-023
-Sugar,sugar,gula,Base,Gourmand,3,6–8 jam,"Manis murni, candied","Vanilla, caramel, cotton candy",5,ALK-L-039 · IBC0027 · IBC0046 · MCB0045 · PRFX0074
+Sugar,sugar,gula,Base,Gourmand,3,6–8 jam,"Manis murni, candied","Vanilla, caramel, cotton candy",6,ESEN0009 · ALK-L-039 · IBC0027 · IBC0046 · MCB0045 · PRFX0074
 Musk,musk,kasturi,Base,Musk,4,8–12 jam,"Hangat, kulit, klasik","Rose, amber, jasmine",147,ALK-L-002 · ALK-L-006 · ALK-L-011 · ALK-L-014 · ALK-L-015 · ALK-L-016
-White Musk,white musk,kasturi putih,Base,Musk,3,6–9 jam,"Bersih, lembut, dekat kulit","Jasmine, cedar, marine",5,ALK-L-001 · ALK-L-040 · ALK-L-003 · ALK-P-053 · PG012
+White Musk,white musk,kasturi putih,Base,Musk,3,6–9 jam,"Bersih, lembut, dekat kulit","Jasmine, cedar, marine",6,ALK-L-001 · ALK-L-040 · ALK-L-003 · ALK-P-053 · PG012
 Amber,amber,amber,Base,Amber,5,10–14 jam,"Resin hangat, manis, kuat","Vanilla, oud, saffron",105,ALK-L-002 · ALK-L-011 · ALK-L-015 · ALK-L-017 · ALK-L-018 · ALK-L-019
-Woody Accord,woody accord,akorda kayu,Base,Woody,3,6–9 jam,"Kering, kayu, penopang","Bergamot, jasmine, musk",48,ALK-L-024 · ALK-P-022 · ALK-P-032 · ALK-P-047 · ALK-P-050 · ALK-P-057
+Woody Accord,woody accord,akorda kayu,Base,Woody,3,6–9 jam,"Kering, kayu, penopang","Bergamot, jasmine, musk",49,ALK-L-023 · ALK-L-024 · ALK-P-022 · ALK-P-032 · ALK-P-047 · ALK-P-050
 Cedar,cedar,cedar,Base,Woody,3,6–9 jam,"Kayu kering, pensil, stabil","Bergamot, lavender, vanilla",29,ALK-L-001 · ALK-L-011 · ALK-L-015 · ALK-L-020 · ALK-L-026 · ALK-L-027
 Sandalwood,sandalwood,cendana,Base,Woody,4,8–12 jam,"Kayu krim, hangat, halus","Rose, cardamom, amber",29,ALK-L-014 · ALK-L-016 · ALK-L-019 · ALK-L-025 · ALK-L-027 · ALK-L-035
-Oud,oud,gaharu,Base,Woody,5,12–16 jam,"Resin kayu gelap, kuat dan padat","Rose, saffron, amber",13,ALK-L-018 · SRT009 · ALK-L-005 · ALK-L-007 · ALK-L-009 · ALK-L-030
+Oud,oud,gaharu,Base,Woody,5,12–16 jam,"Resin kayu gelap, kuat dan padat","Rose, saffron, amber",14,ALK-L-018 · SRT009 · ALK-L-005 · ALK-L-007 · ALK-L-009 · ALK-L-030
 Patchouli,patchouli,patchouli,Base,Woody,4,8–12 jam,"Tanah, hijau, berat","Rose, vanilla, cedar",5,ALK-L-042 · ALK-L-028 · ALK-P-106 · ESEN0054 · MANE0031
 Oakmoss,oakmoss,lumut oak,Base,Woody,4,8–12 jam,"Hutan, lembap, klasik","Bergamot, lavender, amber",2,ALK-P-060 · GCF0012
 Leather,leather,kulit,Base,Leather,4,8–12 jam,"Kulit, asap, maskulin","Saffron, tonka, cedar",8,ALK-L-017 · ALK-L-021 · KV0002 · ALK-L-033 · ALK-P-086 · ALK-P-089
-Floral Accord,floral accord,akorda bunga campuran,Heart,Floral,3,5–7 jam,"Bunga campuran, umum","Musk, amber, bergamot",1,MCB0001
+Floral Accord,floral accord,akorda bunga campuran,Heart,Floral,3,5–7 jam,"Bunga campuran, umum","Musk, amber, bergamot",2,ALK-L-023 · MCB0001
+Acacia,acacia,akasia,Heart,Floral,3,4–6 jam,"Bunga kuning manis-lembut, sedikit madu","Rose, bergamot, musk",1,ALK-P-009
+Airy Notes,airy notes,notes lapang,Heart,Aquatic,2,2–4 jam,"Ringan dan transparan, mudah menguap","Marine, white musk, citrus",1,ALK-L-001
+Ambergris,ambergris,ambergris,Base,Amber,5,12–16 jam,"Resin laut hangat, asin-manis, langka","Amber, oud, marine",1,ALK-P-060
+Amberwood,amberwood,kayu amber,Heart,Amber,4,10–14 jam,"Kayu hangat ke resin, modern","Ambroxan, cedar, vanilla",1,ESEN0009
+Ambroxan,ambroxan,ambroksan,Heart,Amber,4,10–14 jam,"Amber bersih, dekat kulit, penambah proyeksi","Bergamot, musk, amberwood",1,BELL0049
+Bamboo,bamboo,bambu,Heart,Green,2,3–5 jam,"Hijau segar, renyah, ringan","Green tea, lotus, musk",1,ALK-P-065
+Bay Leaf,bay leaf,daun salam,Heart,Herbal,3,4–6 jam,"Herbal kering, sedikit pedas","Bergamot, cedar, cardamom",1,ALK-P-060
+Benzoin,benzoin,benzoin,Base,Amber,4,8–12 jam,"Balsam manis, vanila-resin","Vanilla, tonka, amber",1,ALK-P-086
+Birch,birch,kayu birch,Base,Woody,3,6–9 jam,"Kayu kering, sedikit asap","Leather, cedar, tonka",1,GCF0012
+Black Pepper,black pepper,lada hitam,Heart,Spice,3,4–6 jam,"Pedas tajam, hangat, maskulin","Bergamot, leather, cedar",1,LZ0037
+Blackcurrant,blackcurrant,blackcurrant,Top,Fruity,3,3–5 jam,"Berry hitam asam-manis, tajam","Rose, vanilla, musk",1,GCF0012
+Blood Orange,blood orange,jeruk darah,Top,Citrus,3,2–3 jam,"Jeruk merah manis-asam, sedikit berry","Neroli, bergamot, musk",1,ALK-P-089
+Butter,butter,mentega,Heart,Gourmand,2,4–6 jam,"Krim kaya, lembut, sedikit asin","Vanilla, cream, caramel",1,ALK-L-043
+Cempaka,cempaka,cempaka,Heart,Floral,3,4–7 jam,"Bunga champaca manis-krim, khas Asia","Rose, sandalwood, musk",1,ALK-P-035
+Cherry,cherry,ceri,Top,Fruity,3,3–5 jam,"Manis buah merah gelap, sedikit almond","Almond, vanilla, rose",1,IBC0031
+Cherry Blossom,cherry blossom,bunga sakura,Heart,Floral,2,3–5 jam,"Bunga merah muda lembut, ringan","Pear, musk, jasmine",1,ALK-P-103
+Citronella,citronella,serai wangi,Heart,Citrus,2,2–4 jam,"Jeruk-herbal, segar, menenangkan","Lemongrass, lime, musk",1,ALK-P-063
+Citrus Accord,citrus,akorda jeruk,Top,Citrus,3,2–4 jam,"Kesan jeruk campuran, cerah","Bergamot, lemon, neroli",42,ALK-L-015 · ALK-L-024 · ALK-P-022 · ALK-P-032 · ALK-P-047 · ALK-P-050
+Cognac,cognac,kognak,Top,Gourmand,4,7–10 jam,"Anggur hangat, oak, sedikit manis","Tonka, vanilla, leather",1,ALK-P-018
+Cyclamen,cyclamen,siklamen,Heart,Floral,2,3–5 jam,"Bunga hijau-merah muda, segar","Violet, green notes, musk",1,IBC0079
+Driftwood,driftwood,kayu hanyut,Base,Woody,3,6–9 jam,Kayu kering terpapar laut,"Marine, cedar, white musk",1,ALK-L-046
+Fir,fir,fir,Base,Woody,3,5–8 jam,"Jarum pinus hijau, hutan dingin","Bergamot, oakmoss, cedar",1,ALK-L-041
+Fir Resin,fir resin,resin fir,Base,Amber,4,8–12 jam,"Resin pinus hangat, balsam","Amber, benzoin, cedar",1,ESEN0009
+Grape,grape,anggur,Top,Fruity,2,2–4 jam,"Manis buah anggur, ringan","Rose, musk, vanilla",1,IBC0046
+Grapefruit,grapefruit,jeruk bali,Top,Citrus,3,2–3 jam,"Pahit-manis cerah, lebih tajam dari lemon","Bergamot, marine, musk",1,ALK-P-060
+Green Apple,green apple,apel hijau,Top,Fruity,3,2–3 jam,"Asam renyah, lebih tajam dari apel merah","Cinnamon, cedar, vanilla",1,ALK-P-113
+Green Tea,green tea,teh hijau,Top,Green,2,3–5 jam,"Daun teh segar, tenang, sedikit pahit","Bergamot, lotus, musk",1,ALK-P-056
+Heliotrope,heliotrope,heliotrop,Base,Floral,3,5–8 jam,"Bunga ungu powdery, vanila-almond","Vanilla, iris, almond",1,ALK-L-035
+Juicy Fruits,juicy fruits,campuran buah berair,Top,Fruity,2,2–4 jam,"Buah segar berair, manis cerah","Marine, pear, musk",1,ALK-L-039
+Lemongrass,lemongrass,serai,Top,Herbal,3,3–5 jam,"Segar tajam, sitrus-herbal","Ginger, lime, musk",1,ALK-P-063
+Matcha,matcha,matcha,Top,Green,2,3–5 jam,"Teh hijau bubuk, creamy, sedikit pahit","Cream, vanilla, green notes",1,ALK-L-004
+Milk,milk,susu,Heart,Gourmand,2,4–6 jam,"Lembut, susu, nyaman","Vanilla, iris, caramel",1,ALK-L-004
+Mint,mint,mint,Top,Herbal,3,3–5 jam,"Dingin, hijau, menyegarkan","Lime, marine, lavender",1,ALK-P-089
+Oak,oak,oak,Heart,Woody,4,8–12 jam,"Kayu oak kering, sedikit anggur","Cognac, leather, amber",1,ALK-P-018
+Orchid,orchid,anggrek,Heart,Floral,2,4–6 jam,"Bunga eksotis lembut, sedikit vanila","Jasmine, vanilla, musk",1,ALK-P-122
+Pepper,pepper,lada,Top,Spice,3,4–6 jam,"Pedas umum, hangat, tajam","Bergamot, leather, cedar",3,ALK-L-021 · ALK-L-027 · BELL0049
+Rosewood,rosewood,kayu mawar,Heart,Woody,3,6–9 jam,"Kayu merah muda, bunga, halus","Rose, sandalwood, musk",1,ALK-L-035
+Sakura,sakura,sakura,Top,Floral,2,3–5 jam,"Bunga ceri Jepang, manis lembut","Pear, jasmine, musk",1,ALK-P-103
+Sea Salt,sea salt,garam laut,Top,Aquatic,2,3–5 jam,"Asin segar, seperti angin pantai","Marine, bergamot, driftwood",1,ALK-L-046
+Tuberose,tuberose,tuberosa,Heart,Floral,5,8–12 jam,"Bunga putih sangat kuat, krim, manis","Jasmine, vanilla, musk",1,PG002
+Violet Leaf,violet leaf,daun ungu,Heart,Green,3,4–6 jam,"Hijau-keras, sedikit powdery","Iris, violet, green notes",1,ALK-P-033
+White Wood,white wood,kayu putih,Base,Woody,3,6–9 jam,"Kayu bersih, ringan, ke krim","White musk, sandalwood, amber",1,ALK-P-103

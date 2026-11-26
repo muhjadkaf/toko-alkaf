@@ -14,7 +14,7 @@ Seluruh tulisan menggunakan bahasa Indonesia. Repository ini masih tahap fondasi
 |---|---|
 | `docs/` | Empat dokumen sumber sudah disalin, ditambah [`docs/ARSITEKTUR.md`](docs/ARSITEKTUR.md) |
 | `data/katalog-alkaff-odoo/` | XLSX, CSV siap import Odoo, README katalog, dan `tambah_parfum_lokal.py` sudah disalin |
-| `data/pengetahuan-parfum/` | Basis pengetahuan turunan: 14 keluarga, 56 notes, 55 deskriptor, 24 accord, 24 tema layanan |
+| `data/pengetahuan-parfum/` | Basis pengetahuan turunan: 14 keluarga, 98 notes, 78 deskriptor, 40 accord, 40 tema layanan |
 | `odoo/addons/alkaff_catalog/` | Addon Odoo 20: kategori, field aroma/notes, log, dan wizard import CSV (belum dijalankan di Odoo produksi) |
 | `services/live-bridge/` | Skeleton Python stdlib: normalisasi event, state machine, dedupe, dan overlay lokal (16 tes lulus) |
 | Interaksi TikTok LIVE | Punya rencana teknis + skeleton lokal; **belum terhubung ke API TikTok**, tanpa auto-DM |

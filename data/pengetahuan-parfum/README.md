@@ -12,10 +12,10 @@ Dibuat 2026-11-26. Generator: [`build_kb.py`](build_kb.py).
 | File | Jumlah | Fungsi |
 |---|---:|---|
 | [`01_keluarga_aroma.csv`](01_keluarga_aroma.csv) | 14 keluarga | Pengelompokan aroma + karakter, momen, ketahanan umum, sillage, tema konten, contoh produk |
-| [`02_taksonomi_notes.csv`](02_taksonomi_notes.csv) | 56 notes | Layer (top/heart/base), intensitas 1–5, ketahanan, alias Indonesia, pasangan umum, contoh produk |
-| [`03_kosakata_deskriptor.csv`](03_kosakata_deskriptor.csv) | 55 deskriptor | kosakata copywriting Indonesia–English beserta dimensi dan contoh kalimat |
-| [`04_resep_accord.csv`](04_resep_accord.csv) | 24 accord | Ide kombinasi notes dengan rasio bagian, karakter, momen, maturasi, dan catatan keamanan |
-| [`05_tema_layanan.csv`](05_tema_layanan.csv) | 24 tema | Persona, trigger, notes kunci, keyword CTA, format konten, risiko, dan contoh produk |
+| [`02_taksonomi_notes.csv`](02_taksonomi_notes.csv) | 98 notes | Layer (top/heart/base), intensitas 1–5, ketahanan, alias Indonesia, pasangan umum, contoh produk |
+| [`03_kosakata_deskriptor.csv`](03_kosakata_deskriptor.csv) | 78 deskriptor | kosakata copywriting Indonesia–English beserta dimensi dan contoh kalimat |
+| [`04_resep_accord.csv`](04_resep_accord.csv) | 40 accord | Ide kombinasi notes dengan rasio bagian, karakter, momen, maturasi, dan catatan keamanan |
+| [`05_tema_layanan.csv`](05_tema_layanan.csv) | 40 tema | Persona, trigger, notes kunci, keyword CTA, format konten, risiko, dan contoh produk |
 | [`pengetahuan-parfum.json`](pengetahuan-parfum.json) | bundle | Semua tabel di atas dalam satu JSON untuk dikonsumsi aplikasi |
 
 ## Cara memperbarui

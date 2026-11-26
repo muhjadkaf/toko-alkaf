@@ -195,8 +195,8 @@
       "Ketahanan": "2–3 jam",
       "Deskripsi": "Asam segar, tajam, energik",
       "Pasangan": "Lavender, marine, musk",
-      "Jumlah Produk": 19,
-      "Contoh Internal Reference": "ALK-L-002 · ALK-L-011 · ALK-L-020 · ALK-L-026 · ALK-L-037 · ALK-P-005"
+      "Jumlah Produk": 20,
+      "Contoh Internal Reference": "ALK-L-001 · ALK-L-002 · ALK-L-011 · ALK-L-020 · ALK-L-026 · ALK-L-037"
     },
     {
       "Note": "Lime",
@@ -234,8 +234,8 @@
       "Ketahanan": "3–4 jam",
       "Deskripsi": "Sejuk, berair, seperti angin laut",
       "Pasangan": "Bergamot, cedar, white musk",
-      "Jumlah Produk": 5,
-      "Contoh Internal Reference": "ALK-L-015 · ALK-L-026 · ALK-P-005 · ALK-P-085 · ESEN0002"
+      "Jumlah Produk": 7,
+      "Contoh Internal Reference": "ALK-L-015 · ALK-L-026 · ALK-P-005 · ALK-P-085 · ESEN0002 · LZ0019"
     },
     {
       "Note": "Green Notes",
@@ -247,8 +247,8 @@
       "Ketahanan": "2–3 jam",
       "Deskripsi": "Daun segar, baru dipetik",
       "Pasangan": "Lavender, pear, jasmine",
-      "Jumlah Produk": 4,
-      "Contoh Internal Reference": "ALK-L-037 · ALK-P-009 · ALK-P-035 · PG002"
+      "Jumlah Produk": 6,
+      "Contoh Internal Reference": "ALK-L-035 · ALK-L-037 · ALK-P-009 · ALK-P-035 · PG002"
     },
     {
       "Note": "Pear",
@@ -403,7 +403,7 @@
       "Ketahanan": "5–8 jam",
       "Deskripsi": "Bunga klasik, romantis, bisa pedas",
       "Pasangan": "Saffron, oud, vanilla",
-      "Jumlah Produk": 84,
+      "Jumlah Produk": 85,
       "Contoh Internal Reference": "ALK-L-014 · ALK-L-017 · ALK-L-018 · ALK-L-019 · ALK-L-025 · ALK-L-040"
     },
     {
@@ -624,8 +624,8 @@
       "Ketahanan": "8–10 jam",
       "Deskripsi": "Pedas-manis, kuning, mewah",
       "Pasangan": "Rose, amber, oud",
-      "Jumlah Produk": 13,
-      "Contoh Internal Reference": "ALK-L-019 · ALK-L-041 · SRT009 · ALK-L-005 · ALK-L-007 · ALK-L-030"
+      "Jumlah Produk": 14,
+      "Contoh Internal Reference": "ALK-L-019 · ALK-L-041 · ESEN0009 · SRT009 · ALK-L-005 · ALK-L-007"
     },
     {
       "Note": "Spices",
@@ -689,21 +689,21 @@
       "Ketahanan": "7–10 jam",
       "Deskripsi": "Pahit-manis, gelap, energik",
       "Pasangan": "Vanilla, tonka, hazelnut",
-      "Jumlah Produk": 3,
-      "Contoh Internal Reference": "ALK-L-042 · LZ0130"
+      "Jumlah Produk": 4,
+      "Contoh Internal Reference": "ALK-L-042 · ESEN0054 · LZ0130"
     },
     {
       "Note": "Chocolate",
       "Kunci": "chocolate",
       "Alias": "cokelat",
-      "Layer Dominan": "Heart",
+      "Layer Dominan": "Top",
       "Keluarga Note": "Gourmand",
       "Intensitas": 4,
       "Ketahanan": "7–10 jam",
       "Deskripsi": "Manis gelap, creamy",
       "Pasangan": "Vanilla, almond, tonka",
-      "Jumlah Produk": 1,
-      "Contoh Internal Reference": "IBC0041"
+      "Jumlah Produk": 2,
+      "Contoh Internal Reference": "IBC0032 · IBC0041"
     },
     {
       "Note": "Almond",
@@ -715,8 +715,8 @@
       "Ketahanan": "6–8 jam",
       "Deskripsi": "Manis kacang, lembut",
       "Pasangan": "Cherry, vanilla, tonka",
-      "Jumlah Produk": 2,
-      "Contoh Internal Reference": "MCB0051 · PRFX0074"
+      "Jumlah Produk": 3,
+      "Contoh Internal Reference": "ESEN0054 · MCB0051 · PRFX0074"
     },
     {
       "Note": "Cream",
@@ -754,8 +754,8 @@
       "Ketahanan": "6–8 jam",
       "Deskripsi": "Manis murni, candied",
       "Pasangan": "Vanilla, caramel, cotton candy",
-      "Jumlah Produk": 5,
-      "Contoh Internal Reference": "ALK-L-039 · IBC0027 · IBC0046 · MCB0045 · PRFX0074"
+      "Jumlah Produk": 6,
+      "Contoh Internal Reference": "ESEN0009 · ALK-L-039 · IBC0027 · IBC0046 · MCB0045 · PRFX0074"
     },
     {
       "Note": "Musk",
@@ -780,7 +780,7 @@
       "Ketahanan": "6–9 jam",
       "Deskripsi": "Bersih, lembut, dekat kulit",
       "Pasangan": "Jasmine, cedar, marine",
-      "Jumlah Produk": 5,
+      "Jumlah Produk": 6,
       "Contoh Internal Reference": "ALK-L-001 · ALK-L-040 · ALK-L-003 · ALK-P-053 · PG012"
     },
     {
@@ -806,8 +806,8 @@
       "Ketahanan": "6–9 jam",
       "Deskripsi": "Kering, kayu, penopang",
       "Pasangan": "Bergamot, jasmine, musk",
-      "Jumlah Produk": 48,
-      "Contoh Internal Reference": "ALK-L-024 · ALK-P-022 · ALK-P-032 · ALK-P-047 · ALK-P-050 · ALK-P-057"
+      "Jumlah Produk": 49,
+      "Contoh Internal Reference": "ALK-L-023 · ALK-L-024 · ALK-P-022 · ALK-P-032 · ALK-P-047 · ALK-P-050"
     },
     {
       "Note": "Cedar",
@@ -845,7 +845,7 @@
       "Ketahanan": "12–16 jam",
       "Deskripsi": "Resin kayu gelap, kuat dan padat",
       "Pasangan": "Rose, saffron, amber",
-      "Jumlah Produk": 13,
+      "Jumlah Produk": 14,
       "Contoh Internal Reference": "ALK-L-018 · SRT009 · ALK-L-005 · ALK-L-007 · ALK-L-009 · ALK-L-030"
     },
     {
@@ -897,8 +897,554 @@
       "Ketahanan": "5–7 jam",
       "Deskripsi": "Bunga campuran, umum",
       "Pasangan": "Musk, amber, bergamot",
+      "Jumlah Produk": 2,
+      "Contoh Internal Reference": "ALK-L-023 · MCB0001"
+    },
+    {
+      "Note": "Acacia",
+      "Kunci": "acacia",
+      "Alias": "akasia",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Floral",
+      "Intensitas": 3,
+      "Ketahanan": "4–6 jam",
+      "Deskripsi": "Bunga kuning manis-lembut, sedikit madu",
+      "Pasangan": "Rose, bergamot, musk",
       "Jumlah Produk": 1,
-      "Contoh Internal Reference": "MCB0001"
+      "Contoh Internal Reference": "ALK-P-009"
+    },
+    {
+      "Note": "Airy Notes",
+      "Kunci": "airy notes",
+      "Alias": "notes lapang",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Aquatic",
+      "Intensitas": 2,
+      "Ketahanan": "2–4 jam",
+      "Deskripsi": "Ringan dan transparan, mudah menguap",
+      "Pasangan": "Marine, white musk, citrus",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-L-001"
+    },
+    {
+      "Note": "Ambergris",
+      "Kunci": "ambergris",
+      "Alias": "ambergris",
+      "Layer Dominan": "Base",
+      "Keluarga Note": "Amber",
+      "Intensitas": 5,
+      "Ketahanan": "12–16 jam",
+      "Deskripsi": "Resin laut hangat, asin-manis, langka",
+      "Pasangan": "Amber, oud, marine",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-060"
+    },
+    {
+      "Note": "Amberwood",
+      "Kunci": "amberwood",
+      "Alias": "kayu amber",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Amber",
+      "Intensitas": 4,
+      "Ketahanan": "10–14 jam",
+      "Deskripsi": "Kayu hangat ke resin, modern",
+      "Pasangan": "Ambroxan, cedar, vanilla",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ESEN0009"
+    },
+    {
+      "Note": "Ambroxan",
+      "Kunci": "ambroxan",
+      "Alias": "ambroksan",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Amber",
+      "Intensitas": 4,
+      "Ketahanan": "10–14 jam",
+      "Deskripsi": "Amber bersih, dekat kulit, penambah proyeksi",
+      "Pasangan": "Bergamot, musk, amberwood",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "BELL0049"
+    },
+    {
+      "Note": "Bamboo",
+      "Kunci": "bamboo",
+      "Alias": "bambu",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Green",
+      "Intensitas": 2,
+      "Ketahanan": "3–5 jam",
+      "Deskripsi": "Hijau segar, renyah, ringan",
+      "Pasangan": "Green tea, lotus, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-065"
+    },
+    {
+      "Note": "Bay Leaf",
+      "Kunci": "bay leaf",
+      "Alias": "daun salam",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Herbal",
+      "Intensitas": 3,
+      "Ketahanan": "4–6 jam",
+      "Deskripsi": "Herbal kering, sedikit pedas",
+      "Pasangan": "Bergamot, cedar, cardamom",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-060"
+    },
+    {
+      "Note": "Benzoin",
+      "Kunci": "benzoin",
+      "Alias": "benzoin",
+      "Layer Dominan": "Base",
+      "Keluarga Note": "Amber",
+      "Intensitas": 4,
+      "Ketahanan": "8–12 jam",
+      "Deskripsi": "Balsam manis, vanila-resin",
+      "Pasangan": "Vanilla, tonka, amber",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-086"
+    },
+    {
+      "Note": "Birch",
+      "Kunci": "birch",
+      "Alias": "kayu birch",
+      "Layer Dominan": "Base",
+      "Keluarga Note": "Woody",
+      "Intensitas": 3,
+      "Ketahanan": "6–9 jam",
+      "Deskripsi": "Kayu kering, sedikit asap",
+      "Pasangan": "Leather, cedar, tonka",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "GCF0012"
+    },
+    {
+      "Note": "Black Pepper",
+      "Kunci": "black pepper",
+      "Alias": "lada hitam",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Spice",
+      "Intensitas": 3,
+      "Ketahanan": "4–6 jam",
+      "Deskripsi": "Pedas tajam, hangat, maskulin",
+      "Pasangan": "Bergamot, leather, cedar",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "LZ0037"
+    },
+    {
+      "Note": "Blackcurrant",
+      "Kunci": "blackcurrant",
+      "Alias": "blackcurrant",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Fruity",
+      "Intensitas": 3,
+      "Ketahanan": "3–5 jam",
+      "Deskripsi": "Berry hitam asam-manis, tajam",
+      "Pasangan": "Rose, vanilla, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "GCF0012"
+    },
+    {
+      "Note": "Blood Orange",
+      "Kunci": "blood orange",
+      "Alias": "jeruk darah",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Citrus",
+      "Intensitas": 3,
+      "Ketahanan": "2–3 jam",
+      "Deskripsi": "Jeruk merah manis-asam, sedikit berry",
+      "Pasangan": "Neroli, bergamot, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-089"
+    },
+    {
+      "Note": "Butter",
+      "Kunci": "butter",
+      "Alias": "mentega",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Gourmand",
+      "Intensitas": 2,
+      "Ketahanan": "4–6 jam",
+      "Deskripsi": "Krim kaya, lembut, sedikit asin",
+      "Pasangan": "Vanilla, cream, caramel",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-L-043"
+    },
+    {
+      "Note": "Cempaka",
+      "Kunci": "cempaka",
+      "Alias": "cempaka",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Floral",
+      "Intensitas": 3,
+      "Ketahanan": "4–7 jam",
+      "Deskripsi": "Bunga champaca manis-krim, khas Asia",
+      "Pasangan": "Rose, sandalwood, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-035"
+    },
+    {
+      "Note": "Cherry",
+      "Kunci": "cherry",
+      "Alias": "ceri",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Fruity",
+      "Intensitas": 3,
+      "Ketahanan": "3–5 jam",
+      "Deskripsi": "Manis buah merah gelap, sedikit almond",
+      "Pasangan": "Almond, vanilla, rose",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "IBC0031"
+    },
+    {
+      "Note": "Cherry Blossom",
+      "Kunci": "cherry blossom",
+      "Alias": "bunga sakura",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Floral",
+      "Intensitas": 2,
+      "Ketahanan": "3–5 jam",
+      "Deskripsi": "Bunga merah muda lembut, ringan",
+      "Pasangan": "Pear, musk, jasmine",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-103"
+    },
+    {
+      "Note": "Citronella",
+      "Kunci": "citronella",
+      "Alias": "serai wangi",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Citrus",
+      "Intensitas": 2,
+      "Ketahanan": "2–4 jam",
+      "Deskripsi": "Jeruk-herbal, segar, menenangkan",
+      "Pasangan": "Lemongrass, lime, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-063"
+    },
+    {
+      "Note": "Citrus Accord",
+      "Kunci": "citrus",
+      "Alias": "akorda jeruk",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Citrus",
+      "Intensitas": 3,
+      "Ketahanan": "2–4 jam",
+      "Deskripsi": "Kesan jeruk campuran, cerah",
+      "Pasangan": "Bergamot, lemon, neroli",
+      "Jumlah Produk": 42,
+      "Contoh Internal Reference": "ALK-L-015 · ALK-L-024 · ALK-P-022 · ALK-P-032 · ALK-P-047 · ALK-P-050"
+    },
+    {
+      "Note": "Cognac",
+      "Kunci": "cognac",
+      "Alias": "kognak",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Gourmand",
+      "Intensitas": 4,
+      "Ketahanan": "7–10 jam",
+      "Deskripsi": "Anggur hangat, oak, sedikit manis",
+      "Pasangan": "Tonka, vanilla, leather",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-018"
+    },
+    {
+      "Note": "Cyclamen",
+      "Kunci": "cyclamen",
+      "Alias": "siklamen",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Floral",
+      "Intensitas": 2,
+      "Ketahanan": "3–5 jam",
+      "Deskripsi": "Bunga hijau-merah muda, segar",
+      "Pasangan": "Violet, green notes, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "IBC0079"
+    },
+    {
+      "Note": "Driftwood",
+      "Kunci": "driftwood",
+      "Alias": "kayu hanyut",
+      "Layer Dominan": "Base",
+      "Keluarga Note": "Woody",
+      "Intensitas": 3,
+      "Ketahanan": "6–9 jam",
+      "Deskripsi": "Kayu kering terpapar laut",
+      "Pasangan": "Marine, cedar, white musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-L-046"
+    },
+    {
+      "Note": "Fir",
+      "Kunci": "fir",
+      "Alias": "fir",
+      "Layer Dominan": "Base",
+      "Keluarga Note": "Woody",
+      "Intensitas": 3,
+      "Ketahanan": "5–8 jam",
+      "Deskripsi": "Jarum pinus hijau, hutan dingin",
+      "Pasangan": "Bergamot, oakmoss, cedar",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-L-041"
+    },
+    {
+      "Note": "Fir Resin",
+      "Kunci": "fir resin",
+      "Alias": "resin fir",
+      "Layer Dominan": "Base",
+      "Keluarga Note": "Amber",
+      "Intensitas": 4,
+      "Ketahanan": "8–12 jam",
+      "Deskripsi": "Resin pinus hangat, balsam",
+      "Pasangan": "Amber, benzoin, cedar",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ESEN0009"
+    },
+    {
+      "Note": "Grape",
+      "Kunci": "grape",
+      "Alias": "anggur",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Fruity",
+      "Intensitas": 2,
+      "Ketahanan": "2–4 jam",
+      "Deskripsi": "Manis buah anggur, ringan",
+      "Pasangan": "Rose, musk, vanilla",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "IBC0046"
+    },
+    {
+      "Note": "Grapefruit",
+      "Kunci": "grapefruit",
+      "Alias": "jeruk bali",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Citrus",
+      "Intensitas": 3,
+      "Ketahanan": "2–3 jam",
+      "Deskripsi": "Pahit-manis cerah, lebih tajam dari lemon",
+      "Pasangan": "Bergamot, marine, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-060"
+    },
+    {
+      "Note": "Green Apple",
+      "Kunci": "green apple",
+      "Alias": "apel hijau",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Fruity",
+      "Intensitas": 3,
+      "Ketahanan": "2–3 jam",
+      "Deskripsi": "Asam renyah, lebih tajam dari apel merah",
+      "Pasangan": "Cinnamon, cedar, vanilla",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-113"
+    },
+    {
+      "Note": "Green Tea",
+      "Kunci": "green tea",
+      "Alias": "teh hijau",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Green",
+      "Intensitas": 2,
+      "Ketahanan": "3–5 jam",
+      "Deskripsi": "Daun teh segar, tenang, sedikit pahit",
+      "Pasangan": "Bergamot, lotus, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-056"
+    },
+    {
+      "Note": "Heliotrope",
+      "Kunci": "heliotrope",
+      "Alias": "heliotrop",
+      "Layer Dominan": "Base",
+      "Keluarga Note": "Floral",
+      "Intensitas": 3,
+      "Ketahanan": "5–8 jam",
+      "Deskripsi": "Bunga ungu powdery, vanila-almond",
+      "Pasangan": "Vanilla, iris, almond",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-L-035"
+    },
+    {
+      "Note": "Juicy Fruits",
+      "Kunci": "juicy fruits",
+      "Alias": "campuran buah berair",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Fruity",
+      "Intensitas": 2,
+      "Ketahanan": "2–4 jam",
+      "Deskripsi": "Buah segar berair, manis cerah",
+      "Pasangan": "Marine, pear, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-L-039"
+    },
+    {
+      "Note": "Lemongrass",
+      "Kunci": "lemongrass",
+      "Alias": "serai",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Herbal",
+      "Intensitas": 3,
+      "Ketahanan": "3–5 jam",
+      "Deskripsi": "Segar tajam, sitrus-herbal",
+      "Pasangan": "Ginger, lime, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-063"
+    },
+    {
+      "Note": "Matcha",
+      "Kunci": "matcha",
+      "Alias": "matcha",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Green",
+      "Intensitas": 2,
+      "Ketahanan": "3–5 jam",
+      "Deskripsi": "Teh hijau bubuk, creamy, sedikit pahit",
+      "Pasangan": "Cream, vanilla, green notes",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-L-004"
+    },
+    {
+      "Note": "Milk",
+      "Kunci": "milk",
+      "Alias": "susu",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Gourmand",
+      "Intensitas": 2,
+      "Ketahanan": "4–6 jam",
+      "Deskripsi": "Lembut, susu, nyaman",
+      "Pasangan": "Vanilla, iris, caramel",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-L-004"
+    },
+    {
+      "Note": "Mint",
+      "Kunci": "mint",
+      "Alias": "mint",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Herbal",
+      "Intensitas": 3,
+      "Ketahanan": "3–5 jam",
+      "Deskripsi": "Dingin, hijau, menyegarkan",
+      "Pasangan": "Lime, marine, lavender",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-089"
+    },
+    {
+      "Note": "Oak",
+      "Kunci": "oak",
+      "Alias": "oak",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Woody",
+      "Intensitas": 4,
+      "Ketahanan": "8–12 jam",
+      "Deskripsi": "Kayu oak kering, sedikit anggur",
+      "Pasangan": "Cognac, leather, amber",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-018"
+    },
+    {
+      "Note": "Orchid",
+      "Kunci": "orchid",
+      "Alias": "anggrek",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Floral",
+      "Intensitas": 2,
+      "Ketahanan": "4–6 jam",
+      "Deskripsi": "Bunga eksotis lembut, sedikit vanila",
+      "Pasangan": "Jasmine, vanilla, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-122"
+    },
+    {
+      "Note": "Pepper",
+      "Kunci": "pepper",
+      "Alias": "lada",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Spice",
+      "Intensitas": 3,
+      "Ketahanan": "4–6 jam",
+      "Deskripsi": "Pedas umum, hangat, tajam",
+      "Pasangan": "Bergamot, leather, cedar",
+      "Jumlah Produk": 3,
+      "Contoh Internal Reference": "ALK-L-021 · ALK-L-027 · BELL0049"
+    },
+    {
+      "Note": "Rosewood",
+      "Kunci": "rosewood",
+      "Alias": "kayu mawar",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Woody",
+      "Intensitas": 3,
+      "Ketahanan": "6–9 jam",
+      "Deskripsi": "Kayu merah muda, bunga, halus",
+      "Pasangan": "Rose, sandalwood, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-L-035"
+    },
+    {
+      "Note": "Sakura",
+      "Kunci": "sakura",
+      "Alias": "sakura",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Floral",
+      "Intensitas": 2,
+      "Ketahanan": "3–5 jam",
+      "Deskripsi": "Bunga ceri Jepang, manis lembut",
+      "Pasangan": "Pear, jasmine, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-103"
+    },
+    {
+      "Note": "Sea Salt",
+      "Kunci": "sea salt",
+      "Alias": "garam laut",
+      "Layer Dominan": "Top",
+      "Keluarga Note": "Aquatic",
+      "Intensitas": 2,
+      "Ketahanan": "3–5 jam",
+      "Deskripsi": "Asin segar, seperti angin pantai",
+      "Pasangan": "Marine, bergamot, driftwood",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-L-046"
+    },
+    {
+      "Note": "Tuberose",
+      "Kunci": "tuberose",
+      "Alias": "tuberosa",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Floral",
+      "Intensitas": 5,
+      "Ketahanan": "8–12 jam",
+      "Deskripsi": "Bunga putih sangat kuat, krim, manis",
+      "Pasangan": "Jasmine, vanilla, musk",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "PG002"
+    },
+    {
+      "Note": "Violet Leaf",
+      "Kunci": "violet leaf",
+      "Alias": "daun ungu",
+      "Layer Dominan": "Heart",
+      "Keluarga Note": "Green",
+      "Intensitas": 3,
+      "Ketahanan": "4–6 jam",
+      "Deskripsi": "Hijau-keras, sedikit powdery",
+      "Pasangan": "Iris, violet, green notes",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-033"
+    },
+    {
+      "Note": "White Wood",
+      "Kunci": "white wood",
+      "Alias": "kayu putih",
+      "Layer Dominan": "Base",
+      "Keluarga Note": "Woody",
+      "Intensitas": 3,
+      "Ketahanan": "6–9 jam",
+      "Deskripsi": "Kayu bersih, ringan, ke krim",
+      "Pasangan": "White musk, sandalwood, amber",
+      "Jumlah Produk": 1,
+      "Contoh Internal Reference": "ALK-P-103"
     }
   ],
   "deskriptor": [
@@ -1286,6 +1832,167 @@
       "Dimensi": "audiens",
       "Makna": "Harga dan positioning tinggi",
       "Contoh Kalimat": "Attar oud diposisikan premium."
+    },
+    {
+      "Deskriptor": "Asin",
+      "English": "Salty",
+      "Dimensi": "karakter",
+      "Makna": "Seperti garam atau angin laut",
+      "Contoh Kalimat": "Sea salt memberi kesan asin segar."
+    },
+    {
+      "Deskriptor": "Berair",
+      "English": "Juicy",
+      "Dimensi": "tekstur",
+      "Makna": "Buah segar mengandung air",
+      "Contoh Kalimat": "Juicy fruits terasa berair di top note."
+    },
+    {
+      "Deskriptor": "Krim Kocok",
+      "English": "Whipped",
+      "Dimensi": "tekstur",
+      "Makna": "Busa lembut seperti krim kocok",
+      "Contoh Kalimat": "Whipped cream cocok untuk gourmand ringan."
+    },
+    {
+      "Deskriptor": "Maduan",
+      "English": "Honeyed",
+      "Dimensi": "karakter",
+      "Makna": "Manis seperti madu, lengket lembut",
+      "Contoh Kalimat": "Orange blossom punya sisi maduan."
+    },
+    {
+      "Deskriptor": "Balsamik",
+      "English": "Balsamic",
+      "Dimensi": "karakter",
+      "Makna": "Resin manis hangat",
+      "Contoh Kalimat": "Benzoin memberi kesan balsamik."
+    },
+    {
+      "Deskriptor": "Herbal",
+      "English": "Herbal",
+      "Dimensi": "karakter",
+      "Makna": "Daun kering, rempah hijau",
+      "Contoh Kalimat": "Lavender dan rosemary terasa herbal."
+    },
+    {
+      "Deskriptor": "Hijau Daun",
+      "English": "Leafy",
+      "Dimensi": "karakter",
+      "Makna": "Daun segar belum kering",
+      "Contoh Kalimat": "Violet leaf memberi kesan hijau daun."
+    },
+    {
+      "Deskriptor": "Pinus",
+      "English": "Piney",
+      "Dimensi": "karakter",
+      "Makna": "Jarum konifer, hutan dingin",
+      "Contoh Kalimat": "Fir mengingatkan pada hutan pinus."
+    },
+    {
+      "Deskriptor": "Kayu Krim",
+      "English": "Woody Creamy",
+      "Dimensi": "tekstur",
+      "Makna": "Kayu halus berlapis krim",
+      "Contoh Kalimat": "Sandalwood terasa kayu krim."
+    },
+    {
+      "Deskriptor": "Kayu Kering",
+      "English": "Dry Woody",
+      "Dimensi": "tekstur",
+      "Makna": "Kayu tanpa manis, serat kering",
+      "Contoh Kalimat": "Cedar dan oak memberi kayu kering."
+    },
+    {
+      "Deskriptor": "Kulit Halus",
+      "English": "Soft Leather",
+      "Dimensi": "tekstur",
+      "Makna": "Kulit tidak tajam, lebih lembut",
+      "Contoh Kalimat": "Leather tonka terasa kulit halus."
+    },
+    {
+      "Deskriptor": "Bunga Krim",
+      "English": "Creamy Floral",
+      "Dimensi": "karakter",
+      "Makna": "Bunga lembut berlapis krim",
+      "Contoh Kalimat": "Tuberose memberi bunga krim yang kuat."
+    },
+    {
+      "Deskriptor": "Bunga Powdery",
+      "English": "Powdery Floral",
+      "Dimensi": "karakter",
+      "Makna": "Bunga berbedak halus",
+      "Contoh Kalimat": "Heliotrope memadukan bunga dan powdery."
+    },
+    {
+      "Deskriptor": "Buah Berry",
+      "English": "Berry",
+      "Dimensi": "karakter",
+      "Makna": "Berry merah/hitam asam-manis",
+      "Contoh Kalimat": "Blackcurrant memberi kesan berry."
+    },
+    {
+      "Deskriptor": "Ceri",
+      "English": "Cherry",
+      "Dimensi": "karakter",
+      "Makna": "Buah ceri manis gelap",
+      "Contoh Kalimat": "Cherry almond cocok untuk gourmand buah."
+    },
+    {
+      "Deskriptor": "Teh",
+      "English": "Tea",
+      "Dimensi": "karakter",
+      "Makna": "Daun teh segar, sedikit pahit",
+      "Contoh Kalimat": "Matcha memberi kesan teh creamy."
+    },
+    {
+      "Deskriptor": "Susu",
+      "English": "Milky",
+      "Dimensi": "tekstur",
+      "Makna": "Susu lembut, bukan gula",
+      "Contoh Kalimat": "Milk melembutkan vanilla."
+    },
+    {
+      "Deskriptor": "Alkohol Hangat",
+      "English": "Boozy",
+      "Dimensi": "karakter",
+      "Makna": "Aroma minuman keras hangat",
+      "Contoh Kalimat": "Cognac memberi kesan boozy pada amber."
+    },
+    {
+      "Deskriptor": "Lokal",
+      "English": "Local-inspired",
+      "Dimensi": "tema",
+      "Makna": "Terinspirasi bahan atau momen Indonesia",
+      "Contoh Kalimat": "Cempaka cocok untuk tema lokal."
+    },
+    {
+      "Deskriptor": "Musim Semi",
+      "English": "Spring",
+      "Dimensi": "musim",
+      "Makna": "Segar bunga untuk cuaca transisi",
+      "Contoh Kalimat": "Sakura cocok untuk musim semi."
+    },
+    {
+      "Deskriptor": "Musim Gugur",
+      "English": "Autumn",
+      "Dimensi": "musim",
+      "Makna": "Hangat kayu dan rempah",
+      "Contoh Kalimat": "Oak cognac cocok untuk musim gugur."
+    },
+    {
+      "Deskriptor": "Fotogenik",
+      "English": "Photogenic",
+      "Dimensi": "tema",
+      "Makna": "Menonjol di kamera dan pencahayaan",
+      "Contoh Kalimat": "Amber wood fotogenik untuk sesi foto."
+    },
+    {
+      "Deskriptor": "Restock",
+      "English": "Restock",
+      "Dimensi": "momen",
+      "Makna": "Pembelian ulang rutin",
+      "Contoh Kalimat": "White musk mudah di-restock."
     }
   ],
   "accord": [
@@ -1297,7 +2004,7 @@
       "Momen": "Pagi, kantor, olahraga",
       "Maturasi": "3–7 hari",
       "Keamanan": "Hindari klaim 'tahan 24 jam' tanpa uji.",
-      "Contoh Internal Reference": "ALK-L-020 · LZ0019 · ALK-L-011 · EXPS0028 · GA0018 · ALK-L-001",
+      "Contoh Internal Reference": "ALK-L-001 · ALK-L-020 · LZ0019 · ALK-L-011 · EXPS0028 · GA0018",
       "Status": "Edukasi/inspirasi konten; bukan formula produksi."
     },
     {
@@ -1308,7 +2015,7 @@
       "Momen": "Pantai, setelah mandi, live",
       "Maturasi": "5–10 hari",
       "Keamanan": "Marine bukan dupa laut; pastikan bahan tersedia.",
-      "Contoh Internal Reference": "ALK-L-015 · ALK-L-026 · ALK-P-005 · ESEN0002 · ALK-L-001 · ALK-L-011",
+      "Contoh Internal Reference": "LZ0019 · ALK-L-015 · ALK-L-026 · ALK-P-005 · ESEN0002 · GIV0045",
       "Status": "Edukasi/inspirasi konten; bukan formula produksi."
     },
     {
@@ -1352,7 +2059,7 @@
       "Momen": "Malam, kerja kreatif",
       "Maturasi": "14–21 hari",
       "Keamanan": "Coffee bisa menguning; cek stabilitas warna.",
-      "Contoh Internal Reference": "LZ0130 · ALK-L-042 · ALK-L-012 · ALK-P-006 · ALK-P-018 · ESEN0054",
+      "Contoh Internal Reference": "ESEN0054 · LZ0130 · ALK-L-042 · ALK-L-012 · ALK-P-006 · ALK-P-018",
       "Status": "Edukasi/inspirasi konten; bukan formula produksi."
     },
     {
@@ -1363,7 +2070,7 @@
       "Momen": "Kencan, musim hujan",
       "Maturasi": "10–18 hari",
       "Keamanan": "Potensi alergi kacang; cantumkan kehati-hatian.",
-      "Contoh Internal Reference": "ALK-L-012 · ALK-P-006 · ALK-P-018 · IBC0041 · LZ0130 · MCB0051",
+      "Contoh Internal Reference": "ALK-L-012 · ALK-P-006 · ALK-P-018 · ESEN0054 · IBC0032 · IBC0041",
       "Status": "Edukasi/inspirasi konten; bukan formula produksi."
     },
     {
@@ -1506,7 +2213,7 @@
       "Momen": "Cuci pakaian, rumah",
       "Maturasi": "3–7 hari",
       "Keamanan": "Ini untuk laundry, bukan klaim parfum kulit.",
-      "Contoh Internal Reference": "ALK-L-001 · ALK-P-085 · ALK-L-011 · ALK-L-015 · ALK-L-020 · ALK-L-026",
+      "Contoh Internal Reference": "ALK-L-001 · LZ0019 · ALK-P-085 · ALK-L-011 · ALK-L-015 · ALK-L-020",
       "Status": "Edukasi/inspirasi konten; bukan formula produksi."
     },
     {
@@ -1539,7 +2246,7 @@
       "Momen": "Hadiah, konten lokal",
       "Maturasi": "7–14 hari",
       "Keamanan": "Bahan 'coconut/pandan' perlu disesuaikan stok.",
-      "Contoh Internal Reference": "ALK-L-039 · PRFX0074 · ALK-L-014 · ALK-L-022 · ALK-L-023 · ALK-L-025",
+      "Contoh Internal Reference": "ALK-L-039 · PRFX0074 · ALK-L-035 · ALK-L-014 · ALK-L-022 · ALK-L-023",
       "Status": "Edukasi/inspirasi konten; bukan formula produksi."
     },
     {
@@ -1551,6 +2258,182 @@
       "Maturasi": "21–30 hari",
       "Keamanan": "Gunakan konsentrat terverifikasi.",
       "Contoh Internal Reference": "ALK-L-018 · SRT009 · ALK-L-005 · ALK-L-007 · ALK-L-030 · ALK-P-072",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Sakura Pear",
+      "Keluarga": "Floral Putih & Bouquet",
+      "Rasio": "Sakura 3 · Pear 2 · Jasmine 2 · White Musk 2",
+      "Karakter": "Bunga lembut, manis ringan",
+      "Momen": "Hadiah, siang, foto",
+      "Maturasi": "5–12 hari",
+      "Keamanan": "Cek ketersediaan referensi sakura.",
+      "Contoh Internal Reference": "ALK-P-103 · ALK-L-003 · ALK-L-032 · GCF051 · ALK-L-006 · ALK-L-014",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Cempaka Sandal",
+      "Keluarga": "Floral Putih & Bouquet",
+      "Rasio": "Cempaka 3 · Sandalwood 2 · Rose 1 · Musk 2",
+      "Karakter": "Bunga Asia, krim, hangat",
+      "Momen": "Hadiah, malam santai",
+      "Maturasi": "10–18 hari",
+      "Keamanan": "Cempaka kuat; uji dosis.",
+      "Contoh Internal Reference": "ALK-P-035 · ALK-P-048 · ALK-L-013 · GCF051 · ALK-L-014 · ALK-L-019",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Ambergris Marine",
+      "Keluarga": "Amber / Oriental",
+      "Rasio": "Ambergris 2 · Marine 3 · Bergamot 2 · White Musk 2",
+      "Karakter": "Laut hangat, asin-manis",
+      "Momen": "Pantai, malam",
+      "Maturasi": "14–21 hari",
+      "Keamanan": "Ambergris langka; pakai akorda bila perlu.",
+      "Contoh Internal Reference": "ALK-L-015 · ALK-L-026 · ALK-L-040 · ALK-P-005 · ALK-P-085 · ESEN0002",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Ambroxan Clean",
+      "Keluarga": "Musk & Powdery",
+      "Rasio": "Ambroxan 3 · White Musk 3 · Bergamot 2 · Cedar 1",
+      "Karakter": "Bersih, proyeksi modern",
+      "Momen": "Kantor, live",
+      "Maturasi": "10–18 hari",
+      "Keamanan": "Ambroxan kuat; hindari overdosage.",
+      "Contoh Internal Reference": "PG012 · BELL0049 · ALK-L-040 · ALK-L-003 · ALK-L-001 · ALK-L-011",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Blackcurrant Rose",
+      "Keluarga": "Fruity",
+      "Rasio": "Blackcurrant 3 · Rose 2 · Vanilla 2 · Musk 2",
+      "Karakter": "Berry-asam, bunga, manis",
+      "Momen": "Kencan, siang",
+      "Maturasi": "7–14 hari",
+      "Keamanan": "Berry bisa menguning; cek stabilitas.",
+      "Contoh Internal Reference": "GCF0012 · ALK-L-014 · ALK-L-025 · ALK-L-044 · ALK-L-030 · ALK-L-032",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Cherry Almond",
+      "Keluarga": "Gourmand",
+      "Rasio": "Cherry 3 · Almond 2 · Vanilla 2 · Tonka 1",
+      "Karakter": "Ceri kacang, dessert",
+      "Momen": "Malam, hujan",
+      "Maturasi": "10–18 hari",
+      "Keamanan": "Almond: perhatikan risiko alergi.",
+      "Contoh Internal Reference": "ALK-L-012 · ALK-P-006 · ALK-P-018 · ESEN0054 · LZ0130 · MCB0051",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Green Tea Matcha",
+      "Keluarga": "Citrus Segar",
+      "Rasio": "Green Tea 2 · Matcha 2 · Bergamot 2 · Cream 2",
+      "Karakter": "Teh hijau krim, tenang",
+      "Momen": "Pagi, belajar",
+      "Maturasi": "5–12 hari",
+      "Keamanan": "Jangan klaim detoks.",
+      "Contoh Internal Reference": "ALK-L-004 · ALK-L-002 · ALK-L-020 · ALK-L-037 · LZ0019 · ALK-P-056",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Lemongrass Mint",
+      "Keluarga": "Aromatic Herbal",
+      "Rasio": "Lemongrass 3 · Mint 2 · Lime 2 · Musk 2",
+      "Karakter": "Segar tajam, herbal dingin",
+      "Momen": "Olahraga, siang",
+      "Maturasi": "4–10 hari",
+      "Keamanan": "Mint tajam; uji kepekaan kulit.",
+      "Contoh Internal Reference": "ALK-P-063 · LZ0037 · ALK-P-022 · ALK-P-032 · ALK-P-047 · ALK-P-050",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Oak Cognac",
+      "Keluarga": "Woody",
+      "Rasio": "Oak 3 · Cognac 2 · Tonka 2 · Leather 1",
+      "Karakter": "Kayu anggur hangat",
+      "Momen": "Malam, formal",
+      "Maturasi": "14–21 hari",
+      "Keamanan": "Cognac bisa kuat; seimbangkan.",
+      "Contoh Internal Reference": "ALK-P-018 · ALK-L-021 · KV0002 · ALK-P-089 · LZ0037 · MANE0015",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Fir Resin",
+      "Keluarga": "Amber / Oriental",
+      "Rasio": "Fir 3 · Fir Resin 2 · Amber 2 · Cedar 2",
+      "Karakter": "Hutan resin, hangat",
+      "Momen": "Musim hujan, malam",
+      "Maturasi": "14–21 hari",
+      "Keamanan": "Resin lengket; cek stabilitas.",
+      "Contoh Internal Reference": "ALK-L-011 · ALK-L-015 · ALK-L-020 · ALK-L-027 · ALK-L-041 · ALK-P-005",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Sea Salt Driftwood",
+      "Keluarga": "Aquatik / Laut",
+      "Rasio": "Sea Salt 2 · Driftwood 3 · Marine 2 · White Musk 2",
+      "Karakter": "Asin, kayu hanyut",
+      "Momen": "Pantai, liburan",
+      "Maturasi": "7–14 hari",
+      "Keamanan": "Garam menarik lembap; simpan kering.",
+      "Contoh Internal Reference": "ALK-L-046 · ALK-L-015 · ALK-L-026 · ALK-P-005 · ESEN0002 · GIV0045",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Tuberose Cream",
+      "Keluarga": "Floral Putih & Bouquet",
+      "Rasio": "Tuberose 3 · Cream 2 · Jasmine 1 · Musk 2",
+      "Karakter": "Bunga putih krim kuat",
+      "Momen": "Malam, foto",
+      "Maturasi": "14–21 hari",
+      "Keamanan": "Tuberose sangat kuat; dosis kecil.",
+      "Contoh Internal Reference": "PG002 · ALK-L-039 · ALK-P-035 · ALK-P-048 · ALK-L-013 · ALK-L-028",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Violet Leaf Iris",
+      "Keluarga": "Musk & Powdery",
+      "Rasio": "Violet Leaf 3 · Iris 2 · Violet 2 · White Musk 2",
+      "Karakter": "Hijau powdery elegan",
+      "Momen": "Kantor, siang",
+      "Maturasi": "10–18 hari",
+      "Keamanan": "Iris mahal; pakai sebagai aksen.",
+      "Contoh Internal Reference": "ALK-L-016 · ALK-L-040 · ALK-L-003 · MCB0050 · PG012 · ALK-L-001",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Grapefruit Neroli",
+      "Keluarga": "Citrus Segar",
+      "Rasio": "Grapefruit 3 · Neroli 2 · Blood Orange 2 · Musk 2",
+      "Karakter": "Jeruk pahit-manis, bunga",
+      "Momen": "Pagi, kantor",
+      "Maturasi": "5–12 hari",
+      "Keamanan": "Citrus cepat hilang; sarankan top up.",
+      "Contoh Internal Reference": "ALK-L-002 · ALK-P-005 · ALK-L-020 · ALK-L-037 · LZ0019 · ALK-P-056",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Bamboo Lotus",
+      "Keluarga": "Aquatik / Laut",
+      "Rasio": "Bamboo 3 · Lotus 2 · Green Tea 2 · White Musk 2",
+      "Karakter": "Hijau-air tenang",
+      "Momen": "Siang, santai",
+      "Maturasi": "5–12 hari",
+      "Keamanan": "Hindari klaim kesehatan.",
+      "Contoh Internal Reference": "ALK-P-065 · ALK-P-061 · ALK-L-001 · ALK-L-040 · ALK-L-003 · ALK-P-053",
+      "Status": "Edukasi/inspirasi konten; bukan formula produksi."
+    },
+    {
+      "Nama": "Heliotrope Milk",
+      "Keluarga": "Gourmand",
+      "Rasio": "Heliotrope 3 · Milk 2 · Vanilla 2 · Almond 1",
+      "Karakter": "Bunga powdery susu",
+      "Momen": "Malam, musim hujan",
+      "Maturasi": "10–18 hari",
+      "Keamanan": "Perhatikan alergi susu/kacang.",
+      "Contoh Internal Reference": "ALK-L-004 · ESEN0054 · MCB0051 · PRFX0074 · ALK-L-035 · ALK-L-014",
       "Status": "Edukasi/inspirasi konten; bukan formula produksi."
     }
   ],
@@ -1587,7 +2470,7 @@
       "Trigger": "Ingin wangi liburan",
       "Keluarga": "Aquatik / Laut",
       "Notes Kunci": "marine, bergamot, lavender",
-      "Contoh Internal Reference": "ALK-L-015 · ALK-L-026 · ALK-P-005 · ESEN0002 · ALK-L-011 · ALK-L-020",
+      "Contoh Internal Reference": "LZ0019 · ALK-L-015 · ALK-L-026 · ALK-P-005 · ESEN0002 · GIV0045",
       "CTA": "MARBELLA",
       "Format": "Reels laut + botol",
       "Momen": "Pantai, liburan",
@@ -1652,7 +2535,7 @@
       "Trigger": "Pakaian harus wangi",
       "Keluarga": "Laundry & Clean",
       "Notes Kunci": "white musk, marine, lavender",
-      "Contoh Internal Reference": "ALK-P-009 · ALK-P-085 · ALK-P-103 · ALK-P-113 · ALK-L-001 · ALK-L-011",
+      "Contoh Internal Reference": "ALK-P-009 · ALK-P-085 · ALK-P-103 · ALK-P-113 · ALK-L-001 · LZ0019",
       "CTA": "LAUNDRY",
       "Format": "Before/after cucian",
       "Momen": "Rumah, laundry",
@@ -1678,7 +2561,7 @@
       "Trigger": "Cuaca dingin/lembap",
       "Keluarga": "Gourmand",
       "Notes Kunci": "vanilla, coffee, tonka",
-      "Contoh Internal Reference": "LZ0130 · ALK-L-042 · ALK-L-012 · ALK-P-006 · ALK-P-018 · ALK-L-014",
+      "Contoh Internal Reference": "LZ0130 · ALK-L-042 · ALK-L-012 · ALK-P-006 · ALK-P-018 · ESEN0054",
       "CTA": "HUJAN",
       "Format": "Suasana hujan + kopi",
       "Momen": "Musim hujan",
@@ -1795,7 +2678,7 @@
       "Trigger": "Aroma kopi nyata",
       "Keluarga": "Gourmand",
       "Notes Kunci": "coffee, vanilla, tonka",
-      "Contoh Internal Reference": "LZ0130 · ALK-L-042 · ALK-L-012 · ALK-P-006 · ALK-P-018 · ALK-L-014",
+      "Contoh Internal Reference": "LZ0130 · ALK-L-042 · ALK-L-012 · ALK-P-006 · ALK-P-018 · ESEN0054",
       "CTA": "COFFEE",
       "Format": "Kopi + botol",
       "Momen": "Pagi, malam",
@@ -1865,6 +2748,214 @@
       "Format": "Pagi-siang-malam",
       "Momen": "Hadiah",
       "Risiko": "Cek ketersediaan tiap SKU.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Sakura",
+      "Persona": "Pembeli hadiah",
+      "Trigger": "Suka bunga lembut",
+      "Keluarga": "Floral Putih & Bouquet",
+      "Notes Kunci": "sakura, pear, jasmine",
+      "Contoh Internal Reference": "ALK-P-103 · ALK-L-032 · GCF051 · ALK-L-006 · ALK-L-014 · ALK-L-022",
+      "CTA": "SAKURA",
+      "Format": "Flatlay bunga merah muda",
+      "Momen": "Hadiah, foto",
+      "Risiko": "Cek stok sakura.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Cempaka Lokal",
+      "Persona": "Pembeli lokal",
+      "Trigger": "Cari aroma Nusantara",
+      "Keluarga": "Floral Putih & Bouquet",
+      "Notes Kunci": "cempaka, sandalwood, rose",
+      "Contoh Internal Reference": "ALK-P-035 · ALK-P-048 · ALK-L-013 · GCF051 · ALK-L-014 · ALK-L-019",
+      "CTA": "CEMPAKA",
+      "Format": "Konten bunga lokal",
+      "Momen": "Hadiah, malam",
+      "Risiko": "Jangan klaim asal-usul tanpa data.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Laut Asin",
+      "Persona": "Traveler",
+      "Trigger": "Ingin kesan pantai nyata",
+      "Keluarga": "Aquatik / Laut",
+      "Notes Kunci": "sea salt, driftwood, marine",
+      "Contoh Internal Reference": "ALK-L-046 · ALK-L-015 · ALK-L-026 · ALK-P-005 · ESEN0002 · GIV0045",
+      "CTA": "GARAM",
+      "Format": "Vlog pantai",
+      "Momen": "Pantai",
+      "Risiko": "Garam bukan klaim mineral kesehatan.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Amber Modern",
+      "Persona": "Profesional 25–40",
+      "Trigger": "Ingin elegan tidak berat",
+      "Keluarga": "Musk & Powdery",
+      "Notes Kunci": "ambroxan, white musk, cedar",
+      "Contoh Internal Reference": "PG012 · ALK-L-001 · BELL0049 · ALK-L-040 · ALK-L-003 · ALK-L-011",
+      "CTA": "AMBER",
+      "Format": "Lookbook minimal",
+      "Momen": "Kantor, malam",
+      "Risiko": "Ambroxan kuat; dosis kecil.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Berry Manis",
+      "Persona": "Gen Z",
+      "Trigger": "Suka buah beri",
+      "Keluarga": "Fruity",
+      "Notes Kunci": "blackcurrant, rose, vanilla",
+      "Contoh Internal Reference": "GCF0012 · ALK-L-014 · ALK-L-025 · ALK-L-040 · ALK-L-044 · ALK-L-009",
+      "CTA": "BERRY",
+      "Format": "Warna ungu cerah",
+      "Momen": "Siang, kampus",
+      "Risiko": "Stabilitas warna perlu dicek.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Ceri Almond",
+      "Persona": "Pencinta dessert",
+      "Trigger": "Manis kacang buah",
+      "Keluarga": "Gourmand",
+      "Notes Kunci": "cherry, almond, vanilla",
+      "Contoh Internal Reference": "ESEN0054 · MCB0051 · PRFX0074 · ALK-L-014 · ALK-L-022 · ALK-L-023",
+      "CTA": "CHERRY",
+      "Format": "Dessert flatlay",
+      "Momen": "Malam",
+      "Risiko": "Perhatikan alergi kacang.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Teh Hijau",
+      "Persona": "Pembeli tenang",
+      "Trigger": "Ingin aroma ringan",
+      "Keluarga": "Citrus Segar",
+      "Notes Kunci": "green tea, matcha, bergamot",
+      "Contoh Internal Reference": "ALK-L-004 · ALK-L-002 · ALK-L-020 · ALK-L-037 · LZ0019 · ALK-P-056",
+      "CTA": "TEH",
+      "Format": "Ritual teh",
+      "Momen": "Pagi, belajar",
+      "Risiko": "Hindari klaim detoks.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Serai Segar",
+      "Persona": "Pembeli aktif",
+      "Trigger": "Butuh segar tajam",
+      "Keluarga": "Aromatic Herbal",
+      "Notes Kunci": "lemongrass, mint, lime",
+      "Contoh Internal Reference": "ALK-P-063 · ALK-P-089 · LZ0037",
+      "CTA": "SERAI",
+      "Format": "Olahraga",
+      "Momen": "Siang, gym",
+      "Risiko": "Mint bisa menyengat.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Kayu Oak",
+      "Persona": "Pria formal",
+      "Trigger": "Kayu hangat anggur",
+      "Keluarga": "Woody",
+      "Notes Kunci": "oak, cognac, tonka",
+      "Contoh Internal Reference": "ALK-P-018 · GA0018 · ALK-L-021 · KV0002 · ALK-L-010 · ALK-L-012",
+      "CTA": "OAK",
+      "Format": "Meeting malam",
+      "Momen": "Formal",
+      "Risiko": "Jangan klaim usia tanpa bukti.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Hutan Pinus",
+      "Persona": "Pecinta alam",
+      "Trigger": "Aroma hutan dingin",
+      "Keluarga": "Amber / Oriental",
+      "Notes Kunci": "fir, fir resin, amber",
+      "Contoh Internal Reference": "ALK-L-041 · ALK-L-019 · SRT009 · ALK-L-005 · ALK-L-007 · ALK-L-009",
+      "CTA": "PINUS",
+      "Format": "Camping, hujan",
+      "Momen": "Musim hujan",
+      "Risiko": "Resin lengket; simpan baik.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Tuberose",
+      "Persona": "Pembeli berani",
+      "Trigger": "Bunga kuat",
+      "Keluarga": "Floral Putih & Bouquet",
+      "Notes Kunci": "tuberose, cream, jasmine",
+      "Contoh Internal Reference": "PG002 · ALK-L-039 · ALK-P-035 · ALK-P-048 · ALK-L-013 · ALK-L-028",
+      "CTA": "TUBEROSE",
+      "Format": "Close-up bunga",
+      "Momen": "Malam, foto",
+      "Risiko": "Sillage kuat; sarankan tes.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Violet Powdery",
+      "Persona": "Kantoran",
+      "Trigger": "Elegan powdery",
+      "Keluarga": "Musk & Powdery",
+      "Notes Kunci": "violet leaf, iris, musk",
+      "Contoh Internal Reference": "ALK-L-016 · KV0002 · ALK-L-010 · ALK-P-033 · EXPS0028 · ALK-L-036",
+      "CTA": "VIOLET",
+      "Format": "Flatlay ungu",
+      "Momen": "Kantor",
+      "Risiko": "Iris mahal; cek harga.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Grapefruit",
+      "Persona": "Pembeli segar",
+      "Trigger": "Jeruk pahit-manis",
+      "Keluarga": "Citrus Segar",
+      "Notes Kunci": "grapefruit, neroli, blood orange",
+      "Contoh Internal Reference": "ALK-L-002 · ALK-P-005 · ALK-P-060 · ALK-P-089",
+      "CTA": "GRAPEFRUIT",
+      "Format": "Citrus slice",
+      "Momen": "Pagi",
+      "Risiko": "Cepat hilang; top up.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Bambu Lotus",
+      "Persona": "Pembeli tenang",
+      "Trigger": "Hijau-air minimalis",
+      "Keluarga": "Aquatik / Laut",
+      "Notes Kunci": "bamboo, lotus, green tea",
+      "Contoh Internal Reference": "ALK-P-065 · ALK-P-061 · ALK-P-056",
+      "CTA": "BAMBU",
+      "Format": "Konten zen",
+      "Momen": "Siang",
+      "Risiko": "Hindari klaim meditasi/kesehatan.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Heliotrope Susu",
+      "Persona": "Pencinta manis lembut",
+      "Trigger": "Bunga powdery",
+      "Keluarga": "Gourmand",
+      "Notes Kunci": "heliotrope, milk, vanilla",
+      "Contoh Internal Reference": "ALK-L-004 · ALK-L-035 · ALK-L-014 · ALK-L-022 · ALK-L-023 · ALK-L-025",
+      "CTA": "HELIOTROPE",
+      "Format": "Dessert susu",
+      "Momen": "Malam",
+      "Risiko": "Alergi susu/kacang; cantumkan.",
+      "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
+    },
+    {
+      "Tema": "Parfum Fotogenik",
+      "Persona": "Content creator",
+      "Trigger": "Butuh visual premium",
+      "Keluarga": "Amber / Oriental",
+      "Notes Kunci": "amberwood, ambroxan, musk",
+      "Contoh Internal Reference": "BELL0049 · ALK-L-019 · SRT009 · ALK-L-005 · ALK-L-007 · ALK-P-072",
+      "CTA": "SHOOT",
+      "Format": "Behind the scene",
+      "Momen": "Sesi foto",
+      "Risiko": "Pencahayaan bukan bukti kualitas.",
       "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
     }
   ]

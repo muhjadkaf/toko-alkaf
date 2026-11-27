@@ -16,7 +16,7 @@ Seluruh tulisan menggunakan bahasa Indonesia. Dokumen, data, addon Odoo, skeleto
 | `data/katalog-alkaff-odoo/` | XLSX, CSV siap import Odoo, README katalog, dan `tambah_parfum_lokal.py` sudah disalin |
 | `data/pengetahuan-parfum/` | Basis pengetahuan turunan: 14 keluarga, 135 notes, 78 deskriptor, 56 accord, 40 tema, 70 frasa sensorik, 18 pagar klaim |
 | `odoo/addons/alkaff_catalog/` | Addon Odoo 20: kategori, field aroma/notes, log, wizard import CSV, dan API baca-saja; sudah di-install di `nml` |
-| `webapp/alkaff_scent_lab/` | Flutter Web Clean Lab yang membaca API Odoo `nml` dan dipublish di `alkaff.lokal.or.id` |
+| `webapp/alkaff_scent_lab/` | Flutter Web Clean Lab dengan dunia pabrik maklon “Alkaff Maklon Hall”, narasi audio, dan bus kontrol; dipublish di `alkaf.lokal.or.id` / `alkaff.lokal.or.id` |
 | `services/live-bridge/` | Skeleton Python stdlib: normalisasi event, state machine, dedupe, dan overlay lokal (34 tes lulus) |
 | Interaksi TikTok LIVE | Punya rencana teknis + skeleton lokal; **belum terhubung ke API TikTok**, tanpa auto-DM |
 | Katalog parfum | 164 produk di sheet `IMPORT_odoo`; 42 `Sales Price` terisi dan 122 sengaja dikosongkan |
@@ -109,12 +109,19 @@ Dua demo visual mandiri juga tersedia:
 Buka `https://alkaff.lokal.or.id/?controls=1&keyword=kopi%20dingin` saat menyiapkan host, lalu
 `https://alkaff.lokal.or.id/?keyword=kopi%20dingin` saat LIVE. Aplikasi mengambil tema dan produk
 langsung dari `/alkaff/api/recommendations` di Odoo `nml`; hasil build Flutter tidak di-commit.
+Theater menampilkan **Alkaff Maklon Hall**, visualisasi pabrik maklon skala besar berupa lima plate
+CG + parallax: penerimaan bahan, pencampuran, QC, dan finishing. Teks hanya menempel pada benda
+fisik, tanpa sosok manusia, dan narasi disiarkan sebagai audio bahasa Indonesia tanpa subtitle.
+Plate dan narasi bisa dibuat ulang dengan `tools/generate_world_plates.py` dan
+`tools/generate_narration.py` di folder webapp.
+
 Di OBS cukup pakai **Window Capture** pada jendela browser. Opsi `?mode=split` menyediakan zona
 kamera host di 40% atas. Menu **Alkaff Live Console** di superapp `https://app.lokal.or.id`
 menyediakan chat simulasi dan tombol sutradara adegan lewat bus kontrol bersama,
 tanpa iframe; theater dibuka terpisah di `https://alkaf.lokal.or.id` (alias
-`https://alkaff.lokal.or.id`) dengan channel yang sama.
-Detail build, query string, protokol pesan, dan pagar klaim ada di
+`https://alkaff.lokal.or.id`) dengan channel yang sama. Perintah manual menghentikan
+auto-sequence sampai host menekan `Auto` atau mengubah keyword.
+Detail build, query string, generator aset, protokol pesan, dan pagar klaim ada di
 [`webapp/alkaff_scent_lab/README.md`](webapp/alkaff_scent_lab/README.md).
 
 Sebelum produksi, tetap ikuti dokumentasi LIVE: endpoint `/internal/*` wajib dilindungi, token disimpan di secret manager, dan uji memakai akun TikTok uji dengan moderator manual.

@@ -51,7 +51,8 @@ class LabScreen extends StatefulWidget {
 class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMixin {
   /// Narasi audio bahasa Indonesia. Tidak ada subtitle mengambang.
   /// Path sudah mengikuti hasil build Flutter Web: source `assets/audio/...`
-  /// disalin ke `build/web/assets/assets/audio/...`.
+  /// disalin ke `build/web/assets/assets/audio/...`. Query `?v=` ditambahkan
+  /// saat runtime dari `version.json` agar tablet/PC tidak memakai cache lama.
   static const Map<String, String> _narration = {
     'boot': 'assets/assets/audio/narasi_boot.mp3',
     'scan': 'assets/assets/audio/narasi_scan.mp3',
@@ -83,6 +84,7 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
   String _chatUser = '';
   String _chatText = '';
   String _chatTime = '';
+  String _assetVersion = '1';
   String? _error;
   final List<Timer> _timers = [];
   Timer? _controlTimer;
@@ -339,11 +341,30 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
     }).catchError((_) {}));
   }
 
+  /// Ambil nomor build dari `version.json`. Nomor ini dipakai sebagai query
+  /// string pada semua asset, sehingga build baru otomatis mengganti cache lama.
+  Future<void> _loadVersion() async {
+    try {
+      // File ini di root build/web, bukan di bawah prefix /alkaff/api.
+      final response = await html.HttpRequest.request('/version.json', method: 'GET');
+      if (response.status != 200 || !mounted) return;
+      final decoded = jsonDecode(response.responseText ?? '{}');
+      if (decoded is! Map) return;
+      setState(() {
+        _assetVersion = '${decoded['build_number'] ?? '1'}';
+        _currentNarration = null;
+      });
+    } catch (_) {
+      // version.json opsional; theater tetap memakai fallback '1'.
+    }
+  }
+
   /// Putar narasi scene dari asset lokal. Autoplay browser bisa ditolak sampai
   /// ada gesture pengguna; kegagalan diabaikan agar theater tetap berjalan.
   void _playNarration(String scene) {
-    final src = _narration[scene];
-    if (src == null) return;
+    final base = _narration[scene];
+    if (base == null) return;
+    final src = '$base?v=$_assetVersion';
     if (_currentNarration != src) {
       _narrationAudio.src = src;
       _currentNarration = src;
@@ -353,6 +374,7 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
   }
 
   Future<void> _boot() async {
+    await _loadVersion();
     try {
       final health = await _getJson('/health');
       if (health['database'] != 'nml') {
@@ -525,6 +547,7 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
           chatTime: _chatTime,
           products: _products,
           motion: _pulse,
+          assetVersion: _assetVersion,
         ),
         if (_showControls) _controlDeck(),
       ],

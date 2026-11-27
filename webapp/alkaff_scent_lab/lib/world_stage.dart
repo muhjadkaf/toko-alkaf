@@ -21,6 +21,7 @@ class WorldStage extends StatelessWidget {
     required this.chatTime,
     required this.products,
     required this.motion,
+    required this.assetVersion,
   });
 
   static const List<String> _scenes = ['boot', 'scan', 'mix', 'analyze', 'result'];
@@ -37,6 +38,7 @@ class WorldStage extends StatelessWidget {
   final String chatTime;
   final List<dynamic> products;
   final Animation<double> motion;
+  final String assetVersion;
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +58,12 @@ class WorldStage extends StatelessWidget {
                   scale: scale,
                   child: Transform.translate(
                     offset: Offset(dx, dy),
-                    child: Image.asset(
-                      'assets/world/scene_$key.jpg',
+                    child: Image.network(
+                      'assets/assets/world/scene_$key.jpg?v=$assetVersion',
                       fit: BoxFit.cover,
                       width: double.infinity,
                       height: double.infinity,
+                      gaplessPlayback: true,
                     ),
                   ),
                 ),

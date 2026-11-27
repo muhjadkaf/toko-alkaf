@@ -130,8 +130,20 @@ auto-DM, dan tidak menyimpan data sensitif ke server.
 ```bash
 cd webapp/alkaff_scent_lab
 /home/mintbag/flutter-sdk/bin/flutter pub get
-/home/mintbag/flutter-sdk/bin/flutter build web --release --no-wasm-dry-run
+./build_web.sh
 ```
+
+`build_web.sh` memakai nomor build UNIX timestamp. Nomor itu ditulis ke
+`version.json` dan dipakai theater sebagai query string `?v=<build>` pada plate
+JPG dan narasi MP3. Service `alkaff-web.service` juga dijalankan dengan
+`NAMLAH_WEB_CACHE_BUST=1`, sehingga `index.html` memuat
+`flutter_bootstrap.js?v=<build>` dan bootstrap memuat `main.dart.js?v=<build>`,
+serta semua file statis dikirim dengan `Cache-Control: no-store`.
+
+Hasilnya: tablet Opera maupun PC tidak perlu `Ctrl+Shift+R`. Setiap build baru
+otomatis memakai URL aset yang berbeda, jadi cache lama tidak dipakai. Setelah
+deploy, cache Cloudflare tetap perlu di-purge sekali agar edge tidak menyimpan
+`main.dart.js` lama.
 
 Hasil build ada di `build/web/` dan **sengaja tidak di-commit**.
 Service systemd `alkaff-web.service` menyajikan folder tersebut di
@@ -141,7 +153,8 @@ channel di konsol.
 
 ## Pakai di OBS / TikTok Live Studio
 
-1. Buka URL siap LIVE di Chrome/Edge, tekan `F11` untuk full-screen.
+1. Buka URL siap LIVE di Chrome/Edge/Opera, tekan `F11` untuk full-screen.
+   Build baru otomatis terambil; tidak perlu hard refresh atau hapus cache.
 2. Klik sekali di halaman bila browser memerlukan gesture sebelum memutar audio.
 3. Di OBS, tambahkan **Window Capture** → jendela browser tersebut.
 4. Untuk mode `split`, isi 40% atas dari kamera host melalui overlay OBS atau

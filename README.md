@@ -113,7 +113,9 @@ Theater menampilkan **Alkaff Maklon Hall**, visualisasi pabrik maklon skala besa
 CG + parallax: penerimaan bahan, pencampuran, QC, dan finishing. Teks hanya menempel pada benda
 fisik, tanpa sosok manusia, dan narasi disiarkan sebagai audio bahasa Indonesia tanpa subtitle.
 Plate dan narasi bisa dibuat ulang dengan `tools/generate_world_plates.py` dan
-`tools/generate_narration.py` di folder webapp.
+`tools/generate_narration.py` di folder webapp. Build memakai `build_web.sh`
+dengan nomor build unik; aset dan loader diberi query `?v=<build>` sehingga
+tablet Opera maupun PC otomatis mengambil versi baru tanpa hard refresh.
 
 Di OBS cukup pakai **Window Capture** pada jendela browser. Opsi `?mode=split` menyediakan zona
 kamera host di 40% atas. Menu **Alkaff Live Console** di superapp `https://app.lokal.or.id`

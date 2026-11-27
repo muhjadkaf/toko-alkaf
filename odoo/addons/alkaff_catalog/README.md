@@ -6,7 +6,7 @@ mengimpor `katalog_parfum_alkaff_odoo.csv`.
 
 ## Versi dan konvensi
 
-Mengikuti konvensi proyek `namlah-odoo-addons`: Odoo **20.0** (`20.0.1.0.0`),
+Mengikuti konvensi proyek `namlah-odoo-addons`: Odoo **20.0** (`20.0.2.1.0`),
 lisensi **LGPL-3**, dependensi minimal `base` dan `sale`. File ACL utama
 memakai format Odoo 20 `security/ir.access.csv`. File
 `security/ir.model.access.csv` disertakan hanya sebagai format kompatibilitas
@@ -38,6 +38,32 @@ Import bersifat idempoten berdasarkan `Internal Reference` (`default_code`):
 reference yang sudah ada diperbarui, bukan dibuat ulang. Lihat
 [`docs/IMPORT_MAPPING.md`](docs/IMPORT_MAPPING.md) untuk pemetaan lengkap dan
 langkah uji.
+
+Pada instalasi produksi lokal, modul ini di-install hanya di database **`nml`**
+(port `8071`) dan CSV katalog diimpor lewat wizard yang sama. Instance `8069`
+dan `8070` tidak disentuh.
+
+## Endpoint API untuk web app
+
+Tiga endpoint `auth="public"` bersifat baca-saja dan membatasi CORS ke
+`https://alkaff.lokal.or.id`:
+
+| Endpoint | Fungsi |
+|---|---|
+| `GET /alkaff/api/health` | Status modul + nama database |
+| `GET /alkaff/api/themes` | 40 tema dari bundle basis pengetahuan |
+| `GET /alkaff/api/recommendations?keyword=...&limit=...` | Tema + hingga 12 produk dari `product.template` |
+
+Field yang dikembalikan hanya `ref`, `name`, `family`, dan `notes_top/heart/base`.
+Harga, supplier, `supplier_info_text`, dan data sensitif lain **tidak** dikirim.
+Pencarian memakai token keyword dan sinonim Indonesia/Inggris (mis. `kopi` ↔
+`coffee`), lalu mengurutkan produk berdasarkan kecocokan nama/kode/notes.
+
+Contoh:
+
+```bash
+curl 'https://nml.lokal.or.id/alkaff/api/recommendations?keyword=kopi%20dingin&limit=3'
+```
 
 ## Batasan
 

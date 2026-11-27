@@ -6,7 +6,7 @@ Repo publik `muhjadkaf/toko-alkaf` ini mengumpulkan tiga hal:
 2. **Katalog parfum Odoo** hasil olahan nota toko dan riset parfum lokal Indonesia, beserta skrip pembuatnya.
 3. **Rencana operasional dan teknis**, terutama dokumentasi interaksi TikTok LIVE dan rencana perbaikan Suite Odoo Namlah.
 
-Seluruh tulisan menggunakan bahasa Indonesia. Repository ini masih tahap fondasi: dokumen, data, addon Odoo, dan skeleton layanan LIVE sudah tersedia, tetapi **belum ada integrasi produksi ke TikTok maupun Odoo**. Rencana bertahapnya ada di [`ROADMAP.md`](ROADMAP.md).
+Seluruh tulisan menggunakan bahasa Indonesia. Dokumen, data, addon Odoo, skeleton layanan LIVE, dan web app Flutter sudah tersedia. Modul `alkaff_catalog` serta 164 produk katalog sudah terpasang di database **`nml`**, dan web app theater sudah dipublish di `https://alkaff.lokal.or.id` untuk OBS screen-share. **Belum ada integrasi ke API TikTok** dan tidak ada auto-DM. Rencana bertahapnya ada di [`ROADMAP.md`](ROADMAP.md).
 
 ## Status fondasi
 
@@ -15,7 +15,8 @@ Seluruh tulisan menggunakan bahasa Indonesia. Repository ini masih tahap fondasi
 | `docs/` | Empat dokumen sumber sudah disalin, ditambah [`docs/ARSITEKTUR.md`](docs/ARSITEKTUR.md) |
 | `data/katalog-alkaff-odoo/` | XLSX, CSV siap import Odoo, README katalog, dan `tambah_parfum_lokal.py` sudah disalin |
 | `data/pengetahuan-parfum/` | Basis pengetahuan turunan: 14 keluarga, 135 notes, 78 deskriptor, 56 accord, 40 tema, 70 frasa sensorik, 18 pagar klaim |
-| `odoo/addons/alkaff_catalog/` | Addon Odoo 20: kategori, field aroma/notes, log, dan wizard import CSV (belum dijalankan di Odoo produksi) |
+| `odoo/addons/alkaff_catalog/` | Addon Odoo 20: kategori, field aroma/notes, log, wizard import CSV, dan API baca-saja; sudah di-install di `nml` |
+| `webapp/alkaff_scent_lab/` | Flutter Web Clean Lab yang membaca API Odoo `nml` dan dipublish di `alkaff.lokal.or.id` |
 | `services/live-bridge/` | Skeleton Python stdlib: normalisasi event, state machine, dedupe, dan overlay lokal (34 tes lulus) |
 | Interaksi TikTok LIVE | Punya rencana teknis + skeleton lokal; **belum terhubung ke API TikTok**, tanpa auto-DM |
 | Katalog parfum | 164 produk di sheet `IMPORT_odoo`; 42 `Sales Price` terisi dan 122 sengaja dikosongkan |
@@ -31,6 +32,7 @@ Angka di atas bersumber dari [`data/katalog-alkaff-odoo/README.md`](data/katalog
 | `docs/` | Dokumentasi LIVE TikTok, arsitektur, rencana perbaikan Odoo Namlah, dan catatan riset Biharul Anwar |
 | `data/` | Data katalog parfum untuk Odoo, termasuk file XLSX/CSV dan skrip pembuatnya; lihat [`data/pengetahuan-parfum/README.md`](data/pengetahuan-parfum/README.md) untuk kosakata, resep, dan tema layanan |
 | `odoo/` | Addon Odoo untuk operasional toko; lihat [`odoo/addons/alkaff_catalog/README.md`](odoo/addons/alkaff_catalog/README.md) |
+| `webapp/` | Aplikasi Flutter Web untuk OBS screen-share; lihat [`webapp/alkaff_scent_lab/README.md`](webapp/alkaff_scent_lab/README.md) |
 | `services/` | Layanan pendukung; lihat [`services/live-bridge/README.md`](services/live-bridge/README.md). Quotation/DM gateway masih rencana, bukan kode |
 
 Isi `docs/`:
@@ -101,6 +103,15 @@ Dua demo visual mandiri juga tersedia:
 
 - [`services/live-bridge/overlay-demo/`](services/live-bridge/overlay-demo/) — Dark Emerald Atelier.
 - [`services/live-bridge/overlay-demo-clean-lab/`](services/live-bridge/overlay-demo-clean-lab/) — **Virtual Clean Lab / Interactive Scent Theater**: lima babak sinematik 20 detik per klien, mode `full` atau `split` (40% atas untuk kamera host), kabut, lens flare, SFX sintesis, kasta botol, easter egg, dan recap lima merek. Teks hanya menempel pada objek fisik (layar monitor, label botol/vial, plakat meja, panel mesin); tidak ada teks mengambang. Buka `preview.html` untuk pratinjau, atau `index.html?obs=1` untuk OBS.
+
+### 5. Memakai web app Flutter untuk OBS
+
+Buka `https://alkaff.lokal.or.id/?controls=1&keyword=kopi%20dingin` saat menyiapkan host, lalu
+`https://alkaff.lokal.or.id/?keyword=kopi%20dingin` saat LIVE. Aplikasi mengambil tema dan produk
+langsung dari `/alkaff/api/recommendations` di Odoo `nml`; hasil build Flutter tidak di-commit.
+Di OBS cukup pakai **Window Capture** pada jendela browser. Opsi `?mode=split` menyediakan zona
+kamera host di 40% atas. Detail build, query string, dan pagar klaim ada di
+[`webapp/alkaff_scent_lab/README.md`](webapp/alkaff_scent_lab/README.md).
 
 Sebelum produksi, tetap ikuti dokumentasi LIVE: endpoint `/internal/*` wajib dilindungi, token disimpan di secret manager, dan uji memakai akun TikTok uji dengan moderator manual.
 

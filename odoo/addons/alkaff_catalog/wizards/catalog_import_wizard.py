@@ -156,10 +156,26 @@ class CatalogImportWizard(models.TransientModel):
     # ------------------------------------------------------------------
     @api.model
     def _read_csv(self, binary_value):
-        try:
-            raw = base64.b64decode(binary_value or b'', validate=True)
-        except (binascii.Error, ValueError):
-            raise UserError(_('Isi file CSV tidak valid (base64 rusak).'))
+        """Terima nilai field Binary Odoo (bytes) maupun string base64 mentah."""
+        value = binary_value or b''
+        # Odoo 20 menyimpan field Binary sebagai BinaryValue (bukan bytes biasa).
+        if hasattr(value, 'content'):
+            value = bytes(value)
+        if isinstance(value, bytes):
+            # Odoo mengembalikan bytes file yang sudah didekode dari base64.
+            try:
+                value.decode('utf-8-sig')
+                raw = value
+            except UnicodeDecodeError:
+                try:
+                    raw = base64.b64decode(value, validate=True)
+                except (binascii.Error, ValueError):
+                    raise UserError(_('Isi file CSV tidak valid (base64 rusak).'))
+        else:
+            try:
+                raw = base64.b64decode(value, validate=True)
+            except (binascii.Error, ValueError):
+                raise UserError(_('Isi file CSV tidak valid (base64 rusak).'))
         try:
             # utf-8-sig membuang BOM yang sering dibawa spreadsheet.
             return raw.decode('utf-8-sig').splitlines()

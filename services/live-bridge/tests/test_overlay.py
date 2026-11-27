@@ -163,6 +163,31 @@ class OverlayTest(unittest.TestCase):
         with self.assertRaises(ConfigError):
             load_config({"overlay": {"stage": "teater"}})
 
+    def test_tema_csv_mengubah_narasi_dan_cta(self) -> None:
+        state = build_overlay_state(
+            snapshot("READY", viewer="rani", keyword="!racik office", sku="ALK-L-001")
+        )
+        self.assertEqual(state.theme, "Parfum Kantor Ringan")
+        self.assertEqual(state.theme_keyword, "OFFICE")
+        self.assertIn("white musk, iris, lavender", state.narrations["scan"])
+        self.assertIn("Gambaran keluarga", state.narrations["scan"])
+        self.assertIn("DM OFFICE", state.cta)
+        self.assertIn('"themeKeyword": "OFFICE"', render_html(state))
+
+    def test_tema_eksplisit_mengalahkan_keyword(self) -> None:
+        state = build_overlay_state(
+            snapshot("COLLECTING", keyword="oud", tema="Wangi Malam Formal")
+        )
+        self.assertEqual(state.theme, "Wangi Malam Formal")
+        self.assertEqual(state.theme_keyword, "NIGHT")
+
+    def test_tema_fallback_quote_bila_csv_tidak_ada(self) -> None:
+        cfg = load_config({"themesCsv": "tidak-ada.csv"})
+        state = build_overlay_state(snapshot("READY"), cfg)
+        self.assertEqual(state.theme, "")
+        self.assertEqual(state.theme_keyword, "QUOTE")
+        self.assertIn("DM QUOTE", state.cta)
+
 
 if __name__ == "__main__":
     unittest.main()

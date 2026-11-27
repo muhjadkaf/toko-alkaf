@@ -737,7 +737,10 @@
     }
     var viewer = d.viewer || "", brand = d.brand || "";
     tulis("[data-client]", viewer ? "@" + viewer + (brand ? " · " + brand : "") : "");
-    tulis("[data-klien]", d.keyword ? "KATA KUNCI · " + String(d.keyword).toUpperCase() : "");
+    var klienLine = d.keyword ? "KATA KUNCI · " + String(d.keyword).toUpperCase() : "";
+    if (d.theme) klienLine += (klienLine ? " · " : "") + "TEMA · " + String(d.theme).toUpperCase();
+    if (d.themeKeyword) klienLine += (klienLine ? " · " : "") + "DM " + String(d.themeKeyword).toUpperCase();
+    tulis("[data-klien]", klienLine);
     tulis("[data-eggline]", d.eggName ? "REAKSI ROBOT: KAGET · " + d.eggName : "");
     tulis("[data-brand]", brand || "MARBELLA");
     tulis("[data-code]", d.code || "ALK-000");

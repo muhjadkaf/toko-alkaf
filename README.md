@@ -14,7 +14,7 @@ Seluruh tulisan menggunakan bahasa Indonesia. Repository ini masih tahap fondasi
 |---|---|
 | `docs/` | Empat dokumen sumber sudah disalin, ditambah [`docs/ARSITEKTUR.md`](docs/ARSITEKTUR.md) |
 | `data/katalog-alkaff-odoo/` | XLSX, CSV siap import Odoo, README katalog, dan `tambah_parfum_lokal.py` sudah disalin |
-| `data/pengetahuan-parfum/` | Basis pengetahuan turunan: 14 keluarga, 98 notes, 78 deskriptor, 40 accord, 40 tema layanan |
+| `data/pengetahuan-parfum/` | Basis pengetahuan turunan: 14 keluarga, 135 notes, 78 deskriptor, 56 accord, 40 tema layanan |
 | `odoo/addons/alkaff_catalog/` | Addon Odoo 20: kategori, field aroma/notes, log, dan wizard import CSV (belum dijalankan di Odoo produksi) |
 | `services/live-bridge/` | Skeleton Python stdlib: normalisasi event, state machine, dedupe, dan overlay lokal (31 tes lulus) |
 | Interaksi TikTok LIVE | Punya rencana teknis + skeleton lokal; **belum terhubung ke API TikTok**, tanpa auto-DM |
@@ -68,7 +68,11 @@ python3 data/pengetahuan-parfum/build_kb.py
 ```
 
 Resep accord dan angka ketahanan bersifat edukatif, bukan formula produksi atau
-klaim produk.
+klaim produk. Riset lanjutan (perbendaharaan aroma, merek/karakter, kosakata
+marketing, dan audit katalog) ada di
+[`data/pengetahuan-parfum/research/`](data/pengetahuan-parfum/research/);
+semuanya memakai URL sumber, tanggal akses `2026-11-27`, dan status verifikasi.
+Laporan itu masih berupa usulan—belum dijadikan CSV/JSON resmi sebelum ditinjau.
 
 ### 4. Menjalankan skeleton yang sudah ada
 
@@ -88,7 +92,7 @@ PYTHONPATH=src python3 -m alkaff_live.main \
   --config config/example.json --events examples/events-theater.jsonl --out build
 ```
 
-Demo menghasilkan `build/overlay.json` dan `build/overlay.html` (transparan, bisa dibuka sebagai OBS Browser Source lokal). `events-theater.jsonl` memperlihatkan lima klien, kasta botol, easter egg, dan papan recap; `events.jsonl` berisi alur singkat. Ini **bukan** koneksi TikTok: tidak ada WebSocket, HTTP, auto-DM, atau kredensial. Rincian kontrak ada di [`services/live-bridge/docs/EVENT_CONTRACT.md`](services/live-bridge/docs/EVENT_CONTRACT.md).
+Demo menghasilkan `build/overlay.json` dan `build/overlay.html` (transparan, bisa dibuka sebagai OBS Browser Source lokal). `events-theater.jsonl` memperlihatkan lima klien, kasta botol, easter egg, dan papan recap; `events.jsonl` berisi alur singkat. Narasi dan CTA kini memakai tema dari `05_tema_layanan.csv` (misalnya keyword `kopi` → `DM COFFEE`), bukan notes statis. Ini **bukan** koneksi TikTok: tidak ada WebSocket, HTTP, auto-DM, atau kredensial. Rincian kontrak ada di [`services/live-bridge/docs/EVENT_CONTRACT.md`](services/live-bridge/docs/EVENT_CONTRACT.md).
 
 Dua demo visual mandiri juga tersedia:
 

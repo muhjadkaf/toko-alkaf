@@ -12,11 +12,12 @@ Dibuat 2026-11-26. Generator: [`build_kb.py`](build_kb.py).
 | File | Jumlah | Fungsi |
 |---|---:|---|
 | [`01_keluarga_aroma.csv`](01_keluarga_aroma.csv) | 14 keluarga | Pengelompokan aroma + karakter, momen, ketahanan umum, sillage, tema konten, contoh produk |
-| [`02_taksonomi_notes.csv`](02_taksonomi_notes.csv) | 98 notes | Layer (top/heart/base), intensitas 1–5, ketahanan, alias Indonesia, pasangan umum, contoh produk |
+| [`02_taksonomi_notes.csv`](02_taksonomi_notes.csv) | 135 notes | Layer (top/heart/base), intensitas 1–5, ketahanan, alias Indonesia, pasangan umum, contoh produk |
 | [`03_kosakata_deskriptor.csv`](03_kosakata_deskriptor.csv) | 78 deskriptor | kosakata copywriting Indonesia–English beserta dimensi dan contoh kalimat |
-| [`04_resep_accord.csv`](04_resep_accord.csv) | 40 accord | Ide kombinasi notes dengan rasio bagian, karakter, momen, maturasi, dan catatan keamanan |
+| [`04_resep_accord.csv`](04_resep_accord.csv) | 56 accord | Ide kombinasi notes (sebagian tanpa rasio), karakter, momen, maturasi, dan catatan keamanan |
 | [`05_tema_layanan.csv`](05_tema_layanan.csv) | 40 tema | Persona, trigger, notes kunci, keyword CTA, format konten, risiko, dan contoh produk |
 | [`pengetahuan-parfum.json`](pengetahuan-parfum.json) | bundle | Semua tabel di atas dalam satu JSON untuk dikonsumsi aplikasi |
+| [`research/`](research/) | 4 laporan | Riset multi-agent: note/accord baru, merek, karakter marketing, audit katalog |
 
 ## Cara memperbarui
 
@@ -28,6 +29,13 @@ Generator membaca `data/katalog-alkaff-odoo/katalog_parfum_alkaff_odoo.csv`,
 lalu menimpa seluruh CSV/JSON di direktori ini. Generator juga memvalidasi semua
 `Internal Reference` yang dipakai sebagai contoh; jika ada referensi yang tidak
 ada di katalog, proses berhenti dengan error.
+
+Hasil riset di [`research/`](research/) sudah sebagian diserap ke generator:
+12 alias, 37 entri `NOTE_META`, dan 16 accord dari laporan
+`01_perbendaharaan_aroma.md` (akses 2026-11-27). Entri yang masih
+`Perlu verifikasi` diberi catatan eksplisit di kolom deskripsi/keamanan; laporan
+`02`–`04` tetap sebagai bahan baku positioning, narasi, dan audit—belum
+diubah menjadi tema/CSV baru tanpa tinjauan lanjutan.
 
 ## Cara menggabungkan dengan katalog
 

@@ -55,6 +55,7 @@ class Config:
     recap_every: int = 5
     quote_keyword: str = "QUOTE"
     quote_base_url: str = "https://contoh.invalid/quote"
+    themes_csv: str = ""
 
     @classmethod
     def from_mapping(cls, data: Mapping[str, Any]) -> "Config":
@@ -145,6 +146,9 @@ class Config:
                     default="https://contoh.invalid/quote",
                 )
             ).strip(),
+            themes_csv=str(
+                _ambil(data, "themesCsv", "themes_csv", default="")
+            ).strip(),
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -170,6 +174,7 @@ class Config:
                 "quoteKeyword": self.quote_keyword,
                 "quoteBaseUrl": self.quote_base_url,
             },
+            "themesCsv": self.themes_csv,
         }
 
 

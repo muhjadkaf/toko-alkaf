@@ -27,6 +27,7 @@ from typing import Any
 
 from .config import Config
 from .events import utc_now
+from .themes import Theme, muat_tema, pilih_tema
 
 # Template Clean Lab hidup di sibling ``src/`` pada repo ini.
 _SCENE_ROOT = Path(__file__).resolve().parents[2] / "overlay-demo-clean-lab"
@@ -116,6 +117,10 @@ class OverlayState:
     stage: str = "full"
     sfx: bool = True
     durations: Mapping[str, int] | None = None
+    theme: str = ""
+    theme_keyword: str = ""
+    theme_notes: str = ""
+    theme_caveat: str = ""
 
     def __post_init__(self) -> None:
         if self.narrations is None:
@@ -148,6 +153,10 @@ class OverlayState:
             "stage": self.stage,
             "sfx": self.sfx,
             "durations": dict(self.durations or {}),
+            "theme": self.theme,
+            "themeKeyword": self.theme_keyword,
+            "themeNotes": self.theme_notes,
+            "themeCaveat": self.theme_caveat,
         }
 
 
@@ -255,13 +264,22 @@ def _narrations(
     code: str,
     config: Config,
     egg_name: str,
+    tema: Theme | None = None,
 ) -> dict[str, str]:
-    """Teks narasi per babak, mengikuti klien aktif dan merek yang lahir."""
+    """Teks narasi per babak, mengikuti klien aktif dan tema layanan yang dipilih."""
     subjek = detail or "aroma pilihan"
     kata = keyword or "aroma pilihan"
     merek = brand or subjek
     panggil = viewer or "klien berikutnya"
-    keyword_dm = config.quote_keyword
+    keyword_dm = tema.cta_keyword if tema and tema.cta_keyword else config.quote_keyword
+
+    if tema and tema.notes:
+        peta = (
+            f"Peta {tema.keluarga or 'aroma'}: {tema.notes}. "
+            "Gambaran keluarga, bukan komposisi resmi."
+        )
+    else:
+        peta = "Top Bergamot, heart Lavender, base White Musk."
 
     if egg_name:
         boot = (
@@ -270,13 +288,19 @@ def _narrations(
         )
     else:
         boot = f"Klien masuk ruang VIP. Selamat datang {panggil}. Buka berkas {merek}."
+    if tema:
+        boot += f" Tema layanan: {tema.nama}."
+
+    keluarga = (tema.keluarga if tema else "").lower()
+    if any(bit in keluarga for bit in ("bibit", "konsentrat", "laundry")):
+        campuran = f"Ruang pencampuran {subjek}. Sampel terukur, vortex 2.400 RPM. Tahan napas."
+    else:
+        campuran = f"Ruang maserasi {subjek}. Extrait 30 persen, vortex 2.400 RPM. Tahan napas."
+
     return {
         "boot": boot,
-        "scan": (
-            f"Bedah karakter {kata} untuk {merek}. "
-            "Top Bergamot, heart Lavender, base White Musk."
-        ),
-        "mix": f"Ruang maserasi {subjek}. Extrait 30 persen, vortex 2.400 RPM. Tahan napas.",
+        "scan": f"Bedah karakter {kata} untuk {merek}. {peta}",
+        "mix": campuran,
         "analyze": f"Uji spektrum {subjek} selesai. Sillage tajam, akhir lembut.",
         "result": (
             f"Resmi rilis: ALKAFF x {merek}. Kode resep {code}. Screenshot, lalu tulis "
@@ -311,22 +335,34 @@ def build_overlay_state(snapshot: Mapping[str, Any], config: Config | None = Non
     kode = _kode(viewer, keyword, sku)
     kasta = _tier(klien)
 
+    tema = pilih_tema(
+        muat_tema(cfg.themes_csv),
+        keyword=keyword,
+        sku=sku,
+        variant=variant,
+        tema=str(klien.get("tema", konteks.get("tema", ""))),
+        cta_keyword=str(klien.get("ctaKeyword", konteks.get("ctaKeyword", ""))),
+    )
+    keyword_dm = tema.cta_keyword if tema and tema.cta_keyword else cfg.quote_keyword
+
     pesan = _PESAN.get(status, "Status tidak dikenal.")
     if status == "PROCESSING" and detail:
         pesan = f"Maserasi dan uji spektrum {detail} berjalan..."
     elif status == "READY":
         pesan = f"{merek} rilis · kode resep {kode}. Simpan di catatan pesanan."
+        if tema:
+            pesan = f"{tema.nama} · {merek} rilis · kode resep {kode}."
 
     # CTA mengarahkan viewer memulai DM; aplikasi ini tidak mengirim DM.
     cta = (
-        f"Simpan kode resep {kode} di catatan pesanan — DM {cfg.quote_keyword} bila ingin dikirim"
+        f"Simpan kode resep {kode} di catatan pesanan — DM {keyword_dm} bila ingin dikirim"
         if status == "READY"
         else None
     )
 
     scene = _SCENE.get(status, "boot")
     sequence = _SEQUENCE.get(status, (scene,))
-    narasi = _narrations(detail, keyword, viewer, merek, kode, cfg, egg_name)
+    narasi = _narrations(detail, keyword, viewer, merek, kode, cfg, egg_name, tema)
     if status in ("ERROR", "IDLE"):
         narasi["boot"] = pesan
     elif status == "LIVE" and detail:
@@ -356,6 +392,10 @@ def build_overlay_state(snapshot: Mapping[str, Any], config: Config | None = Non
         stage=cfg.overlay.stage,
         sfx=cfg.overlay.sfx,
         durations=_durasi(cfg),
+        theme=tema.nama if tema else "",
+        theme_keyword=keyword_dm,
+        theme_notes=tema.notes if tema else "",
+        theme_caveat=tema.caveat if tema else "",
     )
 
 
@@ -385,6 +425,10 @@ def _render_clean_lab_html(state: OverlayState, cfg: Config) -> str:
             "sfx": state.sfx,
             "stage": state.stage,
             "durations": dict(state.durations or {}),
+            "theme": state.theme,
+            "themeKeyword": state.theme_keyword,
+            "themeNotes": state.theme_notes,
+            "themeCaveat": state.theme_caveat,
             "viewer": state.viewer,
             "keyword": state.keyword,
             "brand": state.brand,
@@ -444,6 +488,7 @@ def _render_fallback_html(state: OverlayState, config: Config | None = None) -> 
   .badge {{ font-size: 20px; letter-spacing: .16em; color: #e9c98b; }}
   .judul {{ font-size: 44px; font-weight: 700; margin-top: 10px; line-height: 1.15; }}
   .detail {{ font-size: 26px; color: #f4e4c8; margin-top: 8px; }}
+  .tema {{ font-size: 20px; color: #7ee3cb; margin-top: 8px; letter-spacing: .04em; }}
   .cta {{ font-size: 30px; font-weight: 700; color: #ffd98a; margin-top: 16px; }}
 </style>
 </head>
@@ -452,6 +497,7 @@ def _render_fallback_html(state: OverlayState, config: Config | None = None) -> 
     <div class="badge" id="badge"></div>
     <div class="judul" id="judul"></div>
     <div class="detail" id="detail"></div>
+    <div class="tema" id="tema"></div>
     <div class="cta" id="cta"></div>
   </div>
   <script type="application/json" id="overlay-state">{data}</script>
@@ -462,6 +508,9 @@ def _render_fallback_html(state: OverlayState, config: Config | None = None) -> 
       document.getElementById('badge').textContent = state.status;
       document.getElementById('judul').textContent = state.message;
       document.getElementById('detail').textContent = state.detail || '';
+      document.getElementById('tema').textContent = state.theme
+        ? 'Tema: ' + state.theme + ' · DM ' + state.themeKeyword
+        : '';
       document.getElementById('cta').textContent = state.cta || '';
     }})();
   </script>

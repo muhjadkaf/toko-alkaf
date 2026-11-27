@@ -46,6 +46,7 @@ services/live-bridge/
 │   ├── events.py         # LiveEvent + normalisasi + eventId SHA-256
 │   ├── orchestrator.py   # state machine + dedupe + filter streak gift
 │   ├── overlay.py        # OverlayState + adapter lima scene Clean Lab
+│   ├── themes.py         # pembaca 05_tema_layanan.csv (narasi + CTA)
 │   └── main.py           # demo JSONL
 └── tests/
     ├── test_events.py
@@ -101,6 +102,13 @@ file ditulis ke `build/`:
   `voice: true` memakai durasi narasi MP3 penuh. Buka sebagai file lokal;
   tidak memerlukan server.
 
+Narasi dan CTA diambil dari `data/pengetahuan-parfum/05_tema_layanan.csv`
+lewat `themes.py`: keyword viewer, SKU/varian, atau field `tema`/`ctaKeyword`
+memilih satu baris tema. `notes` tema dipakai sebagai peta aroma dengan catatan
+"gambaran keluarga, bukan komposisi resmi"; `CTA Keyword` tema menggantikan
+keyword DM generik. Bila tidak ada yang cocok, tema `QUOTE` dipakai. Tidak ada
+harga, supplier, atau klaim baru yang ditambahkan oleh modul ini.
+
 Catatan: `build/` adalah hasil demo lokal dan sengaja tidak di-commit.
 Audio ducking/musik latar diatur di OBS atau TikTok Live Studio, bukan di repo ini.
 Jika browser menolak Web Audio tanpa gesture, tambahkan
@@ -133,6 +141,7 @@ dan keyword CTA. Semua nilai bisa diganti lewat file JSON atau langsung berupa
 | `easterEggs` | `{}` | Peta `kata kunci rahasia → merek jenaka`. |
 | `recapEvery` | `5` | Papan "5 Merek Terakhir" tiap N klien pada status `READY`. |
 | `giftTiers` | `{}` | Daftar nama gift yang dikenal; gift apa pun ber-kasta `founder`. |
+| `themesCsv` | `05_tema_layanan.csv` | Path tema layanan relatif terhadap folder basis pengetahuan; kosong/`tidak ada` → keyword `QUOTE`. |
 
 ```python
 from alkaff_live.config import load_config

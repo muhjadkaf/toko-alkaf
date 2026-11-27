@@ -78,7 +78,8 @@ class OrchestratorTest(unittest.TestCase):
         self.assertEqual(overlay.scene, "result")
         self.assertEqual(overlay.sequence, ("result",))
         self.assertTrue(overlay.visible)
-        self.assertIn("QUOTE", overlay.cta or "")
+        self.assertEqual(overlay.theme_keyword, "ATTAR")
+        self.assertIn("DM ATTAR", overlay.cta or "")
         self.assertIn("ALK-01", render_json(overlay))
 
     def test_konteks_teater_dari_chat_share_dan_gift(self) -> None:

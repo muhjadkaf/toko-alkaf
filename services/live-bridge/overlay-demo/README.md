@@ -37,7 +37,8 @@ Buka `preview.html` atau `index.html` di browser untuk melihat animasi berjalan.
 
 - Ini **mock visual**, bukan koneksi TikTok. Komentar di sisi kiri adalah contoh,
   bukan chat asli.
-- Harga `Rp449.000` adalah harga eceran referensi Marbella dari situs resmi
-  MyKonos; keputusan harga jual tetap milik toko.
+- Label `ALK-000` adalah kode resep untuk screenshot, bukan nomor pesanan dan
+  bukan harga. Harga jual tidak ditampilkan di demo ini; cek `Sales Price`
+  katalog hanya bila kolomnya terisi.
 - Animasi berat (blur, partikel) dijalankan di GPU OBS. Jika mesin lemah,
   gunakan `?lowfx=1` atau kurangi jumlah partikel.

@@ -103,12 +103,12 @@ IDLE --streamStart--> LIVE --chat--> COLLECTING --control.submit--> PROCESSING
   "visible": true,
   "message": "ALKAFF FAN rilis · kode resep ALK-385. Simpan di catatan pesanan.",
   "detail": "ALK-01 · EDT",
-  "cta": "Simpan kode resep ALK-385 di catatan pesanan — DM QUOTE bila ingin dikirim",
+  "cta": "Simpan kode resep ALK-385 di catatan pesanan — DM ATTAR bila ingin dikirim",
   "updatedAt": "2026-11-27T19:00:09Z",
   "eventCount": 6,
   "sequence": ["result"],
   "narrations": {
-    "result": "Resmi rilis: ALKAFF x ALKAFF FAN. Kode resep ALK-385. Screenshot, lalu tulis kode di catatan pesanan. DM QUOTE bila ingin dikirim."
+    "result": "Resmi rilis: ALKAFF x ALKAFF FAN. Kode resep ALK-385. Screenshot, lalu tulis kode di catatan pesanan. DM ATTAR bila ingin dikirim."
   },
   "viewer": "alkaff_fan",
   "keyword": "oud dong kak",
@@ -122,7 +122,11 @@ IDLE --streamStart--> LIVE --chat--> COLLECTING --control.submit--> PROCESSING
   "recap": [],
   "stage": "full",
   "sfx": true,
-  "durations": {"boot": 2000, "scan": 4000, "mix": 4000, "analyze": 4000, "result": 6000}
+  "durations": {"boot": 2000, "scan": 4000, "mix": 4000, "analyze": 4000, "result": 6000},
+  "theme": "Parfum Attar & Oud",
+  "themeKeyword": "ATTAR",
+  "themeNotes": "oud, amber, rose",
+  "themeCaveat": "Jangan klaim kehalalan tanpa sertifikasi."
 }
 ```
 
@@ -145,6 +149,8 @@ IDLE --streamStart--> LIVE --chat--> COLLECTING --control.submit--> PROCESSING
 | `recap` | array | Maksimal lima merek terakhir, muncul setiap `recapEvery` klien pada `READY`. |
 | `stage` | string | `full` (default) atau `split` (40% atas transparan untuk kamera host). |
 | `sfx`, `durations` | boolean/object | SFX sintesis dan durasi tiap babak dalam ms. |
+| `theme`, `themeKeyword` | string | Tema terpilih dari `05_tema_layanan.csv` dan keyword DM-nya; fallback `QUOTE`. |
+| `themeNotes`, `themeCaveat` | string | Notes kunci dan caveat dari baris tema yang sama; bukan komposisi resmi. |
 
 Pemetaan status ke babak:
 
@@ -163,6 +169,13 @@ yang merangkai `boot → scan → mix → analyze → result`. Durasi default me
 profil: `voice: false` memakai 2/4/4/4/6 detik (20 detik) dengan SFX sintesis;
 `voice: true` memakai durasi mengikuti panjang MP3 narasi (±40 detik).
 `overlay.durations` dapat mengganti durasi per babak.
+
+Tema layanan dipilih dari `data/pengetahuan-parfum/05_tema_layanan.csv`
+(melalui `themes.py`) dengan prioritas: field `tema`/`ctaKeyword` eksplisit,
+cocokan `CTA Keyword`, SKU/varian pada `Contoh Internal Reference`, lalu keyword
+viewer pada nama/keluarga/notes/momen. Bila tidak ada kecocokan, baris bertanda
+`QUOTE` yang dipakai. `themeNotes` selalu dibacakan sebagai gambaran keluarga,
+bukan komposisi resmi pabrik; CTA tetap viewer-initiated.
 
 `write_overlay()` menulis dua file lokal:
 

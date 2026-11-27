@@ -26,5 +26,6 @@
   "demo": {
     "quoteKeyword": "QUOTE",
     "quoteBaseUrl": "https://contoh.invalid/quote"
-  }
+  },
+  "themesCsv": "05_tema_layanan.csv"
 }

@@ -24,14 +24,21 @@ class ConfigError(ValueError):
     """Konfigurasi tidak valid atau mengandung field yang dilarang."""
 
 
+_SCENES = frozenset({"boot", "scan", "mix", "analyze", "result"})
+_STAGES = frozenset({"full", "split"})
+
+
 @dataclass(frozen=True)
 class OverlayConfig:
-    """Ukuran kanvas Browser Source OBS."""
+    """Kanvas dan timing Browser Source OBS."""
 
     width: int = 1920
     height: int = 1080
     transparent: bool = True
     voice: bool = True
+    sfx: bool = True
+    stage: str = "full"
+    durations: Mapping[str, int] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -44,6 +51,8 @@ class Config:
     max_quotes_per_minute: int = 20
     overlay: OverlayConfig = field(default_factory=OverlayConfig)
     gift_tiers: Mapping[str, tuple[str, ...]] = field(default_factory=dict)
+    easter_eggs: Mapping[str, str] = field(default_factory=dict)
+    recap_every: int = 5
     quote_keyword: str = "QUOTE"
     quote_base_url: str = "https://contoh.invalid/quote"
 
@@ -73,6 +82,32 @@ class Config:
             bersih = tuple(str(item).strip().lower() for item in nama if str(item).strip())
             tiers[str(tier).strip().lower()] = bersih
 
+        eggs_raw = _ambil(data, "easterEggs", "easter_eggs", default={})
+        if not isinstance(eggs_raw, Mapping):
+            raise ConfigError("field 'easterEggs' harus berupa objek")
+        eggs: dict[str, str] = {}
+        for kata, merek in eggs_raw.items():
+            kunci = re.sub(r"\s+", " ", str(kata).strip().lower())
+            nama = re.sub(r"\s+", " ", str(merek).strip().upper())
+            if kunci and nama:
+                eggs[kunci] = nama
+
+        durasi_raw = _ambil(overlay_raw, "durations", default={})
+        if not isinstance(durasi_raw, Mapping):
+            raise ConfigError("field 'overlay.durations' harus berupa objek")
+        durasi: dict[str, int] = {}
+        for scene, ms in durasi_raw.items():
+            kunci = str(scene).strip().lower()
+            if kunci not in _SCENES:
+                raise ConfigError(f"overlay.durations.{scene} bukan scene yang dikenal")
+            if isinstance(ms, bool) or not isinstance(ms, int) or ms <= 0:
+                raise ConfigError(f"overlay.durations.{scene} harus bilangan bulat positif (ms)")
+            durasi[kunci] = ms
+
+        stage = str(_ambil(overlay_raw, "stage", default="full")).strip().lower()
+        if stage not in _STAGES:
+            raise ConfigError("overlay.stage harus 'full' atau 'split'")
+
         return cls(
             app_name=str(_ambil(data, "appName", "app_name", default="alkaff-live-bridge")),
             session_ttl_seconds=_bilangan(
@@ -92,8 +127,13 @@ class Config:
                 height=_bilangan(overlay_raw, "height", default=1080),
                 transparent=bool(_ambil(overlay_raw, "transparent", default=True)),
                 voice=bool(_ambil(overlay_raw, "voice", default=True)),
+                sfx=bool(_ambil(overlay_raw, "sfx", default=True)),
+                stage=stage,
+                durations=durasi,
             ),
             gift_tiers=tiers,
+            easter_eggs=eggs,
+            recap_every=_bilangan(data, "recapEvery", "recap_every", default=5),
             quote_keyword=str(
                 _ambil(demo_raw, "quoteKeyword", "quote_keyword", default="QUOTE")
             ).strip().upper(),
@@ -119,8 +159,13 @@ class Config:
                 "height": self.overlay.height,
                 "transparent": self.overlay.transparent,
                 "voice": self.overlay.voice,
+                "sfx": self.overlay.sfx,
+                "stage": self.overlay.stage,
+                "durations": dict(self.overlay.durations),
             },
             "giftTiers": {k: list(v) for k, v in self.gift_tiers.items()},
+            "easterEggs": dict(self.easter_eggs),
+            "recapEvery": self.recap_every,
             "demo": {
                 "quoteKeyword": self.quote_keyword,
                 "quoteBaseUrl": self.quote_base_url,

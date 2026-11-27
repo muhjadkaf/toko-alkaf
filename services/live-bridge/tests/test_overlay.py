@@ -35,11 +35,67 @@ class OverlayTest(unittest.TestCase):
         states = [build_overlay_state(snapshot(s)) for s in untuk_status]
         self.assertEqual(tuple(st.scene for st in states), hasil)
 
-    def test_processing_memutar_mix_lalu_analyze(self) -> None:
-        state = build_overlay_state(snapshot("PROCESSING", sku="ALK-01"))
-        self.assertEqual(state.sequence, ("mix", "analyze"))
-        self.assertIn("ALK-01", state.narrations["mix"])
-        self.assertIn("ALK-01", state.narrations["analyze"])
+    def test_koleksi_then_processing_membentuk_episode_lima_babak(self) -> None:
+        live = build_overlay_state(snapshot("LIVE"))
+        koleksi = build_overlay_state(snapshot("COLLECTING", sku="ALK-01"))
+        proses = build_overlay_state(snapshot("PROCESSING", sku="ALK-01"))
+        hasil = build_overlay_state(snapshot("READY", sku="ALK-01"))
+        self.assertEqual(koleksi.sequence, ("scan",))
+        self.assertEqual(proses.sequence, ("mix", "analyze"))
+        self.assertEqual(hasil.sequence, ("result",))
+        self.assertEqual(
+            tuple(live.sequence + koleksi.sequence + proses.sequence + hasil.sequence),
+            ("boot", "scan", "mix", "analyze", "result"),
+        )
+        self.assertIn("ALK-01", proses.narrations["mix"])
+        self.assertIn("ALK-01", proses.narrations["analyze"])
+
+    def test_easter_egg_menjadi_merek_jenaka(self) -> None:
+        cfg = load_config({"easterEggs": {"hujan mantan": "EAU DE KENANGAN"}})
+        state = build_overlay_state(
+            snapshot("COLLECTING", viewer="hujan_aja", keyword="!racik hujan mantan"), cfg
+        )
+        self.assertEqual(state.keyword, "hujan mantan")
+        self.assertEqual(state.egg, "hujan mantan")
+        self.assertEqual(state.brand, "EAU DE KENANGAN")
+        self.assertIn("pusing", state.narrations["boot"])
+
+    def test_kasta_gift_menjadi_founder(self) -> None:
+        state = build_overlay_state(
+            snapshot(
+                "READY",
+                viewer="alkaff_fan",
+                keyword="oud",
+                sku="ALK-01",
+                giftTier="founder",
+                priority=True,
+            )
+        )
+        self.assertEqual(state.tier, "founder")
+        self.assertIn("Founder Edition", state.tier_label)
+        self.assertTrue(state.priority)
+        self.assertIn("VIP MAKLON UNLOCKED!", render_html(state))
+
+    def test_recap_lima_merek_terakhir(self) -> None:
+        klien = [
+            {
+                "viewer": f"klien{i}",
+                "keyword": "oud",
+                "sku": f"ALK-0{i}",
+                "tier": "classic",
+            }
+            for i in range(1, 6)
+        ]
+        state = build_overlay_state(
+            {
+                "status": "READY",
+                "eventCount": 20,
+                "context": {"clientCount": 5, "clients": klien},
+            }
+        )
+        self.assertEqual(len(state.recap), 5)
+        self.assertTrue(all(item["code"].startswith("ALK-") for item in state.recap))
+        self.assertEqual(state.recap[-1]["brand"], "KLIEN5")
 
     def test_idle_dan_ended_disembunyikan(self) -> None:
         for status in ("IDLE", "ENDED"):
@@ -82,6 +138,30 @@ class OverlayTest(unittest.TestCase):
         cfg = load_config({"overlay": {"voice": False}})
         self.assertFalse(cfg.overlay.voice)
         self.assertFalse(cfg.to_dict()["overlay"]["voice"])
+
+    def test_mode_split_dan_durasi_episode(self) -> None:
+        cfg = load_config(
+            {
+                "overlay": {
+                    "stage": "split",
+                    "voice": False,
+                    "sfx": True,
+                    "durations": {"boot": 1000},
+                }
+            }
+        )
+        state = build_overlay_state(snapshot("LIVE"), cfg)
+        self.assertEqual(state.stage, "split")
+        self.assertTrue(state.sfx)
+        self.assertEqual(state.durations["boot"], 1000)
+        self.assertEqual(state.durations["result"], 6000)
+        self.assertIn("split-stage", render_html(state, cfg))
+
+    def test_mode_split_tidak_valid_ditolak(self) -> None:
+        from alkaff_live.config import ConfigError
+
+        with self.assertRaises(ConfigError):
+            load_config({"overlay": {"stage": "teater"}})
 
 
 if __name__ == "__main__":

@@ -23,6 +23,8 @@ overlay OBS** pada proyek Toko Alkaff.
 - Tidak ada kredensial/token; `config.py` menolak field yang menyerupai kredensial.
 - Tidak ada auto-DM. CTA quotation hanya berupa ajakan agar **viewer memulai DM**
   dengan keyword (viewer-initiated).
+- Kasta botol, "ANTREAN #1", dan easter egg hanya **tampilan teater** dari event
+  yang diterima; tidak ada antrean nyata, prioritas server, atau pengiriman gift.
 - Status/transisi dan skema event masih kontrak internal, bukan API publik TikTok.
 - Tidak ada rate limiting sungguhan, TTL sesi per viewer, atau quotation service;
   field konfigurasi untuk itu baru sebagai contoh nilai.
@@ -36,6 +38,7 @@ services/live-bridge/
 ├── config/example.json
 ├── docs/EVENT_CONTRACT.md
 ├── examples/events.jsonl
+├── examples/events-theater.jsonl  # demo 5 klien + recap
 ├── schemas/live_event.schema.json
 ├── src/alkaff_live/
 │   ├── __init__.py
@@ -46,7 +49,8 @@ services/live-bridge/
 │   └── main.py           # demo JSONL
 └── tests/
     ├── test_events.py
-    └── test_orchestrator.py
+    ├── test_orchestrator.py
+    └── test_overlay.py
 ```
 
 ## Menjalankan tes
@@ -71,6 +75,15 @@ PYTHONPATH=src python3 -m alkaff_live.main \
   --out build
 ```
 
+Untuk melihat lima klien, kasta botol, easter egg, dan papan recap:
+
+```bash
+PYTHONPATH=src python3 -m alkaff_live.main \
+  --config config/example.json \
+  --events examples/events-theater.jsonl \
+  --out build
+```
+
 Alternatif tanpa `PYTHONPATH`:
 
 ```bash
@@ -82,12 +95,16 @@ file ditulis ke `build/`:
 
 - `build/overlay.json` — snapshot state.
 - `build/overlay.html` — halaman 1920×1080 background transparan untuk
-  OBS Browser Source. Memakai lima scene Clean Lab (`boot`, `scan`, `mix`,
-  `analyze`, `result`) dan menyalin `build/audio/` untuk narasi MP3. Narasi
-  bisa dimatikan dengan `"overlay": {"voice": false}` pada konfigurasi.
-  Buka sebagai file lokal; tidak memerlukan server.
+  OBS Browser Source. Memakai lima babak (`boot`, `scan`, `mix`, `analyze`,
+  `result`) dan menyalin `build/audio/` untuk narasi MP3. Contoh konfigurasi
+  memakai `voice: false` sehingga episode berdurasi 20 detik dengan SFX sintesis;
+  `voice: true` memakai durasi narasi MP3 penuh. Buka sebagai file lokal;
+  tidak memerlukan server.
 
 Catatan: `build/` adalah hasil demo lokal dan sengaja tidak di-commit.
+Audio ducking/musik latar diatur di OBS atau TikTok Live Studio, bukan di repo ini.
+Jika browser menolak Web Audio tanpa gesture, tambahkan
+`--autoplay-policy=no-user-gesture-required` pada Browser Source OBS.
 
 Contoh urutan pada `examples/events.jsonl`:
 
@@ -102,9 +119,20 @@ kode keluar `2` dan pesan di `stderr`.
 
 ## Konfigurasi
 
-`config/example.json` hanya berisi pengaturan demo (TTL, batas antrean, ukuran
-overlay, tier gift, dan keyword CTA). Semua nilai bisa diganti lewat file JSON
-atau langsung berupa `dict`:
+`config/example.json` berisi pengaturan demo: TTL, batas antrean, ukuran overlay,
+mode panggung, narasi/SFX, durasi babak, tier gift, easter egg, frekuensi recap,
+dan keyword CTA. Semua nilai bisa diganti lewat file JSON atau langsung berupa
+`dict`:
+
+| Kunci | Default | Fungsi |
+|---|---|---|
+| `overlay.stage` | `full` | `split` menyisihkan 40% atas untuk kamera host. |
+| `overlay.voice` | `true` | Narasi MP3 bahasa Indonesia; contoh memakai `false`. |
+| `overlay.sfx` | `true` | SFX Web Audio: blip, tuangan, sentrifugal, thump, chime, semprotan. |
+| `overlay.durations` | otomatis | Durasi per babak dalam ms; mengganti profil 20 dtk/narasi. |
+| `easterEggs` | `{}` | Peta `kata kunci rahasia → merek jenaka`. |
+| `recapEvery` | `5` | Papan "5 Merek Terakhir" tiap N klien pada status `READY`. |
+| `giftTiers` | `{}` | Daftar nama gift yang dikenal; gift apa pun ber-kasta `founder`. |
 
 ```python
 from alkaff_live.config import load_config

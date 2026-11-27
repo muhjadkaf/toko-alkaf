@@ -225,21 +225,87 @@ class Orchestrator:
         return str(gift.get("repeatEnd")) not in ("1", "True", "true")
 
     def _perbarui_konteks(self, event: LiveEvent) -> None:
+        """Simpan konteks teater: klien, kata kunci, kasta botol, dan recap."""
         payload = event.payload or {}
         if event.type in ("streamStart", "streamEnd"):
             self._context.clear()
-        elif event.type == "control.submit":
-            if payload.get("sku"):
-                self._context["sku"] = str(payload["sku"])
-            if payload.get("variant"):
-                self._context["variant"] = str(payload["variant"])
-            self._context.pop("quoteId", None)
-            self._context.pop("quoteUrl", None)
-        elif event.type == "control.result":
-            if payload.get("quoteId"):
-                self._context["quoteId"] = str(payload["quoteId"])
-            if payload.get("quoteUrl"):
-                self._context["quoteUrl"] = str(payload["quoteUrl"])
+            return
+
+        viewer = self._viewer(event)
+        if viewer:
+            sebelumnya = str(self._context.get("viewer", "")).strip()
+            if sebelumnya and sebelumnya.lower() != viewer.lower():
+                # Klien baru: kasta dan kata kunci lama tidak terbawa.
+                for kunci in ("keyword", "shared", "giftTier", "giftName", "priority"):
+                    self._context.pop(kunci, None)
+            self._context["viewer"] = viewer
+
+        if event.type in ("chat", "questionNew"):
+            teks = self._teks_chat(payload)
+            if teks:
+                self._context["keyword"] = teks[:120]
+        elif event.type == "share":
+            self._context["shared"] = True
+            if self._context.get("giftTier") != "founder":
+                self._context["giftTier"] = "emerald"
+        elif event.type == "gift":
+            gift = payload.get("gift")
+            nama = "gift"
+            if isinstance(gift, Mapping) and gift.get("name"):
+                nama = str(gift["name"])
+            self._context["giftName"] = nama
+            self._context["giftTier"] = "founder"
+            self._context["priority"] = True
+        elif event.type in ("control.submit", "control.result"):
+            if payload.get("keyword"):
+                self._context["keyword"] = str(payload["keyword"]).strip()[:120]
+            if event.type == "control.submit":
+                if payload.get("sku"):
+                    self._context["sku"] = str(payload["sku"])
+                if payload.get("variant"):
+                    self._context["variant"] = str(payload["variant"])
+                self._context.pop("quoteId", None)
+                self._context.pop("quoteUrl", None)
+                self._ingat_klien()
+            else:
+                if payload.get("quoteId"):
+                    self._context["quoteId"] = str(payload["quoteId"])
+                if payload.get("quoteUrl"):
+                    self._context["quoteUrl"] = str(payload["quoteUrl"])
+
+    @staticmethod
+    def _viewer(event: LiveEvent) -> str:
+        if event.user is None:
+            return ""
+        for nilai in (event.user.unique_id, event.user.nickname, event.user.id):
+            bersih = str(nilai or "").strip().lstrip("@")
+            if bersih:
+                return bersih[:64]
+        return ""
+
+    @staticmethod
+    def _teks_chat(payload: Mapping[str, Any]) -> str:
+        for kunci in ("comment", "question", "text", "message"):
+            nilai = payload.get(kunci)
+            if nilai:
+                return str(nilai).strip()
+        return ""
+
+    def _ingat_klien(self) -> None:
+        """Simpan resep klien untuk papan recap lima merek terakhir."""
+        klien = {
+            "viewer": str(self._context.get("viewer", "")),
+            "keyword": str(self._context.get("keyword", "")),
+            "sku": str(self._context.get("sku", "")),
+            "variant": str(self._context.get("variant", "")),
+            "tier": str(self._context.get("giftTier", "classic")),
+            "shared": bool(self._context.get("shared", False)),
+            "priority": bool(self._context.get("priority", False)),
+        }
+        daftar = list(self._context.get("clients", []))
+        daftar.append(klien)
+        self._context["clients"] = daftar[-10:]
+        self._context["clientCount"] = int(self._context.get("clientCount", 0)) + 1
 
     @staticmethod
     def _alasan(event: LiveEvent, target: State) -> str:

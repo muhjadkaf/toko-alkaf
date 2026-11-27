@@ -35,6 +35,8 @@
     <button data-scene="result">Hasil</button>
     <span class="sep"></span>
     <button id="voice">🔊 Suara AI: OFF</button>
+    <button id="sfx" class="on">♪ SFX: ON</button>
+    <button id="stage">Panggung: Full</button>
     <button id="obs">Buka Mode OBS</button>
     <span class="hint">Kontrol ini di luar adegan — tidak tampil di LIVE/OBS.</span>
   </div>
@@ -57,6 +59,19 @@
     voice.classList.toggle("on", on);
     voice.textContent = on ? "🔊 Suara AI: ON" : "🔊 Suara AI: OFF";
     send({voice:on});
+  });
+  var sfx = document.getElementById("sfx");
+  sfx.addEventListener("click", function(){
+    var on = !sfx.classList.contains("on");
+    sfx.classList.toggle("on", on);
+    sfx.textContent = on ? "♪ SFX: ON" : "♪ SFX: OFF";
+    send({sfx:on});
+  });
+  var stage = document.getElementById("stage");
+  stage.addEventListener("click", function(){
+    var split = stage.textContent.indexOf("Split") === -1;
+    stage.textContent = split ? "Panggung: Split" : "Panggung: Full";
+    send({stage:split ? "split" : "full"});
   });
   document.getElementById("obs").addEventListener("click", function(){
     window.open("index.html?obs=1", "_blank");

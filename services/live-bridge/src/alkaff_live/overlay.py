@@ -5,18 +5,20 @@ Dua keluaran tanpa jaringan:
 - ``overlay.html``: halaman transparan mandiri dengan data yang disematkan.
 
 Renderer memakai template ``overlay-demo-clean-lab/index.html`` bila tersedia,
-sehingga status orchestrator ditampilkan sebagai lima scene sinematik:
-boot → scan → mix → analyze → result. Jika template tidak ada (misalnya paket
-dipasang tanpa folder demo), renderer jatuh ke panel HTML sederhana.
+sehingga status orchestrator ditampilkan sebagai lima babak sinematik:
+boot → scan → mix → analyze → result. Jika template tidak ada, renderer jatuh
+ke panel HTML sederhana.
 
-Renderer ini sengaja "dumb": tidak mengambil keputusan bisnis dan tidak
-mengirim pesan/DM.
+Renderer sengaja "dumb": tidak mengambil keputusan bisnis, tidak mengirim DM,
+dan tidak memesan antrean sungguhan. Semua gamifikasi hanya berupa tampilan.
 """
 
 from __future__ import annotations
 
+import hashlib
 import html
 import json
+import re
 import shutil
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -31,7 +33,7 @@ _SCENE_ROOT = Path(__file__).resolve().parents[2] / "overlay-demo-clean-lab"
 _TEMPLATE = _SCENE_ROOT / "index.html"
 _AUDIO = _SCENE_ROOT / "audio"
 
-# Status orchestrator → scene pertama yang harus tampil.
+# Status orchestrator → babak pertama yang harus tampil.
 _SCENE = {
     "IDLE": "boot",
     "LIVE": "boot",
@@ -42,8 +44,7 @@ _SCENE = {
     "ENDED": "boot",
 }
 
-# Urutan scene yang diputar otomatis untuk tiap status. PROCESSING menampilkan
-# mixing lalu analisis sebelum quotation siap.
+# Urutan otomatis per status. Gabungannya membentuk satu episode lima babak.
 _SEQUENCE = {
     "IDLE": ("boot",),
     "LIVE": ("boot",),
@@ -54,12 +55,35 @@ _SEQUENCE = {
     "ENDED": ("boot",),
 }
 
+# Profil timing. episode = 20 detik dengan SFX sintesis; narrated = mengikuti
+# panjang MP3 narasi. Konfigurasi overlay.durations dapat menggantikan keduanya.
+_EPISODE_DURATIONS = {
+    "boot": 2000,
+    "scan": 4000,
+    "mix": 4000,
+    "analyze": 4000,
+    "result": 6000,
+}
+_NARRATED_DURATIONS = {
+    "boot": 7000,
+    "scan": 10500,
+    "mix": 9500,
+    "analyze": 7000,
+    "result": 8000,
+}
+
+_TIER_LABEL = {
+    "classic": "Classic Lab Edition",
+    "emerald": "Emerald Doff · Tutup Emas",
+    "founder": "Founder Edition · Kristal Hitam-Emas",
+}
+
 _PESAN = {
     "IDLE": "Menunggu LIVE dimulai.",
-    "LIVE": "LIVE sekarang — ketik nama parfum di komentar.",
-    "COLLECTING": "Pilih varian lewat komentar: 1 / 2 / 3.",
-    "PROCESSING": "Meracik formula pilihan dan menganalisis profil aroma...",
-    "READY": "Quotation siap. Silakan DM keyword bila ingin dikirim.",
+    "LIVE": "LIVE sekarang — ketik !racik di komentar.",
+    "COLLECTING": "Bedah karakter: kata kunci penonton dipindai.",
+    "PROCESSING": "Maserasi dan uji spektrum berjalan...",
+    "READY": "Merek siap. Simpan kode resep di catatan pesanan.",
     "ERROR": "Sambungan event terganggu; lab menampilkan ulang pemindaian.",
     "ENDED": "Selesai. Overlay disembunyikan.",
 }
@@ -67,7 +91,7 @@ _PESAN = {
 
 @dataclass(frozen=True)
 class OverlayState:
-    """Kontrak data minimal yang dikonsumsi overlay."""
+    """Kontrak data yang dikonsumsi overlay."""
 
     status: str
     scene: str
@@ -78,11 +102,26 @@ class OverlayState:
     updated_at: str
     event_count: int
     sequence: tuple[str, ...] = ("boot",)
-    narrations: Mapping[str, str] = None  # type: ignore[assignment]
+    narrations: Mapping[str, str] | None = None
+    viewer: str = ""
+    keyword: str = ""
+    brand: str = ""
+    code: str = ""
+    tier: str = "classic"
+    tier_label: str = _TIER_LABEL["classic"]
+    priority: bool = False
+    egg: str = ""
+    egg_name: str = ""
+    recap: tuple[Mapping[str, str], ...] = ()
+    stage: str = "full"
+    sfx: bool = True
+    durations: Mapping[str, int] | None = None
 
     def __post_init__(self) -> None:
         if self.narrations is None:
             object.__setattr__(self, "narrations", {})
+        if self.durations is None:
+            object.__setattr__(self, "durations", dict(_EPISODE_DURATIONS))
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -95,24 +134,165 @@ class OverlayState:
             "updatedAt": self.updated_at,
             "eventCount": self.event_count,
             "sequence": list(self.sequence),
-            "narrations": dict(self.narrations),
+            "narrations": dict(self.narrations or {}),
+            "viewer": self.viewer,
+            "keyword": self.keyword,
+            "brand": self.brand,
+            "code": self.code,
+            "tier": self.tier,
+            "tierLabel": self.tier_label,
+            "priority": self.priority,
+            "egg": self.egg,
+            "eggName": self.egg_name,
+            "recap": [dict(item) for item in self.recap],
+            "stage": self.stage,
+            "sfx": self.sfx,
+            "durations": dict(self.durations or {}),
         }
 
 
-def _narrations(detail: str, keyword: str) -> dict[str, str]:
-    """Teks narasi per scene, disesuaikan dengan produk yang sedang diproses."""
-    subjek = detail or "aroma pilihan"
+def _bersihkan_keyword(teks: str) -> str:
+    """Buang awalan perintah `!racik` agar kata kunci rahasia bisa dicocokkan."""
+    hasil = re.sub(r"^!\s*racik\b", "", str(teks).strip(), flags=re.IGNORECASE)
+    hasil = re.sub(r"^racik\b", "", hasil, flags=re.IGNORECASE)
+    return re.sub(r"\s+", " ", hasil).strip()[:120]
+
+
+def _normalisasi_egg(teks: str) -> str:
+    return re.sub(r"\s+", " ", re.sub(r"[^\w\s]+", " ", str(teks).lower())).strip()
+
+
+def _cocok_egg(keyword: str, config: Config) -> tuple[str, str]:
+    if not config.easter_eggs or not keyword:
+        return "", ""
+    norm = _normalisasi_egg(keyword)
+    if not norm:
+        return "", ""
+    for kunci in sorted(config.easter_eggs, key=len, reverse=True):
+        if norm == kunci or kunci in norm:
+            return kunci, config.easter_eggs[kunci]
+    return "", ""
+
+
+def _brand(viewer: str, detail: str, egg_name: str) -> str:
+    if egg_name:
+        return egg_name[:28]
+    bersih = re.sub(r"[^0-9A-Za-z]+", " ", str(viewer)).strip()
+    bersih = re.sub(r"\s+", " ", bersih).upper()
+    if bersih:
+        return bersih[:24]
+    return (detail or "ALKaff").upper()[:24]
+
+
+def _kode(viewer: str, keyword: str, sku: str) -> str:
+    """Kode resep deterministik untuk screenshot, bukan nomor pesanan."""
+    basis = f"{viewer}|{keyword}|{sku}".encode("utf-8")
+    angka = int(hashlib.sha256(basis).hexdigest()[:8], 16) % 1000
+    return f"ALK-{angka:03d}"
+
+
+def _tier(klien: Mapping[str, Any]) -> str:
+    if klien.get("giftTier") == "founder" or klien.get("priority"):
+        return "founder"
+    if klien.get("shared") or klien.get("giftTier") == "emerald":
+        return "emerald"
+    return "classic"
+
+
+def _klien_aktif(konteks: Mapping[str, Any], status: str) -> dict[str, Any]:
+    daftar = konteks.get("clients")
+    if status in ("PROCESSING", "READY") and isinstance(daftar, (list, tuple)) and daftar:
+        terakhir = daftar[-1]
+        if isinstance(terakhir, Mapping):
+            return dict(terakhir)
     return {
-        "boot": f"Sistem lab Alkaff aktif. Saya AI perfumer. Mari kita racik {subjek}.",
-        "scan": f"Memindai {subjek}. Top, heart, dan base dicocokkan dengan katalog.",
-        "mix": f"Meracik {subjek}. Tetesan presisi, lalu diputar hingga homogen.",
-        "analyze": f"Analisis profil {subjek} selesai. Karakter siap ditampilkan.",
-        "result": f"Profil {subjek} siap. DM kata kunci {keyword} untuk detail quotation.",
+        "viewer": konteks.get("viewer", ""),
+        "keyword": konteks.get("keyword", ""),
+        "sku": konteks.get("sku", ""),
+        "variant": konteks.get("variant", ""),
+        "giftTier": konteks.get("giftTier", ""),
+        "shared": konteks.get("shared", False),
+        "priority": konteks.get("priority", False),
     }
 
 
+def _recap(
+    konteks: Mapping[str, Any], status: str, config: Config
+) -> tuple[Mapping[str, str], ...]:
+    daftar = konteks.get("clients")
+    jumlah = int(konteks.get("clientCount", 0) or 0)
+    if (
+        status != "READY"
+        or jumlah <= 0
+        or jumlah % config.recap_every != 0
+        or not isinstance(daftar, (list, tuple))
+        or len(daftar) < config.recap_every
+    ):
+        return ()
+    hasil: list[Mapping[str, str]] = []
+    for klien in list(daftar)[-config.recap_every :]:
+        if not isinstance(klien, Mapping):
+            continue
+        viewer = str(klien.get("viewer", ""))
+        kata = _bersihkan_keyword(str(klien.get("keyword", "")))
+        _, egg_name = _cocok_egg(kata, config)
+        merek = _brand(viewer, str(klien.get("sku", "")), egg_name)
+        hasil.append(
+            {
+                "brand": merek,
+                "code": _kode(viewer, kata, str(klien.get("sku", ""))),
+                "tier": _tier(klien),
+            }
+        )
+    return tuple(hasil)
+
+
+def _narrations(
+    detail: str,
+    keyword: str,
+    viewer: str,
+    brand: str,
+    code: str,
+    config: Config,
+    egg_name: str,
+) -> dict[str, str]:
+    """Teks narasi per babak, mengikuti klien aktif dan merek yang lahir."""
+    subjek = detail or "aroma pilihan"
+    kata = keyword or "aroma pilihan"
+    merek = brand or subjek
+    panggil = viewer or "klien berikutnya"
+    keyword_dm = config.quote_keyword
+
+    if egg_name:
+        boot = (
+            f"Easter egg terdeteksi! {panggil} meminta {kata}. "
+            f"Robot pusing, tapi merek jenakanya {egg_name}."
+        )
+    else:
+        boot = f"Klien masuk ruang VIP. Selamat datang {panggil}. Buka berkas {merek}."
+    return {
+        "boot": boot,
+        "scan": (
+            f"Bedah karakter {kata} untuk {merek}. "
+            "Top Bergamot, heart Lavender, base White Musk."
+        ),
+        "mix": f"Ruang maserasi {subjek}. Extrait 30 persen, vortex 2.400 RPM. Tahan napas.",
+        "analyze": f"Uji spektrum {subjek} selesai. Sillage tajam, akhir lembut.",
+        "result": (
+            f"Resmi rilis: ALKAFF x {merek}. Kode resep {code}. Screenshot, lalu tulis "
+            f"kode di catatan pesanan. DM {keyword_dm} bila ingin dikirim."
+        ),
+    }
+
+
+def _durasi(config: Config) -> dict[str, int]:
+    dasar = dict(_NARRATED_DURATIONS if config.overlay.voice else _EPISODE_DURATIONS)
+    dasar.update(config.overlay.durations)
+    return dasar
+
+
 def build_overlay_state(snapshot: Mapping[str, Any], config: Config | None = None) -> OverlayState:
-    """Ubah snapshot orchestrator menjadi state overlay Clean Lab."""
+    """Ubah snapshot orchestrator menjadi state teater lima babak."""
     cfg = config or Config()
     status = str(snapshot.get("status", "IDLE")).upper()
     konteks = snapshot.get("context") or {}
@@ -123,21 +303,31 @@ def build_overlay_state(snapshot: Mapping[str, Any], config: Config | None = Non
     variant = str(konteks.get("variant", "")).strip()
     detail = " · ".join(bit for bit in (sku, variant) if bit)
 
+    klien = _klien_aktif(konteks, status)
+    viewer = str(klien.get("viewer", "")).strip()
+    keyword = _bersihkan_keyword(str(klien.get("keyword", "")))
+    egg, egg_name = _cocok_egg(keyword, cfg)
+    merek = _brand(viewer, detail, egg_name)
+    kode = _kode(viewer, keyword, sku)
+    kasta = _tier(klien)
+
     pesan = _PESAN.get(status, "Status tidak dikenal.")
     if status == "PROCESSING" and detail:
-        pesan = f"Meracik {detail} dan menganalisis profilnya..."
-    elif status == "READY" and detail:
-        pesan = f"Quotation {detail} siap."
+        pesan = f"Maserasi dan uji spektrum {detail} berjalan..."
+    elif status == "READY":
+        pesan = f"{merek} rilis · kode resep {kode}. Simpan di catatan pesanan."
 
     # CTA mengarahkan viewer memulai DM; aplikasi ini tidak mengirim DM.
-    cta = f"DM kata kunci {cfg.quote_keyword} ke akun Alkaff" if status == "READY" else None
+    cta = (
+        f"Simpan kode resep {kode} di catatan pesanan — DM {cfg.quote_keyword} bila ingin dikirim"
+        if status == "READY"
+        else None
+    )
 
     scene = _SCENE.get(status, "boot")
     sequence = _SEQUENCE.get(status, (scene,))
-    narasi = _narrations(detail, cfg.quote_keyword)
-    if status == "ERROR":
-        narasi["boot"] = pesan
-    elif status == "IDLE":
+    narasi = _narrations(detail, keyword, viewer, merek, kode, cfg, egg_name)
+    if status in ("ERROR", "IDLE"):
         narasi["boot"] = pesan
     elif status == "LIVE" and detail:
         narasi["boot"] = f"LIVE dimulai. Katalog {detail} siap dipindai."
@@ -153,6 +343,19 @@ def build_overlay_state(snapshot: Mapping[str, Any], config: Config | None = Non
         event_count=int(snapshot.get("eventCount", 0)),
         sequence=sequence,
         narrations=narasi,
+        viewer=viewer,
+        keyword=keyword,
+        brand=merek,
+        code=kode,
+        tier=kasta,
+        tier_label=_TIER_LABEL[kasta],
+        priority=bool(klien.get("priority", False)),
+        egg=egg,
+        egg_name=egg_name,
+        recap=_recap(konteks, status, cfg),
+        stage=cfg.overlay.stage,
+        sfx=cfg.overlay.sfx,
+        durations=_durasi(cfg),
     )
 
 
@@ -169,16 +372,29 @@ def render_html(state: OverlayState, config: Config | None = None) -> str:
 
 
 def _render_clean_lab_html(state: OverlayState, cfg: Config) -> str:
-    """Sematkan state ke template Clean Lab dan kirim perintah ke pemutar scene."""
+    """Sematkan state ke template Clean Lab dan kirim perintah ke pemutar babak."""
     template = _TEMPLATE.read_text(encoding="utf-8")
     payload = json.dumps(
         {
             "scene": state.scene,
             "auto": True,
             "sequence": list(state.sequence),
-            "narrations": dict(state.narrations),
+            "narrations": dict(state.narrations or {}),
             "visible": state.visible,
             "voice": cfg.overlay.voice,
+            "sfx": state.sfx,
+            "stage": state.stage,
+            "durations": dict(state.durations or {}),
+            "viewer": state.viewer,
+            "keyword": state.keyword,
+            "brand": state.brand,
+            "code": state.code,
+            "tier": state.tier,
+            "tierLabel": state.tier_label,
+            "priority": state.priority,
+            "egg": state.egg,
+            "eggName": state.egg_name,
+            "recap": [dict(item) for item in state.recap],
         },
         ensure_ascii=False,
     ).replace("</", "<\\/")

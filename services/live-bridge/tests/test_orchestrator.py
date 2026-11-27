@@ -19,16 +19,22 @@ from alkaff_live.orchestrator import (  # noqa: E402
 from alkaff_live.overlay import build_overlay_state, render_json  # noqa: E402
 
 
-def buat_event(jenis: str, event_id: str, payload: dict[str, Any] | None = None):
+def buat_event(
+    jenis: str,
+    event_id: str,
+    payload: dict[str, Any] | None = None,
+    user: dict[str, str] | None = None,
+):
     """Buat event dengan eventId eksplisit agar dedupe mudah diuji."""
-    return normalize_event(
-        {
-            "eventId": event_id,
-            "type": jenis,
-            "occurredAt": "2026-11-26T09:30:00Z",
-            "payload": payload or {},
-        }
-    )
+    data: dict[str, Any] = {
+        "eventId": event_id,
+        "type": jenis,
+        "occurredAt": "2026-11-26T09:30:00Z",
+        "payload": payload or {},
+    }
+    if user is not None:
+        data["user"] = user
+    return normalize_event(data)
 
 
 class OrchestratorTest(unittest.TestCase):
@@ -74,6 +80,61 @@ class OrchestratorTest(unittest.TestCase):
         self.assertTrue(overlay.visible)
         self.assertIn("QUOTE", overlay.cta or "")
         self.assertIn("ALK-01", render_json(overlay))
+
+    def test_konteks_teater_dari_chat_share_dan_gift(self) -> None:
+        orchestrator = Orchestrator()
+        user = {"uniqueId": "alkaff_fan", "nickname": "Fan Alkaff"}
+        orchestrator.apply(buat_event("streamStart", "t1"))
+        orchestrator.apply(
+            buat_event("chat", "t2", {"comment": "!racik oud dong kak"}, user)
+        )
+        orchestrator.apply(buat_event("share", "t3", {}, user))
+        orchestrator.apply(
+            buat_event(
+                "gift",
+                "t4",
+                {"gift": {"name": "Universe", "giftType": 1, "repeatEnd": 1}},
+                user,
+            )
+        )
+        orchestrator.apply(
+            buat_event("control.submit", "t5", {"sku": "ALK-01", "variant": "EDT"}, user)
+        )
+        orchestrator.apply(buat_event("control.result", "t6", {"quoteId": "Q-1"}))
+
+        konteks = orchestrator.snapshot()["context"]
+        self.assertEqual(konteks["viewer"], "alkaff_fan")
+        self.assertEqual(konteks["keyword"], "!racik oud dong kak")
+        self.assertTrue(konteks["shared"])
+        self.assertEqual(konteks["giftTier"], "founder")
+        self.assertTrue(konteks["priority"])
+        self.assertEqual(konteks["clientCount"], 1)
+        self.assertEqual(konteks["clients"][-1]["tier"], "founder")
+
+        overlay = build_overlay_state(orchestrator.snapshot(), Config())
+        self.assertEqual(overlay.viewer, "alkaff_fan")
+        self.assertEqual(overlay.keyword, "oud dong kak")
+        self.assertEqual(overlay.tier, "founder")
+        self.assertIn("ALK-", overlay.code)
+
+    def test_klien_baru_mengganti_kasta_lama(self) -> None:
+        orchestrator = Orchestrator()
+        orchestrator.apply(buat_event("streamStart", "k1"))
+        orchestrator.apply(
+            buat_event(
+                "gift",
+                "k2",
+                {"gift": {"name": "Rose", "giftType": 1, "repeatEnd": 1}},
+                {"uniqueId": "klien_satu"},
+            )
+        )
+        orchestrator.apply(
+            buat_event("chat", "k3", {"comment": "!racik vanila"}, {"uniqueId": "klien_dua"})
+        )
+        konteks = orchestrator.snapshot()["context"]
+        self.assertEqual(konteks["viewer"], "klien_dua")
+        self.assertNotIn("giftTier", konteks)
+        self.assertEqual(build_overlay_state(orchestrator.snapshot()).tier, "classic")
 
     def test_transisi_tidak_valid_ditolak(self) -> None:
         orchestrator = Orchestrator()

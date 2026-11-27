@@ -16,7 +16,7 @@ Seluruh tulisan menggunakan bahasa Indonesia. Repository ini masih tahap fondasi
 | `data/katalog-alkaff-odoo/` | XLSX, CSV siap import Odoo, README katalog, dan `tambah_parfum_lokal.py` sudah disalin |
 | `data/pengetahuan-parfum/` | Basis pengetahuan turunan: 14 keluarga, 98 notes, 78 deskriptor, 40 accord, 40 tema layanan |
 | `odoo/addons/alkaff_catalog/` | Addon Odoo 20: kategori, field aroma/notes, log, dan wizard import CSV (belum dijalankan di Odoo produksi) |
-| `services/live-bridge/` | Skeleton Python stdlib: normalisasi event, state machine, dedupe, dan overlay lokal (16 tes lulus) |
+| `services/live-bridge/` | Skeleton Python stdlib: normalisasi event, state machine, dedupe, dan overlay lokal (31 tes lulus) |
 | Interaksi TikTok LIVE | Punya rencana teknis + skeleton lokal; **belum terhubung ke API TikTok**, tanpa auto-DM |
 | Katalog parfum | 164 produk di sheet `IMPORT_odoo`; 42 `Sales Price` terisi dan 122 sengaja dikosongkan |
 
@@ -85,15 +85,15 @@ klaim produk.
 cd services/live-bridge
 python3 -m unittest discover -s tests
 PYTHONPATH=src python3 -m alkaff_live.main \
-  --config config/example.json --events examples/events.jsonl --out build
+  --config config/example.json --events examples/events-theater.jsonl --out build
 ```
 
-Demo menghasilkan `build/overlay.json` dan `build/overlay.html` (transparan, bisa dibuka sebagai OBS Browser Source lokal). Ini **bukan** koneksi TikTok: tidak ada WebSocket, HTTP, auto-DM, atau kredensial. Rincian kontrak ada di [`services/live-bridge/docs/EVENT_CONTRACT.md`](services/live-bridge/docs/EVENT_CONTRACT.md).
+Demo menghasilkan `build/overlay.json` dan `build/overlay.html` (transparan, bisa dibuka sebagai OBS Browser Source lokal). `events-theater.jsonl` memperlihatkan lima klien, kasta botol, easter egg, dan papan recap; `events.jsonl` berisi alur singkat. Ini **bukan** koneksi TikTok: tidak ada WebSocket, HTTP, auto-DM, atau kredensial. Rincian kontrak ada di [`services/live-bridge/docs/EVENT_CONTRACT.md`](services/live-bridge/docs/EVENT_CONTRACT.md).
 
 Dua demo visual mandiri juga tersedia:
 
 - [`services/live-bridge/overlay-demo/`](services/live-bridge/overlay-demo/) — Dark Emerald Atelier.
-- [`services/live-bridge/overlay-demo-clean-lab/`](services/live-bridge/overlay-demo-clean-lab/) — **Virtual Clean Lab**: ruang virtual 3D full-screen dengan mesin presisi dan narasi AI bahasa Indonesia. Teks hanya menempel pada objek fisik (layar monitor, label botol/vial, plakat meja, panel mesin); tidak ada teks mengambang. Buka `preview.html` untuk pratinjau, atau `index.html?obs=1` untuk OBS.
+- [`services/live-bridge/overlay-demo-clean-lab/`](services/live-bridge/overlay-demo-clean-lab/) — **Virtual Clean Lab / Interactive Scent Theater**: lima babak sinematik 20 detik per klien, mode `full` atau `split` (40% atas untuk kamera host), kabut, lens flare, SFX sintesis, kasta botol, easter egg, dan recap lima merek. Teks hanya menempel pada objek fisik (layar monitor, label botol/vial, plakat meja, panel mesin); tidak ada teks mengambang. Buka `preview.html` untuk pratinjau, atau `index.html?obs=1` untuk OBS.
 
 Sebelum produksi, tetap ikuti dokumentasi LIVE: endpoint `/internal/*` wajib dilindungi, token disimpan di secret manager, dan uji memakai akun TikTok uji dengan moderator manual.
 

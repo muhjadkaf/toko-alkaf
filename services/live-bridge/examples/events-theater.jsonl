@@ -1,0 +1,19 @@
+{"type":"streamStart","occurredAt":"2026-11-27T19:00:00Z","payload":{}}
+{"type":"chat","occurredAt":"2026-11-27T19:00:03Z","user":{"uniqueId":"alkaff_fan","nickname":"Fan Alkaff"},"payload":{"comment":"!racik oud dong kak"}}
+{"type":"share","occurredAt":"2026-11-27T19:00:05Z","user":{"uniqueId":"alkaff_fan","nickname":"Fan Alkaff"},"payload":{}}
+{"type":"gift","occurredAt":"2026-11-27T19:00:06Z","user":{"uniqueId":"alkaff_fan","nickname":"Fan Alkaff"},"payload":{"gift":{"giftId":5655,"name":"Universe","giftType":1,"repeatCount":1,"repeatEnd":1,"diamondCount":34999}}}
+{"type":"control.submit","occurredAt":"2026-11-27T19:00:08Z","user":{"uniqueId":"alkaff_fan","nickname":"Fan Alkaff"},"payload":{"sku":"ALK-01","variant":"EDT"}}
+{"type":"control.result","occurredAt":"2026-11-27T19:00:09Z","user":{"uniqueId":"alkaff_fan","nickname":"Fan Alkaff"},"payload":{"quoteId":"Q-DEMO-001","quoteUrl":"https://contoh.invalid/quote/ALK-01?variant=EDT"}}
+{"type":"chat","occurredAt":"2026-11-27T19:00:24Z","user":{"uniqueId":"hujan_aja","nickname":"Hujan"},"payload":{"comment":"!racik hujan mantan"}}
+{"type":"share","occurredAt":"2026-11-27T19:00:25Z","user":{"uniqueId":"hujan_aja","nickname":"Hujan"},"payload":{}}
+{"type":"control.submit","occurredAt":"2026-11-27T19:00:27Z","user":{"uniqueId":"hujan_aja","nickname":"Hujan"},"payload":{"sku":"ALK-02","variant":"EDP"}}
+{"type":"control.result","occurredAt":"2026-11-27T19:00:28Z","user":{"uniqueId":"hujan_aja","nickname":"Hujan"},"payload":{"quoteId":"Q-DEMO-002","quoteUrl":"https://contoh.invalid/quote/ALK-02?variant=EDP"}}
+{"type":"chat","occurredAt":"2026-11-27T19:00:44Z","user":{"uniqueId":"gaji_tua","nickname":"Gaji Tua"},"payload":{"comment":"!racik gaji tanggal tua"}}
+{"type":"control.submit","occurredAt":"2026-11-27T19:00:46Z","user":{"uniqueId":"gaji_tua","nickname":"Gaji Tua"},"payload":{"sku":"ALK-03","variant":"EDP"}}
+{"type":"control.result","occurredAt":"2026-11-27T19:00:47Z","user":{"uniqueId":"gaji_tua","nickname":"Gaji Tua"},"payload":{"quoteId":"Q-DEMO-003","quoteUrl":"https://contoh.invalid/quote/ALK-03?variant=EDP"}}
+{"type":"chat","occurredAt":"2026-11-27T19:01:04Z","user":{"uniqueId":"vanila_malam","nickname":"Vanila"},"payload":{"comment":"!racik vanila hangat"}}
+{"type":"control.submit","occurredAt":"2026-11-27T19:01:06Z","user":{"uniqueId":"vanila_malam","nickname":"Vanila"},"payload":{"sku":"ALK-04","variant":"EDT"}}
+{"type":"control.result","occurredAt":"2026-11-27T19:01:07Z","user":{"uniqueId":"vanila_malam","nickname":"Vanila"},"payload":{"quoteId":"Q-DEMO-004","quoteUrl":"https://contoh.invalid/quote/ALK-04?variant=EDT"}}
+{"type":"chat","occurredAt":"2026-11-27T19:01:24Z","user":{"uniqueId":"kopi_dingin","nickname":"Kopi"},"payload":{"comment":"!racik kopi dingin"}}
+{"type":"control.submit","occurredAt":"2026-11-27T19:01:26Z","user":{"uniqueId":"kopi_dingin","nickname":"Kopi"},"payload":{"sku":"ALK-05","variant":"EDT"}}
+{"type":"control.result","occurredAt":"2026-11-27T19:01:27Z","user":{"uniqueId":"kopi_dingin","nickname":"Kopi"},"payload":{"quoteId":"Q-DEMO-005","quoteUrl":"https://contoh.invalid/quote/ALK-05?variant=EDT"}}

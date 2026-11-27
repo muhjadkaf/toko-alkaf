@@ -6,13 +6,23 @@
   "overlay": {
     "width": 1920,
     "height": 1080,
-    "transparent": true
+    "transparent": true,
+    "voice": false,
+    "sfx": true,
+    "stage": "full"
   },
   "giftTiers": {
     "sparkle": ["rose", "finger heart"],
     "mix": ["finger heart deluxe", "sunglasses"],
     "premium": ["universe", "lion"]
   },
+  "easterEggs": {
+    "hujan mantan": "EAU DE KENANGAN",
+    "gaji tanggal tua": "EXTRAIT AKHIR BULAN",
+    "jodoh": "EAU DE PENGANTIN",
+    "kopi dingin": "COFFEE NOIR"
+  },
+  "recapEvery": 5,
   "demo": {
     "quoteKeyword": "QUOTE",
     "quoteBaseUrl": "https://contoh.invalid/quote"

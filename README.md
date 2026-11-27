@@ -111,7 +111,9 @@ Buka `https://alkaff.lokal.or.id/?controls=1&keyword=kopi%20dingin` saat menyiap
 langsung dari `/alkaff/api/recommendations` di Odoo `nml`; hasil build Flutter tidak di-commit.
 Di OBS cukup pakai **Window Capture** pada jendela browser. Opsi `?mode=split` menyediakan zona
 kamera host di 40% atas. Menu **Alkaff Live Console** di superapp `https://app.lokal.or.id`
-menyediakan chat simulasi dan tombol sutradara adegan lewat `postMessage` ke iframe theater.
+menyediakan chat simulasi dan tombol sutradara adegan lewat bus kontrol bersama,
+tanpa iframe; theater dibuka terpisah di `https://alkaf.lokal.or.id` (alias
+`https://alkaff.lokal.or.id`) dengan channel yang sama.
 Detail build, query string, protokol pesan, dan pagar klaim ada di
 [`webapp/alkaff_scent_lab/README.md`](webapp/alkaff_scent_lab/README.md).
 

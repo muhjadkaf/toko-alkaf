@@ -48,30 +48,42 @@ https://alkaff.lokal.or.id/?mode=split&keyword=kopi%20dingin
 ## Konsol manual dari Namlah superapp
 
 Menu **Alkaff Live Console** di `https://app.lokal.or.id` (Beranda → kategori Kurasi)
-menyematkan theater ini dalam iframe dan mengirim perintah lewat `postMessage`.
+**tidak memuat iframe/pratinjau**. Konsol mengirim perintah ke bus kontrol bersama
+dan theater yang dibuka di perangkat lain melakukan polling ke bus yang sama.
 Konsol menyediakan:
 
 - input username TikTok + komentar/perintah palsu yang tampil sebagai chat simulasi;
 - tombol kirim komen yang sekaligus memakai komentar sebagai keyword rekomendasi;
 - tombol sutradara untuk memotong langsung ke `boot`, `scan`, `mix`, `analyze`, `result`;
 - tombol `Auto`, `Reset`, `Split/Full`, dan `Hapus chat`;
-- status balasan dari theater (scene, status, tema, CTA, jumlah produk).
+- field channel bersama dan tautan theater untuk dibuka di HP lain;
+- status theater (scene, status, tema, CTA, jumlah produk) dari bus kontrol.
 
-Protokol pesan dari konsol ke theater:
+Endpoint bus kontrol (same-origin, diproksikan oleh `serve.py`):
+
+| Metode | Path | Fungsi |
+| --- | --- | --- |
+| `POST` | `/alkaff/control` | antrekan perintah konsol |
+| `GET` | `/alkaff/control?channel=live&since=0` | theater mengambil perintah baru |
+| `POST` | `/alkaff/control/state` | theater mempublikasikan status |
+| `GET` | `/alkaff/control/state?channel=live` | konsol membaca status |
+
+Contoh body perintah:
 
 ```json
 {
   "source": "namlah-alkaff-console",
+  "channel": "live",
   "command": "chat",
   "payload": {"username": "viewer_demo", "comment": "kopi dingin"}
 }
 ```
 
 Perintah yang diterima: `keyword`, `scene`, `play`, `reset`, `split`, `chat`, `clearChat`.
-Theater hanya menerima pesan dari origin `https://app.lokal.or.id` (atau
-`http://localhost:8085` untuk pengujian lokal) dan membalas status ke origin itu.
-Ini **simulasi manual**: bukan API TikTok, bukan auto-DM, dan tidak menyimpan
-data viewer ke server.
+Cursor `since=-1` berarti bootstrap: theater tidak memutar ulang perintah lama.
+`postMessage` lokal masih diterima sebagai fallback bila theater disematkan,
+tetapi bukan lagi jalur utama. Ini **simulasi manual**: bukan API TikTok, bukan
+auto-DM, dan tidak menyimpan data sensitif ke server.
 
 ## Build
 
@@ -83,7 +95,9 @@ cd webapp/alkaff_scent_lab
 
 Hasil build ada di `build/web/` dan **sengaja tidak di-commit**.
 Service systemd `alkaff-web.service` menyajikan folder tersebut di
-`127.0.0.1:8088`; Cloudflare Tunnel meneruskan `alkaff.lokal.or.id` ke port itu.
+`127.0.0.1:8088`; Cloudflare Tunnel meneruskan `alkaff.lokal.or.id` dan alias
+`alkaf.lokal.or.id` ke port itu. Query string `?channel=live` harus sama dengan
+channel di konsol.
 
 ## Pakai di OBS / TikTok Live Studio
 

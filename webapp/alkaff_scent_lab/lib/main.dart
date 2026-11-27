@@ -7,10 +7,12 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(const AlkaffApp());
 
-/// API dibaca langsung dari instance Odoo `nml` yang sudah dipublish.
+/// API dibaca same-origin lewat proxy `/alkaff/api/` pada serve.py, sehingga
+/// theater bisa dipakai di `alkaff...` maupun `alkaf...` tanpa CORS khusus.
 /// Bisa dioverride lewat query string untuk pengujian lokal:
-/// ?api=http://127.0.0.1:8071/alkaff/api
-const String _defaultApiBase = 'https://nml.lokal.or.id/alkaff/api';
+/// ?api=http://127.0.0.1:8071/alkaff/api&control=http://127.0.0.1:8085/alkaff/control
+const String _defaultApiBase = '/alkaff/api';
+const String _defaultControlBase = '/alkaff/control';
 const Size _stageSize = Size(1600, 900);
 const String _consoleSource = 'namlah-alkaff-console';
 const List<String> _consoleOrigins = [
@@ -49,6 +51,8 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
   late final AnimationController _pulse;
   late final TextEditingController _keywordController;
   late String _apiBase;
+  late String _controlBase;
+  late String _controlChannel;
   late String _keyword;
   late bool _showControls;
   late bool _split;
@@ -67,6 +71,8 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
   String _chatTime = '';
   String? _error;
   final List<Timer> _timers = [];
+  Timer? _controlTimer;
+  int _controlCursor = -1;
   late final html.EventListener _consoleListener;
   String _consoleOrigin = _consoleOrigins.first;
 
@@ -75,6 +81,8 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
     super.initState();
     final params = Uri.base.queryParameters;
     _apiBase = params['api'] ?? _defaultApiBase;
+    _controlBase = params['control'] ?? _defaultControlBase;
+    _controlChannel = params['channel'] ?? 'live';
     _keyword = params['keyword'] ?? 'kopi dingin';
     _showControls = params['controls'] == '1';
     _split = params['mode'] == 'split';
@@ -85,12 +93,20 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
     )..repeat();
     _consoleListener = (event) => _onConsoleMessage(event);
     html.window.addEventListener('message', _consoleListener);
+    // Bentuk cursor segera setelah widget hidup agar perintah yang dikirim
+    // host tidak dianggap "perintah lama" saat poll pertama.
+    _pollControl();
+    _controlTimer = Timer.periodic(
+      const Duration(milliseconds: 1200),
+      (_) => _pollControl(),
+    );
     _boot();
   }
 
   @override
   void dispose() {
     html.window.removeEventListener('message', _consoleListener);
+    _controlTimer?.cancel();
     for (final timer in _timers) {
       timer.cancel();
     }
@@ -113,6 +129,49 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
       throw StateError('Respons bukan objek JSON dari $uri');
     }
     return Map<String, dynamic>.from(decoded);
+  }
+
+  Future<void> _postJson(String url, Map<String, dynamic> body) async {
+    final response = await html.HttpRequest.request(
+      url,
+      method: 'POST',
+      requestHeaders: {'Content-Type': 'application/json'},
+      sendData: jsonEncode(body),
+    );
+    final status = response.status ?? 0;
+    if (status >= 400) {
+      throw StateError('HTTP $status dari $url');
+    }
+  }
+
+  Future<void> _pollControl() async {
+    final encodedChannel = Uri.encodeComponent(_controlChannel);
+    final uri = Uri.parse(
+      '$_controlBase?channel=$encodedChannel&since=$_controlCursor&limit=40',
+    );
+    try {
+      final response = await html.HttpRequest.request(uri.toString(), method: 'GET');
+      if (response.status != 200) return;
+      final decoded = jsonDecode(response.responseText ?? '{}');
+      if (decoded is! Map) return;
+      final data = Map<String, dynamic>.from(decoded);
+      final cursor = data['cursor'];
+      if (cursor is int) _controlCursor = cursor;
+      final commands = data['commands'];
+      if (commands is! List) return;
+      for (final raw in commands) {
+        if (raw is! Map) continue;
+        final item = Map<String, dynamic>.from(raw);
+        _applyCommand(
+          '${item['command'] ?? ''}',
+          item['payload'] is Map
+              ? Map<String, dynamic>.from(item['payload'] as Map)
+              : <String, dynamic>{},
+        );
+      }
+    } catch (_) {
+      // Bus kontrol belum tersedia — theater tetap berjalan dengan scene lokal.
+    }
   }
 
   void _onConsoleMessage(html.Event event) {
@@ -139,7 +198,11 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
     final payload = message['payload'] is Map
         ? Map<String, dynamic>.from(message['payload'] as Map)
         : <String, dynamic>{};
+    _applyCommand(command, payload);
+  }
 
+  /// Dipakai baik oleh pesan postMessage lokal maupun polling bus kontrol.
+  void _applyCommand(String command, Map<String, dynamic> payload) {
     switch (command) {
       case 'keyword':
         final text = '${payload['keyword'] ?? ''}'.trim();
@@ -237,6 +300,25 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
       },
     });
     html.window.postMessage(payload, _consoleOrigin);
+
+    // Publikasikan status ke bus kontrol agar konsol tanpa iframe bisa
+    // menampilkan scene/tema tanpa bergantung pada jendela yang sama.
+    final channel = Uri.encodeComponent(_controlChannel);
+    unawaited(_postJson('$_controlBase/state?channel=$channel', {
+      'channel': _controlChannel,
+      'source': 'alkaff-app',
+      'scene': _scene,
+      'status': _status,
+      'theme': _themeName,
+      'cta': _cta,
+      'products': _products.length,
+      'split': _split,
+      'chat': {
+        'username': _chatUser,
+        'comment': _chatText,
+        'time': _chatTime,
+      },
+    }).catchError((_) {}));
   }
 
   Future<void> _boot() async {

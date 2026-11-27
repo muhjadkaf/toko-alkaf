@@ -114,7 +114,9 @@ CG + parallax: penerimaan bahan, pencampuran, QC, dan finishing. Ruangnya memaka
 (dinding beton, lantai epoksi, stainless brushed, kayu hangat), rak botol kaca amber, tangki
 berjaket, drum, pipa/gauge, meja QC dengan vial/pipet/suntikan realistik, dan conveyor—bukan garis
 atau kotak generik. Teks hanya menempel pada benda fisik, tanpa sosok manusia, dan narasi disiarkan
-sebagai audio bahasa Indonesia tanpa subtitle. Rujukan visual multi-agen (butik parfum, peralatan
+sebagai audio bahasa Indonesia tanpa subtitle. Konsol Sarang Semut bisa memilih tiga mode presenter:
+`host` (CG jadi latar, mic host dari OBS), `robot` (operator menyuruh robot bicara/bergerak), atau
+`autopilot` (robot mengikuti script lima adegan). Rujukan visual multi-agen (butik parfum, peralatan
 maklon, lisensi foto) tercatat di
 [`webapp/alkaff_scent_lab/docs/REFERENSI-VISUAL.md`](webapp/alkaff_scent_lab/docs/REFERENSI-VISUAL.md);
 foto internet hanya dipakai sebagai referensi, bukan disalin ke repo.

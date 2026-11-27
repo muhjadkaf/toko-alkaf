@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import 'robot_presenter.dart';
 import 'world_stage.dart';
 
 void main() => runApp(const AlkaffApp());
@@ -61,6 +63,21 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
     'result': 'assets/assets/audio/narasi_result.mp3',
   };
 
+  /// Teks narasi dipakai untuk memperkirakan suku kata saat menggerakkan
+  /// rahang robot. Sama persis dengan tools/generate_narration.py.
+  static const Map<String, String> _narrationText = {
+    'boot': 'Selamat datang di Alkaff Scent Lab. Visualisasi ini menunjukkan '
+        'alur maklon parfum dari penerimaan bahan hingga pengemasan.',
+    'scan': 'Penerimaan bahan dimulai dari pemeriksaan kode dan kondisi '
+        'kemasan. Setiap batch dicatat agar dapat ditelusuri.',
+    'mix': 'Di ruang pencampuran, tangki berjaket dan pengaduk bekerja dengan '
+        'kendali suhu. Skala ini menggambarkan kapasitas produksi.',
+    'analyze': 'Pemeriksaan mutu dilakukan sebelum proses lanjut. Fokusnya '
+        'adalah konsistensi keluarga aroma dan kesesuaian dokumen.',
+    'result': 'Botol diberi label, lalu dikemas. Rekomendasi yang Anda lihat '
+        'berasal dari katalog Alkaff. CTA dimulai dari penonton.',
+  };
+
   late final AnimationController _pulse;
   late final html.AudioElement _narrationAudio;
   String? _currentNarration;
@@ -72,6 +89,17 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
   late bool _showControls;
   late bool _split;
   bool _autoPaused = false;
+
+  /// host = CG jadi latar, mic host dari OBS, robot mati.
+  /// robot = operator yang menggerakkan dan menyuruh robot bicara.
+  /// autopilot = robot mengikuti script lima adegan.
+  String _presenterMode = 'autopilot';
+  String _robotAction = 'idle';
+  bool _speaking = false;
+  bool _blink = false;
+  double _mouth = 0;
+  Timer? _mouthTimer;
+  int _mouthTick = 0;
 
   String _scene = 'boot';
   String _status = 'MENYIAPKAN';
@@ -102,6 +130,10 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
     _keyword = params['keyword'] ?? 'kopi dingin';
     _showControls = params['controls'] == '1';
     _split = params['mode'] == 'split';
+    final presenter = params['presenter'] ?? '';
+    if (presenter == 'host' || presenter == 'robot' || presenter == 'autopilot') {
+      _presenterMode = presenter;
+    }
     _keywordController = TextEditingController(text: _keyword);
     _pulse = AnimationController(
       vsync: this,
@@ -110,6 +142,7 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
     _narrationAudio = html.AudioElement()
       ..preload = 'auto'
       ..autoplay = true;
+    _narrationAudio.onEnded.listen((_) => _stopSpeaking());
     _consoleListener = (event) => _onConsoleMessage(event);
     html.window.addEventListener('message', _consoleListener);
     // Bentuk cursor segera setelah widget hidup agar perintah yang dikirim
@@ -126,6 +159,7 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
   void dispose() {
     html.window.removeEventListener('message', _consoleListener);
     _controlTimer?.cancel();
+    _mouthTimer?.cancel();
     for (final timer in _timers) {
       timer.cancel();
     }
@@ -249,6 +283,23 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
           _split = payload['enabled'] is bool ? payload['enabled'] as bool : !_split;
         });
         break;
+      case 'presenter':
+        _setPresenterMode('${payload['mode'] ?? ''}');
+        break;
+      case 'robot':
+        final action = '${payload['action'] ?? 'idle'}';
+        const allowedActions = {'idle', 'scan', 'mix', 'qc', 'pour', 'point'};
+        _autoPaused = true;
+        setState(() {
+          _presenterMode = 'robot';
+          _robotAction = allowedActions.contains(action) ? action : 'idle';
+        });
+        _postState();
+        break;
+      case 'speak':
+        final text = '${payload['text'] ?? ''}'.trim();
+        _speakCommand(text);
+        break;
       case 'chat':
         final user = '${payload['username'] ?? ''}'.trim();
         final text = '${payload['comment'] ?? ''}'.trim();
@@ -313,6 +364,9 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
       'cta': _cta,
       'products': _products.length,
       'split': _split,
+      'presenterMode': _presenterMode,
+      'robotAction': _robotAction,
+      'speaking': _speaking,
       'chat': {
         'username': _chatUser,
         'comment': _chatText,
@@ -333,6 +387,9 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
       'cta': _cta,
       'products': _products.length,
       'split': _split,
+      'presenterMode': _presenterMode,
+      'robotAction': _robotAction,
+      'speaking': _speaking,
       'chat': {
         'username': _chatUser,
         'comment': _chatText,
@@ -362,6 +419,7 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
   /// Putar narasi scene dari asset lokal. Autoplay browser bisa ditolak sampai
   /// ada gesture pengguna; kegagalan diabaikan agar theater tetap berjalan.
   void _playNarration(String scene) {
+    if (_presenterMode == 'host') return;
     final base = _narration[scene];
     if (base == null) return;
     final src = '$base?v=$_assetVersion';
@@ -371,6 +429,144 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
     }
     _narrationAudio.currentTime = 0;
     _narrationAudio.play().catchError((_) {});
+    _startSpeaking(_narrationText[scene] ?? '');
+  }
+
+  /// Mode host memakai CG sebagai latar dan mic host dari OBS. Robot dan
+  /// narasi theater dimatikan, tetapi katalog/chat tetap jalan.
+  void _setPresenterMode(String requested) {
+    const modes = {'host', 'robot', 'autopilot'};
+    final mode = modes.contains(requested) ? requested : 'autopilot';
+    if (mode == _presenterMode) return;
+    setState(() {
+      _presenterMode = mode;
+      if (mode == 'host') {
+        _robotAction = 'idle';
+        _stopSpeakingSilently();
+      } else {
+        _robotAction = _actionForScene(_scene);
+      }
+    });
+    if (mode == 'host') {
+      _mouthTimer?.cancel();
+      _mouthTimer = null;
+      _narrationAudio.pause();
+    } else if (mode == 'autopilot') {
+      _autoPaused = false;
+      _startScenes();
+      return;
+    } else {
+      _autoPaused = true;
+    }
+    _postState();
+  }
+
+  String _actionForScene(String scene) {
+    switch (scene) {
+      case 'scan':
+        return 'scan';
+      case 'mix':
+        return 'mix';
+      case 'analyze':
+        return 'qc';
+      case 'result':
+        return 'pour';
+      default:
+        return 'idle';
+    }
+  }
+
+  /// Perintah bicara manual dari konsol. Tanpa teks = narasi scene berjalan;
+  /// dengan teks = Web Speech id-ID bila tersedia, rahang tetap digerakkan.
+  void _speakCommand(String text) {
+    _autoPaused = true;
+    setState(() {
+      _presenterMode = 'robot';
+      _robotAction = 'point';
+    });
+    if (text.isEmpty) {
+      _playNarration(_scene);
+      _postState();
+      return;
+    }
+    _narrationAudio.pause();
+    _startSpeaking(text);
+    try {
+      final utterance = html.SpeechSynthesisUtterance(text)
+        ..lang = 'id-ID'
+        ..rate = 0.95;
+      utterance.onBoundary.listen((event) {
+        if (!mounted) return;
+        final start = event.charIndex ?? 0;
+        final chunk = start < text.length ? text.substring(start) : '';
+        setState(() => _mouth = _syllables(chunk) > 0 ? 0.85 : 0.55);
+      });
+      utterance.onEnd.listen((_) => _stopSpeaking());
+      html.window.speechSynthesis?.speak(utterance);
+    } catch (_) {
+      // Web Speech tidak tersedia: rahang tetap berjalan dari perkiraan suku kata.
+    }
+    _postState();
+  }
+
+  /// Gerakkan rahang mengikuti perkiraan suku kata. Ini bukan forced alignment,
+  /// tetapi cukup untuk presenter CG stilirisasi dan tidak butuh dependency.
+  void _startSpeaking(String text) {
+    _mouthTimer?.cancel();
+    _mouthTick = 0;
+    final syllables = math.max(2, _syllables(text));
+    final cycle = math.max(6, (syllables * 2.4).round());
+    setState(() {
+      _speaking = true;
+      _mouth = 0;
+    });
+    _mouthTimer = Timer.periodic(const Duration(milliseconds: 70), (timer) {
+      if (!mounted || !_speaking) {
+        timer.cancel();
+        return;
+      }
+      final phase = _mouthTick % cycle;
+      final open = phase < cycle * 0.52;
+      final level = open
+          ? 0.35 + 0.65 * (0.5 + 0.5 * math.sin(_mouthTick * 0.85))
+          : 0.0;
+      setState(() {
+        _mouth = level;
+        _blink = _mouthTick % 53 == 0;
+      });
+      _mouthTick++;
+    });
+  }
+
+  void _stopSpeaking() {
+    _mouthTimer?.cancel();
+    _mouthTimer = null;
+    if (!mounted) return;
+    setState(() {
+      _speaking = false;
+      _mouth = 0;
+      _blink = false;
+    });
+    _postState();
+  }
+
+  void _stopSpeakingSilently() {
+    _speaking = false;
+    _mouth = 0;
+    _blink = false;
+  }
+
+  int _syllables(String text) {
+    final lower = text.toLowerCase();
+    var count = 0;
+    var inVowel = false;
+    for (final codeUnit in lower.codeUnits) {
+      final ch = String.fromCharCode(codeUnit);
+      final vowel = 'aiueo'.contains(ch);
+      if (vowel && !inVowel) count++;
+      inVowel = vowel;
+    }
+    return count;
   }
 
   Future<void> _boot() async {
@@ -416,6 +612,7 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
     setState(() {
       _scene = scene;
       _status = status;
+      if (_presenterMode != 'host') _robotAction = _actionForScene(scene);
     });
     _playNarration(scene);
     _postState();
@@ -549,6 +746,13 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
           motion: _pulse,
           assetVersion: _assetVersion,
         ),
+        if (_presenterMode != 'host')
+          RobotPresenter(
+            mouth: _mouth,
+            action: _robotAction,
+            speaking: _speaking,
+            blink: _blink,
+          ),
         if (_showControls) _controlDeck(),
       ],
     );

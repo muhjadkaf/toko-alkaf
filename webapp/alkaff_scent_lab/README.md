@@ -136,11 +136,34 @@ Contoh body perintah:
 }
 ```
 
-Perintah yang diterima: `keyword`, `scene`, `play`, `reset`, `split`, `chat`, `clearChat`.
-Cursor `since=-1` berarti bootstrap: theater tidak memutar ulang perintah lama.
-`postMessage` lokal masih diterima sebagai fallback bila theater disematkan,
-tetapi bukan lagi jalur utama. Ini **simulasi manual**: bukan API TikTok, bukan
-auto-DM, dan tidak menyimpan data sensitif ke server.
+Perintah yang diterima: `keyword`, `scene`, `play`, `reset`, `split`, `chat`,
+`clearChat`, `presenter`, `speak`, `robot`. Cursor `since=-1` berarti bootstrap:
+theater tidak memutar ulang perintah lama. `postMessage` lokal masih diterima
+sebagai fallback bila theater disematkan, tetapi bukan lagi jalur utama. Ini
+**simulasi manual**: bukan API TikTok, bukan auto-DM, dan tidak menyimpan data
+sensitif ke server.
+
+### Mode presenter
+
+| Mode | Perilaku |
+| --- | --- |
+| `host` | CG pabrik tetap jadi latar; narasi dan robot dimatikan. Audio host diambil dari mic/OBS. |
+| `robot` | Operator menyuruh robot bicara dan bergerak lewat perintah `speak` / `robot`. |
+| `autopilot` | Robot mengikuti script lima adegan otomatis; ini default theater. |
+
+Contoh:
+
+```json
+{"command":"presenter","payload":{"mode":"robot"}}
+{"command":"speak","payload":{"text":"Selamat datang di Alkaff Scent Lab"}}
+{"command":"robot","payload":{"action":"qc"}}
+```
+
+Aksi robot yang dikenal: `idle`, `scan`, `mix`, `qc`, `pour`, `point`. Status
+`presenterMode`, `robotAction`, dan `speaking` ikut dipublikasikan ke
+`/alkaff/control/state`. Rahang robot digerakkan dari perkiraan suku kata narasi;
+bila teks diketik di konsol, Web Speech `id-ID` dipakai bila tersedia dengan
+fallback ke perkiraan tersebut. Tidak ada subtitle dan tidak ada sosok manusia.
 
 ## Build
 

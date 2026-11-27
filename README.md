@@ -110,7 +110,9 @@ Buka `https://alkaff.lokal.or.id/?controls=1&keyword=kopi%20dingin` saat menyiap
 `https://alkaff.lokal.or.id/?keyword=kopi%20dingin` saat LIVE. Aplikasi mengambil tema dan produk
 langsung dari `/alkaff/api/recommendations` di Odoo `nml`; hasil build Flutter tidak di-commit.
 Di OBS cukup pakai **Window Capture** pada jendela browser. Opsi `?mode=split` menyediakan zona
-kamera host di 40% atas. Detail build, query string, dan pagar klaim ada di
+kamera host di 40% atas. Menu **Alkaff Live Console** di superapp `https://app.lokal.or.id`
+menyediakan chat simulasi dan tombol sutradara adegan lewat `postMessage` ke iframe theater.
+Detail build, query string, protokol pesan, dan pagar klaim ada di
 [`webapp/alkaff_scent_lab/README.md`](webapp/alkaff_scent_lab/README.md).
 
 Sebelum produksi, tetap ikuti dokumentasi LIVE: endpoint `/internal/*` wajib dilindungi, token disimpan di secret manager, dan uji memakai akun TikTok uji dengan moderator manual.

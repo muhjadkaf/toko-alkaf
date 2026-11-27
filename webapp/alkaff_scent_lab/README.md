@@ -45,6 +45,34 @@ Mode split dengan zona kamera di 40% atas:
 https://alkaff.lokal.or.id/?mode=split&keyword=kopi%20dingin
 ```
 
+## Konsol manual dari Namlah superapp
+
+Menu **Alkaff Live Console** di `https://app.lokal.or.id` (Beranda → kategori Kurasi)
+menyematkan theater ini dalam iframe dan mengirim perintah lewat `postMessage`.
+Konsol menyediakan:
+
+- input username TikTok + komentar/perintah palsu yang tampil sebagai chat simulasi;
+- tombol kirim komen yang sekaligus memakai komentar sebagai keyword rekomendasi;
+- tombol sutradara untuk memotong langsung ke `boot`, `scan`, `mix`, `analyze`, `result`;
+- tombol `Auto`, `Reset`, `Split/Full`, dan `Hapus chat`;
+- status balasan dari theater (scene, status, tema, CTA, jumlah produk).
+
+Protokol pesan dari konsol ke theater:
+
+```json
+{
+  "source": "namlah-alkaff-console",
+  "command": "chat",
+  "payload": {"username": "viewer_demo", "comment": "kopi dingin"}
+}
+```
+
+Perintah yang diterima: `keyword`, `scene`, `play`, `reset`, `split`, `chat`, `clearChat`.
+Theater hanya menerima pesan dari origin `https://app.lokal.or.id` (atau
+`http://localhost:8085` untuk pengujian lokal) dan membalas status ke origin itu.
+Ini **simulasi manual**: bukan API TikTok, bukan auto-DM, dan tidak menyimpan
+data viewer ke server.
+
 ## Build
 
 ```bash

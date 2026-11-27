@@ -12,6 +12,11 @@ void main() => runApp(const AlkaffApp());
 /// ?api=http://127.0.0.1:8071/alkaff/api
 const String _defaultApiBase = 'https://nml.lokal.or.id/alkaff/api';
 const Size _stageSize = Size(1600, 900);
+const String _consoleSource = 'namlah-alkaff-console';
+const List<String> _consoleOrigins = [
+  'https://app.lokal.or.id',
+  'http://localhost:8085',
+];
 
 class AlkaffApp extends StatelessWidget {
   const AlkaffApp({super.key});
@@ -57,8 +62,13 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
   String _limitation =
       'Notes adalah gambaran keluarga, bukan komposisi resmi pabrik.';
   List<dynamic> _products = const [];
+  String _chatUser = '';
+  String _chatText = '';
+  String _chatTime = '';
   String? _error;
   final List<Timer> _timers = [];
+  late final html.EventListener _consoleListener;
+  String _consoleOrigin = _consoleOrigins.first;
 
   @override
   void initState() {
@@ -73,11 +83,14 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
       vsync: this,
       duration: const Duration(seconds: 6),
     )..repeat();
+    _consoleListener = (event) => _onConsoleMessage(event);
+    html.window.addEventListener('message', _consoleListener);
     _boot();
   }
 
   @override
   void dispose() {
+    html.window.removeEventListener('message', _consoleListener);
     for (final timer in _timers) {
       timer.cancel();
     }
@@ -100,6 +113,130 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
       throw StateError('Respons bukan objek JSON dari $uri');
     }
     return Map<String, dynamic>.from(decoded);
+  }
+
+  void _onConsoleMessage(html.Event event) {
+    if (event is! html.MessageEvent) return;
+    if (!_consoleOrigins.contains(event.origin)) return;
+    _consoleOrigin = event.origin;
+
+    Map<String, dynamic> message;
+    try {
+      final data = event.data;
+      if (data is String) {
+        message = Map<String, dynamic>.from(jsonDecode(data) as Map);
+      } else if (data is Map) {
+        message = Map<String, dynamic>.from(data);
+      } else {
+        return;
+      }
+    } catch (_) {
+      return;
+    }
+    if (message['source'] != _consoleSource) return;
+
+    final command = '${message['command'] ?? ''}';
+    final payload = message['payload'] is Map
+        ? Map<String, dynamic>.from(message['payload'] as Map)
+        : <String, dynamic>{};
+
+    switch (command) {
+      case 'keyword':
+        final text = '${payload['keyword'] ?? ''}'.trim();
+        if (text.isNotEmpty) {
+          _keywordController.text = text;
+          _keyword = text;
+          _rerun();
+        }
+        break;
+      case 'scene':
+        _cutScene('${payload['scene'] ?? 'boot'}');
+        break;
+      case 'play':
+        _startScenes();
+        break;
+      case 'reset':
+        _rerun();
+        break;
+      case 'split':
+        setState(() {
+          _split = payload['enabled'] is bool ? payload['enabled'] as bool : !_split;
+        });
+        break;
+      case 'chat':
+        final user = '${payload['username'] ?? ''}'.trim();
+        final text = '${payload['comment'] ?? ''}'.trim();
+        final clock = DateTime.now().toString().split(' ').last.substring(0, 8);
+        setState(() {
+          _chatUser = user;
+          _chatText = text;
+          _chatTime = clock;
+        });
+        if (text.isNotEmpty) {
+          _keywordController.text = text;
+          _keyword = text;
+          _rerun();
+        }
+        break;
+      case 'clearChat':
+        setState(() {
+          _chatUser = '';
+          _chatText = '';
+          _chatTime = '';
+        });
+        break;
+    }
+  }
+
+  void _cutScene(String scene) {
+    for (final timer in _timers) {
+      timer.cancel();
+    }
+    _timers.clear();
+    String status;
+    String narration;
+    switch (scene) {
+      case 'scan':
+        status = 'MEMINDAI';
+        narration = 'Memindai notes aroma dari katalog Alkaff.';
+        break;
+      case 'mix':
+        status = 'MENCOCOKKAN';
+        narration = 'Mencocokkan keluarga $_notes dengan tema $_themeName.';
+        break;
+      case 'analyze':
+        status = 'MENGANALISIS';
+        narration = 'Menganalisis karakter aroma $_themeName.';
+        break;
+      case 'result':
+        status = 'READY';
+        narration = 'Rekomendasi $_themeName siap. CTA $_cta dimulai dari penonton.';
+        break;
+      default:
+        scene = 'boot';
+        status = 'MENYIAPKAN';
+        narration = 'Menyiapkan laboratorium Alkaff.';
+    }
+    _setScene(scene, status, narration);
+  }
+
+  void _postState() {
+    final payload = jsonEncode({
+      'source': 'alkaff-app',
+      'type': 'alkaff:state',
+      'scene': _scene,
+      'status': _status,
+      'theme': _themeName,
+      'cta': _cta,
+      'products': _products.length,
+      'split': _split,
+      'chat': {
+        'username': _chatUser,
+        'comment': _chatText,
+        'time': _chatTime,
+      },
+    });
+    html.window.postMessage(payload, _consoleOrigin);
   }
 
   Future<void> _boot() async {
@@ -137,6 +274,7 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
       _products = (data['products'] as List?) ?? const [];
       _error = null;
     });
+    _postState();
   }
 
   void _setScene(String scene, String status, String narration) {
@@ -146,6 +284,7 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
       _status = status;
       _narration = narration;
     });
+    _postState();
   }
 
   void _startScenes() {
@@ -272,6 +411,7 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
           ),
         ),
         _topPlate(),
+        _chatBoard(),
         _bottleLabel(),
         _narrationBoard(),
         _productCards(),
@@ -304,6 +444,54 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
             Text(
               _status,
               style: TextStyle(color: _status == 'ERROR' ? Colors.redAccent : Color(0xFF7ED5B2), fontSize: 13),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _chatBoard() {
+    return Positioned(
+      left: 46,
+      top: 158,
+      child: Container(
+        width: 320,
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: const Color(0xE808120E),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0x44FFFFFF)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Row(
+              children: [
+                Icon(Icons.forum_outlined, color: Color(0xFFD7B36B), size: 18),
+                SizedBox(width: 8),
+                Text(
+                  'LIVE CHAT · SIMULASI',
+                  style: TextStyle(color: Color(0xFFD7B36B), fontSize: 12, letterSpacing: 1),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            Text(
+              _chatUser.isEmpty ? 'Menunggu viewer' : '@$_chatUser',
+              style: const TextStyle(color: Color(0xFFF3FAF6), fontSize: 17, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              _chatText.isEmpty ? 'Komen viewer akan tampil di monitor ini.' : _chatText,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: Color(0xFFDCEBE4), fontSize: 14, height: 1.4),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              _chatTime.isEmpty ? '—' : _chatTime,
+              style: const TextStyle(color: Color(0xFF7E9A8C), fontSize: 11),
             ),
           ],
         ),

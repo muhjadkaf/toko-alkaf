@@ -110,11 +110,18 @@ Buka `https://alkaff.lokal.or.id/?controls=1&keyword=kopi%20dingin` saat menyiap
 `https://alkaff.lokal.or.id/?keyword=kopi%20dingin` saat LIVE. Aplikasi mengambil tema dan produk
 langsung dari `/alkaff/api/recommendations` di Odoo `nml`; hasil build Flutter tidak di-commit.
 Theater menampilkan **Alkaff Maklon Hall**, visualisasi pabrik maklon skala besar berupa lima plate
-CG + parallax: penerimaan bahan, pencampuran, QC, dan finishing. Teks hanya menempel pada benda
-fisik, tanpa sosok manusia, dan narasi disiarkan sebagai audio bahasa Indonesia tanpa subtitle.
-Plate dan narasi bisa dibuat ulang dengan `tools/generate_world_plates.py` dan
-`tools/generate_narration.py` di folder webapp. Build memakai `build_web.sh`
-dengan nomor build unik; aset dan loader diberi query `?v=<build>` sehingga
+CG + parallax: penerimaan bahan, pencampuran, QC, dan finishing. Ruangnya memakai tekstur nyata
+(dinding beton, lantai epoksi, stainless brushed, kayu hangat), rak botol kaca amber, tangki
+berjaket, drum, pipa/gauge, meja QC dengan vial/pipet/suntikan realistik, dan conveyor—bukan garis
+atau kotak generik. Teks hanya menempel pada benda fisik, tanpa sosok manusia, dan narasi disiarkan
+sebagai audio bahasa Indonesia tanpa subtitle. Rujukan visual multi-agen (butik parfum, peralatan
+maklon, lisensi foto) tercatat di
+[`webapp/alkaff_scent_lab/docs/REFERENSI-VISUAL.md`](webapp/alkaff_scent_lab/docs/REFERENSI-VISUAL.md);
+foto internet hanya dipakai sebagai referensi, bukan disalin ke repo.
+
+Plate dan narasi bisa dibuat ulang dengan `tools/generate_world_plates.py`,
+`tools/texture_utils.py`, dan `tools/generate_narration.py` di folder webapp. Build memakai
+`build_web.sh` dengan nomor build unik; aset dan loader diberi query `?v=<build>` sehingga
 tablet Opera maupun PC otomatis mengambil versi baru tanpa hard refresh.
 
 Di OBS cukup pakai **Window Capture** pada jendela browser. Opsi `?mode=split` menyediakan zona

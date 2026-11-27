@@ -58,8 +58,19 @@ https://alkaff.lokal.or.id/?mode=split&keyword=kopi%20dingin
 
 ## Dunia dan aset
 
-Lima adegan memakai plate CG yang dirender lokal dengan PIL, sehingga bisa
-dibuat ulang tanpa layanan gambar eksternal:
+Lima adegan memakai plate CG yang dirender lokal dengan numpy + PIL, sehingga
+bisa dibuat ulang tanpa layanan gambar eksternal. Ruangnya adalah perpaduan
+**pabrik maklon stainless** dan **butik parfum hangat**: dinding beton bertekstur,
+lantai epoksi berkilap lembut, rak kayu berrel kuningan berisi botol kaca amber
+berlabel matte, lampu high-bay hangat, tangki berjaket, drum di atas palet,
+pipa ber-flange, gauge dial, catwalk, meja QC stainless dengan vial/pipet/suntikan,
+serta conveyor botol di akhir lini. Tidak ada garis grid atau kotak generik,
+manusia, teks mengambang, neon, atau partikel ajaib.
+
+Riset multi-agen (nuansa butik, peralatan maklon, dan lisensi foto/tekstur)
+tercatat di `docs/REFERENSI-VISUAL.md` lengkap dengan URL, tanggal akses
+`2026-11-27`, dan status verifikasi. Foto internet dipakai hanya sebagai
+referensi nuansa; tidak ada foto yang disalin atau disimpan di repo.
 
 | Scene | Plate | Narasi audio |
 |---|---|---|
@@ -72,9 +83,15 @@ dibuat ulang tanpa layanan gambar eksternal:
 Generator:
 
 ```bash
-python3 tools/generate_world_plates.py   # butuh Pillow
+python3 tools/generate_world_plates.py   # butuh Pillow + numpy
 python3 tools/generate_narration.py      # butuh gTTS, bahasa Indonesia
 ```
+
+`tools/texture_utils.py` menyediakan tekstur prosedural yang dipakai generator:
+`concrete` (dinding), `epoxy` (lantai), `brushed_steel` (tangki/meja/pipa),
+`warm_wood` (rak/palet), `fbm`/`grain` (ketidakteraturan alami), dan
+`radial_light` (cahaya hangat dengan jatuhan mulus). Semua tekstur dibuat dari
+nol; tidak ada aset gambar pihak ketiga.
 
 `WorldStage` melakukan parallax ringan dan menempelkan UI diegetik: papan logam
 identitas di dinding, monitor QC untuk chat simulasi, dan kertas batch untuk

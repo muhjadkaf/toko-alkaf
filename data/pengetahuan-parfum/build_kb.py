@@ -5,8 +5,9 @@ Membaca:  ../katalog-alkaff-odoo/katalog_parfum_alkaff_odoo.csv
 Menulis:  file CSV + JSON di direktori ini.
 
 Data yang dihasilkan bersifat **edukatif dan komersial-ringan**: taksonomi,
-deskriptor, ide accord, dan tema layanan. Bukan komposisi resmi pabrik, bukan
-formula produksi, dan bukan klaim kosmetik/obat.
+deskriptor, ide accord, tema layanan, frasa sensorik, dan pagar klaim. Bukan
+komposisi resmi pabrik, bukan formula produksi, bukan positioning merek lain,
+dan bukan klaim kosmetik/obat.
 """
 from __future__ import annotations
 
@@ -405,6 +406,178 @@ DESCRIPTORS = [
     ("Restock", "Restock", "momen", "Pembelian ulang rutin", "White musk mudah di-restock."),
 ]
 
+# Riset 03_karakter_marketing.md (2026-11-27), §3. Kalimat pendek 2–8 kata
+# untuk copywriter overlay/LIVE. Ini gambaran sensorik/suasana, BUKAN klaim
+# komposisi, performa, efek tubuh, atau arketipe resmi/persona demografi.
+SENSORIAL_PHRASES = [
+    (1, "Quiet Luxurian", "Kain linen tersetrika rapi", "BARU", "—"),
+    (2, "Quiet Luxurian", "Cahaya jendela sore", "BARU", "—"),
+    (3, "Quiet Luxurian", "Kayu halus tanpa riuh", "BARU", "Kayu, Kayu Krim"),
+    (4, "Quiet Luxurian", "Lipatan kemeja bersih", "BARU", "Bersih"),
+    (5, "Quiet Luxurian", "Ruang kerja sunyi", "BARU", "Tenang"),
+    (6, "Quiet Luxurian", "Sentuhan akhir yang pelan", "BARU", "—"),
+    (7, "Quiet Luxurian", "Elegan tanpa perlu sorotan", "BARU", "Mewah"),
+    (8, "Modern Romantic", "Kelopak setelah hujan", "BARU", "—"),
+    (9, "Modern Romantic", "Mawar dengan embun pagi", "BARU", "Berbunga"),
+    (10, "Modern Romantic", "Pelukan kain katun", "BARU", "Krim"),
+    (11, "Modern Romantic", "Manis vanila yang lembut", "BARU", "Manis, Krim"),
+    (12, "Modern Romantic", "Surat yang belum dikirim", "BARU", "Romantis"),
+    (13, "Modern Romantic", "Sore di taman kota", "BARU", "—"),
+    (14, "Modern Romantic", "Bunga putih di meja", "BARU", "Berbunga, Bunga Krim"),
+    (15, "Night Strategist", "Meja rapat lampu redup", "BARU", "Formal"),
+    (16, "Night Strategist", "Rapat yang sudah siap", "BARU", "Formal"),
+    (17, "Night Strategist", "Jaket sebelum keluar", "BARU", "—"),
+    (18, "Night Strategist", "Langkah di trotoar malam", "BARU", "Malam"),
+    (19, "Night Strategist", "Kata yang dipikirkan dulu", "BARU", "—"),
+    (20, "Night Strategist", "Bayangan di dinding kantor", "BARU", "Kantor"),
+    (21, "Night Strategist", "Selesai sebelum besok pagi", "BARU", "—"),
+    (22, "Playful Gourmand", "Sendok karamel hangat", "BARU", "Manis"),
+    (23, "Playful Gourmand", "Kue dari oven kecil", "BARU", "Manis"),
+    (24, "Playful Gourmand", "Gula tabur di atas", "BARU", "Manis"),
+    (25, "Playful Gourmand", "Tawa setelah kopi", "BARU", "Nostalgik"),
+    (26, "Playful Gourmand", "Busa susu manis", "BARU", "Susu, Krim Kocok"),
+    (27, "Playful Gourmand", "Ceri di ujung lidah", "BARU", "Ceri"),
+    (28, "Playful Gourmand", "Main-main di dapur", "BARU", "—"),
+    (29, "Clean Minimalist", "Kain setelah dijemur", "BARU", "Bersih"),
+    (30, "Clean Minimalist", "Sabun di tangan bersih", "BARU", "Bersih"),
+    (31, "Clean Minimalist", "Satu botol untuk harian", "BARU", "Santai, Minimalis"),
+    (32, "Clean Minimalist", "Rak yang tidak penuh", "BARU", "Minimalis"),
+    (33, "Clean Minimalist", "Pagi tanpa banyak pilihan", "BARU", "Pagi"),
+    (34, "Clean Minimalist", "Hembusan tipis di leher", "BARU", "Dekat Kulit, Ringan"),
+    (35, "Clean Minimalist", "Putih yang tidak berisik", "BARU", "Minimalis"),
+    (36, "Heritage Keeper", "Resin yang disimpan lama", "BARU", "Resin"),
+    (37, "Heritage Keeper", "Cerita dari lemari kayu", "BARU", "Kayu, Nostalgik"),
+    (38, "Heritage Keeper", "Sore di rumah lama", "BARU", "Nostalgik"),
+    (39, "Heritage Keeper", "Mawar dan damar berdampingan", "BARU", "Resin, Berbunga"),
+    (40, "Heritage Keeper", "Kain songket di acara keluarga", "BARU", "Lokal"),
+    (41, "Heritage Keeper", "Warisan yang dipakai lagi", "BARU", "Nostalgik"),
+    (42, "Heritage Keeper", "Aroma attar yang dikenal", "BARU", "Mewah"),
+    (43, "Explorer", "Peta di saku jaket", "BARU", "—"),
+    (44, "Explorer", "Pintu yang belum dibuka", "BARU", "—"),
+    (45, "Explorer", "Angin dari kota baru", "BARU", "Lapang"),
+    (46, "Explorer", "Rasa penasaran di perjalanan", "BARU", "—"),
+    (47, "Explorer", "Aroma yang sulit ditebak", "BARU", "Dramatis"),
+    (48, "Explorer", "Jalan masuk ke hutan", "BARU", "Hijau Daun, Pinus"),
+    (49, "Explorer", "Kembali dengan cerita baru", "BARU", "—"),
+    (50, "Soft Rebel", "Aturan yang dilipat kecil", "BARU", "—"),
+    (51, "Soft Rebel", "Warna yang sengaja beda", "BARU", "Dramatis"),
+    (52, "Soft Rebel", "Senyum di balik jaket", "BARU", "—"),
+    (53, "Soft Rebel", "Langkah yang tidak searah", "BARU", "—"),
+    (54, "Soft Rebel", "Lada di ujung manis", "BARU", "Pedas, Segar-Manis"),
+    (55, "Soft Rebel", "Nada yang tidak ikut arus", "BARU", "—"),
+    (56, "Soft Rebel", "Gelap yang tetap ramah", "BARU", "Hangat"),
+    (57, "Ritualist", "Cangkir teh masih hangat", "BARU", "Teh"),
+    (58, "Ritualist", "Tiga napas sebelum mulai", "BARU", "Tenang"),
+    (59, "Ritualist", "Lampu kecil di sudut", "BARU", "Tenang"),
+    (60, "Ritualist", "Halaman yang dibuka pelan", "BARU", "—"),
+    (61, "Ritualist", "Rangkaian pagi yang sama", "BARU", "Pagi"),
+    (62, "Ritualist", "Daun kering dalam cangkir", "BARU", "Teh, Herbal"),
+    (63, "Ritualist", "Jeda antara dua rapat", "BARU", "Kantor"),
+    (64, "Collector", "Rak yang bertambah satu", "BARU", "Restock"),
+    (65, "Collector", "Botol kecil untuk dicoba", "BARU", "Workshop"),
+    (66, "Collector", "Catatan di kertas kecil", "BARU", "—"),
+    (67, "Collector", "Sampel yang disimpan rapi", "BARU", "Workshop"),
+    (68, "Collector", "Satu lagi yang berbeda", "BARU", "—"),
+    (69, "Collector", "Koleksi yang ikut bertumbuh", "BARU", "Restock"),
+    (70, "Collector", "Cukup untuk hari ini", "BARU", "—"),
+]
+
+# Riset 03_karakter_marketing.md (2026-11-27), §4. Pagar klaim untuk
+# narasi LIVE/theater. Kolom dasar memakai kode sumber S5–S16 pada laporan;
+# status verifikasi disalin apa adanya, bukan klaim produk Alkaff.
+CLAIM_GUARDS = [
+    ("Tahan 24 jam / seharian penuh / 12 jam tanpa top up",
+     "Tanpa bukti; angka harus dari uji yang relevan dengan produk",
+     "Coba di kulit Anda dan amati sendiri; cocok untuk rutinitas panjang tanpa angka",
+     "S6 https://eur-lex.europa.eu/eli/reg/2013/655/oj/eng; S9 https://www.ftc.gov/legal-library/browse/ftc-policy-statement-regarding-advertising-substantiation",
+     "2026-11-27", "Terverifikasi (primer)"),
+    ("Bebas alergi / hypoallergenic / alergy tested / tidak mungkin gatal",
+     "Dilarang/tanpa jaminan",
+     "Coba sedikit lebih dulu; lihat daftar bahan pada kemasan",
+     "S7 https://www.fda.gov/cosmetics/cosmetics-labeling-claims/hypoallergenic-cosmetics; S5 https://ifrafragrance.org/about-fragrance/this-is-a-fragrance-2",
+     "2026-11-27", "Terverifikasi (primer + editorial)"),
+    ("Afrodisiak / memicu hasrat / pasangan pasti jatuh cinta",
+     "Dilarang sebagai efek tubuh/pikiran",
+     "Aroma bunga yang terasa personal; pilihan untuk malam yang rapi",
+     "S8 https://www.fda.gov/cosmetics/cosmetic-products/aromatherapy; S10 https://ads.tiktok.com/resources/help/article/tiktok-ads-policy-misleading-and-false-content",
+     "2026-11-27", "Terverifikasi (primer + platform)"),
+    ("Menghangatkan tubuh / mendinginkan suhu tubuh / menurunkan demam",
+     "Dilarang; masuk klaim fungsi tubuh/obat",
+     "Kesan resin hangat di hidung; sejuk kaca sebagai gambaran aroma",
+     "S8 https://www.fda.gov/cosmetics/cosmetic-products/aromatherapy",
+     "2026-11-27", "Terverifikasi (primer)"),
+    ("Halal tanpa sertifikat / attar halal hanya karena tradisi",
+     "Dilarang tanpa penunjukan resmi",
+     "Aroma tradisional berbasis attar; status sertifikasi dicek pada dokumen produk",
+     "S13 https://bpjph.halal.go.id/read/penyesuaian-penahapan-kewajiban-sertifikasi-halal-diatur-dalam-pp-40-tahun-2026-begini-rinciannya; S14 https://jdih.halal.go.id/api/jdih/pdf?path=jdih%2Fdokumen%2F1792631903741_salinan_-_370.2026._pedoman_pelaksanaan_sjph_kosmetik.pdf",
+     "2026-11-27", "Terverifikasi (primer; S14 cuplikan PDF)"),
+    ("BPOM / disetujui BPOM / lolos uji pemerintah tanpa nomor",
+     "Dilarang; otoritas tidak memberi stempel klaim produk",
+     "Informasi Produk dan nomor notifikasi ditampilkan apa adanya; bila kosong, jangan disebut",
+     "S12 https://standar-otskk.pom.go.id/berita/siaran-pers-nomor-hm-01-1-2-05-25-104-tanggal-15-mei-2025; S6 https://eur-lex.europa.eu/eli/reg/2013/655/oj/eng",
+     "2026-11-27", "Terverifikasi (primer)"),
+    ("Harga resmi / harga brand / promo resmi tanpa sumber",
+     "Dilarang tanpa sumber; platform melarang info harga tidak konsisten",
+     "Harga dan stok dicek pada katalog/toko resmi saat LIVE; tidak menyebut angka",
+     "S10 https://ads.tiktok.com/resources/help/article/tiktok-ads-policy-misleading-and-false-content",
+     "2026-11-27", "Terverifikasi (platform) + prinsip internal"),
+    ("Bersertifikat IFRA tanpa dokumen pembuat campuran wewangian",
+     "Tanpa bukti; jangan menyiratkan stempel IFRA",
+     "Dapat diminta: dokumen kesesuaian dari pembuat campuran wewangian, bila tersedia",
+     "S5 https://ifrafragrance.org/about-fragrance/this-is-a-fragrance-2",
+     "2026-11-27", "Terverifikasi (editorial)"),
+    ("Detoks / melancarkan peredaran darah / mengatasi stres / menyembuhkan insomnia",
+     "Dilarang; klaim terapi/obat",
+     "Suasana lembut, tidak mengganggu; ritual teh yang sederhana",
+     "S8 https://www.fda.gov/cosmetics/cosmetic-products/aromatherapy",
+     "2026-11-27", "Terverifikasi (primer)"),
+    ("100% natural / chemical-free / non-toxic / organik tanpa dokumen",
+     "Dilarang/menyesatkan; istilah pemasaran tanpa definisi ketat",
+     "Terinspirasi bunga dan kayu; perpaduan note alami dan molekul wewangian",
+     "S5 https://ifrafragrance.org/about-fragrance/this-is-a-fragrance-2; S6 https://eur-lex.europa.eu/eli/reg/2013/655/oj/eng",
+     "2026-11-27", "Terverifikasi (editorial + primer)"),
+    ("Paling wangi / No. 1 di TikTok / terbaik di dunia",
+     "Dilarang sebagai istilah absolut",
+     "Salah satu opsi yang sering dipilih untuk malam; cocok untuk yang suka amber",
+     "S10 https://ads.tiktok.com/resources/help/article/tiktok-ads-policy-misleading-and-false-content; S6 https://eur-lex.europa.eu/eli/reg/2013/655/oj/eng",
+     "2026-11-27", "Terverifikasi (platform + primer)"),
+    ("Cocok untuk semua kulit / aman untuk bayi / aman untuk ibu hamil",
+     "Dilarang/tanpa bukti; sensitivitas individu berbeda",
+     "Coba dalam jumlah kecil sesuai petunjuk penggunaan; konsultasikan bila ada kekhawatiran",
+     "S7 https://www.fda.gov/cosmetics/cosmetics-labeling-claims/hypoallergenic-cosmetics; S5 https://ifrafragrance.org/about-fragrance/this-is-a-fragrance-2",
+     "2026-11-27", "Terverifikasi (primer + editorial)"),
+    ("EDP pasti lebih tahan dari EDT / ekstrak 30% pasti lebih kuat",
+     "Tanpa bukti; jangan menjanjikan performa dari label saja",
+     "Bandingkan pada kulit Anda; sebutkan label konsentrasi apa adanya",
+     "S6 https://eur-lex.europa.eu/eli/reg/2013/655/oj/eng",
+     "2026-11-27", "Terverifikasi (primer) + prinsip internal"),
+    ("Komposisi persis brand X / dupe identik / formula resmi pabrik",
+     "Dilarang tanpa data resmi",
+     "Terinspirasi keluarga aroma; daftar note bersifat edukatif",
+     "S6 https://eur-lex.europa.eu/eli/reg/2013/655/oj/eng; S9 https://www.ftc.gov/legal-library/browse/ftc-policy-statement-regarding-advertising-substantiation",
+     "2026-11-27", "Terverifikasi (primer)"),
+    ("Sebelum/sesudah dengan filter / warna botol membuktikan mutu",
+     "Dilarang; menyesatkan secara visual",
+     "Tampilkan kartu notes dan kondisi pencahayaan apa adanya",
+     "S10 https://ads.tiktok.com/resources/help/article/tiktok-ads-policy-misleading-and-false-content; S11 https://www.tiktok.com/community-guidelines/en/integrity-authenticity",
+     "2026-11-27", "Terverifikasi (platform)"),
+    ("Auto-DM dari komentar LIVE / DM massal / interaksi otomatis",
+     "Dilarang oleh alur platform",
+     "Penonton mengetik keyword; balasan dikirim dalam jalur DM yang sah",
+     "S11 https://www.tiktok.com/community-guidelines/en/integrity-authenticity; S16 dokumentasi internal LIVE",
+     "2026-11-27", "Terverifikasi (platform) + prinsip internal"),
+    ("Aroma menenangkan pikiran / membuat tidur lebih nyenyak",
+     "Dilarang sebagai klaim terapi",
+     "Suasana lembut, tidak mengganggu; cocok untuk rutinitas malam",
+     "S8 https://www.fda.gov/cosmetics/cosmetic-products/aromatherapy",
+     "2026-11-27", "Terverifikasi (primer)"),
+    ("Gratis / diskon / angka stok atau ketersediaan belum dicek",
+     "Dilarang bila tidak cocok dengan katalog",
+     "CTA diarahkan ke pengecekan katalog; tidak menyebut angka",
+     "S10 https://ads.tiktok.com/resources/help/article/tiktok-ads-policy-misleading-and-false-content",
+     "2026-11-27", "Terverifikasi (platform) + prinsip internal"),
+]
+
 # Accord: (nama, keluarga, rasio bagian, karakter, momen, maturasi, catatan)
 ACCORDS = [
     ("Citrus Pagi", "Citrus Segar", "Bergamot 3 · Lemon 2 · Lavender 2 · White Musk 2 · Cedar 1", "Segar, bersih, ringan", "Pagi, kantor, olahraga", "3–7 hari", "Hindari klaim 'tahan 24 jam' tanpa uji."),
@@ -682,7 +855,30 @@ def main():
                "CTA Keyword", "Format Konten", "Momen", "Risiko / Caveat", "Catatan LIVE"],
               theme_rows)
 
-    # 06 bundle JSON untuk aplikasi
+    # 06 frasa sensorik dari riset 03 (bukan klaim, bukan komposisi resmi)
+    phrase_rows = [
+        [str(no), archetype, phrase, status, similar,
+         "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+         "research/03_karakter_marketing.md", "2026-11-27"]
+        for no, archetype, phrase, status, similar in SENSORIAL_PHRASES
+    ]
+    write_csv("06_frasa_sensorik.csv",
+              ["#", "Arketipe (alat bercerita)", "Frasa", "Status", "Mirip Deskriptor",
+               "Batasan", "Sumber", "Tanggal Akses"],
+              phrase_rows)
+
+    # 07 pagar klaim dari riset 03 (aturan, bukan janji produk)
+    guard_rows = [
+        [risky, status, safe, basis, access, verification,
+         "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."]
+        for risky, status, safe, basis, access, verification in CLAIM_GUARDS
+    ]
+    write_csv("07_pagar_klaim.csv",
+              ["Klaim Berisiko", "Status", "Alternatif Aman", "Dasar / URL Sumber",
+               "Tanggal Akses", "Status Verifikasi", "Batasan"],
+              guard_rows)
+
+    # 08 bundle JSON untuk aplikasi
     bundle = {
         "sumber": "katalog_parfum_alkaff_odoo.csv",
         "jumlah_produk": len(parsed),
@@ -691,6 +887,8 @@ def main():
         "deskriptor": [dict(zip(["Deskriptor","English","Dimensi","Makna","Contoh Kalimat"], d)) for d in DESCRIPTORS],
         "accord": [dict(zip(["Nama","Keluarga","Rasio","Karakter","Momen","Maturasi","Keamanan","Contoh Internal Reference","Status"], r)) for r in accord_rows],
         "tema": [dict(zip(["Tema","Persona","Trigger","Keluarga","Notes Kunci","Contoh Internal Reference","CTA","Format","Momen","Risiko","Catatan LIVE"], r)) for r in theme_rows],
+        "frasa": [dict(zip(["#","Arketipe","Frasa","Status","Mirip Deskriptor","Batasan","Sumber","Tanggal Akses"], r)) for r in phrase_rows],
+        "pagarKlaim": [dict(zip(["Klaim Berisiko","Status","Alternatif Aman","Dasar","Tanggal Akses","Status Verifikasi","Batasan"], r)) for r in guard_rows],
     }
     (ROOT / "pengetahuan-parfum.json").write_text(
         json.dumps(bundle, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -707,7 +905,8 @@ def main():
         raise SystemExit("Referensi tidak ditemukan di katalog: " + ", ".join(invalid))
 
     print(f"Produk: {len(parsed)} | keluarga: {len(fam_rows)} | notes: {len(note_rows)} | "
-          f"deskriptor: {len(DESCRIPTORS)} | accord: {len(accord_rows)} | tema: {len(theme_rows)}")
+          f"deskriptor: {len(DESCRIPTORS)} | accord: {len(accord_rows)} | tema: {len(theme_rows)} | "
+          f"frasa: {len(phrase_rows)} | pagar klaim: {len(guard_rows)}")
     print("Referensi tervalidasi:", len(all_refs))
 
 

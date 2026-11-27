@@ -16,8 +16,10 @@ Dibuat 2026-11-26. Generator: [`build_kb.py`](build_kb.py).
 | [`03_kosakata_deskriptor.csv`](03_kosakata_deskriptor.csv) | 78 deskriptor | kosakata copywriting Indonesia–English beserta dimensi dan contoh kalimat |
 | [`04_resep_accord.csv`](04_resep_accord.csv) | 56 accord | Ide kombinasi notes (sebagian tanpa rasio), karakter, momen, maturasi, dan catatan keamanan |
 | [`05_tema_layanan.csv`](05_tema_layanan.csv) | 40 tema | Persona, trigger, notes kunci, keyword CTA, format konten, risiko, dan contoh produk |
+| [`06_frasa_sensorik.csv`](06_frasa_sensorik.csv) | 70 frasa | Kalimat pendek 2–8 kata per arketipe; gambaran sensorik/suasana, bukan klaim |
+| [`07_pagar_klaim.csv`](07_pagar_klaim.csv) | 18 aturan | Klaim berisiko, alternatif aman, dasar/URL, tanggal akses, dan status verifikasi |
 | [`pengetahuan-parfum.json`](pengetahuan-parfum.json) | bundle | Semua tabel di atas dalam satu JSON untuk dikonsumsi aplikasi |
-| [`research/`](research/) | 4 laporan | Riset multi-agent: note/accord baru, merek, karakter marketing, audit katalog |
+| [`research/`](research/) | 5 dokumen | Riset multi-agent: note/accord, merek, karakter marketing, audit katalog, dan keputusan tinjauan |
 
 ## Cara memperbarui
 
@@ -30,12 +32,15 @@ lalu menimpa seluruh CSV/JSON di direktori ini. Generator juga memvalidasi semua
 `Internal Reference` yang dipakai sebagai contoh; jika ada referensi yang tidak
 ada di katalog, proses berhenti dengan error.
 
-Hasil riset di [`research/`](research/) sudah sebagian diserap ke generator:
+Hasil riset di [`research/`](research/) sudah diserap secara selektif:
 12 alias, 37 entri `NOTE_META`, dan 16 accord dari laporan
-`01_perbendaharaan_aroma.md` (akses 2026-11-27). Entri yang masih
-`Perlu verifikasi` diberi catatan eksplisit di kolom deskripsi/keamanan; laporan
-`02`–`04` tetap sebagai bahan baku positioning, narasi, dan audit—belum
-diubah menjadi tema/CSV baru tanpa tinjauan lanjutan.
+`01_perbendaharaan_aroma.md`; 70 frasa sensorik dan 18 pagar klaim dari laporan
+`03_karakter_marketing.md` (semua akses 2026-11-27). Entri yang masih
+`Perlu verifikasi` diberi catatan eksplisit di kolom deskripsi/keamanan.
+Keputusan tinjauan laporan `02`–`04` ada di
+[`research/05_keputusan_tinjauan.md`](research/05_keputusan_tinjauan.md):
+arketipe, 12 usulan tema, ide positioning, kandidat produk, dan perbaikan data
+tetap usulan/internal—belum dijadikan klaim publik, tema baru, atau harga.
 
 ## Cara menggabungkan dengan katalog
 
@@ -67,8 +72,9 @@ notes, keluarga, dan status harga terverifikasi; referensi tidak diarang.
 
 - **Rekomendasi cepat:** pilih tema dari `05_tema_layanan.csv` berdasarkan
   persona/momen, lalu ambil 3–6 produk dari kolom contoh reference.
-- **Copywriting:** ambil deskriptor dari `03_kosakata_deskriptor.csv` dan
-  karakter keluarga dari `01_keluarga_aroma.csv`.
+- **Copywriting:** ambil deskriptor dari `03_kosakata_deskriptor.csv`, frasa dari
+  `06_frasa_sensorik.csv`, dan karakter keluarga dari `01_keluarga_aroma.csv`.
+  Sebelum tayang, cocokkan kalimat dengan `07_pagar_klaim.csv`.
 - **Edukasi racik:** tampilkan `04_resep_accord.csv` sebagai inspirasi, bukan
   formula produksi; sertakan `Catatan Keamanan`.
 - **Filter LIVE:** tema dengan CTA harus memakai alur viewer-initiated. Jangan

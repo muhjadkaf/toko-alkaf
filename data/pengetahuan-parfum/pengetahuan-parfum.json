@@ -3615,5 +3615,871 @@
       "Risiko": "Pencahayaan bukan bukti kualitas.",
       "Catatan LIVE": "Beli/DM dimulai dari pengguna bila dipakai di TikTok LIVE."
     }
+  ],
+  "frasa": [
+    {
+      "#": "1",
+      "Arketipe": "Quiet Luxurian",
+      "Frasa": "Kain linen tersetrika rapi",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "2",
+      "Arketipe": "Quiet Luxurian",
+      "Frasa": "Cahaya jendela sore",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "3",
+      "Arketipe": "Quiet Luxurian",
+      "Frasa": "Kayu halus tanpa riuh",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Kayu, Kayu Krim",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "4",
+      "Arketipe": "Quiet Luxurian",
+      "Frasa": "Lipatan kemeja bersih",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Bersih",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "5",
+      "Arketipe": "Quiet Luxurian",
+      "Frasa": "Ruang kerja sunyi",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Tenang",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "6",
+      "Arketipe": "Quiet Luxurian",
+      "Frasa": "Sentuhan akhir yang pelan",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "7",
+      "Arketipe": "Quiet Luxurian",
+      "Frasa": "Elegan tanpa perlu sorotan",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Mewah",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "8",
+      "Arketipe": "Modern Romantic",
+      "Frasa": "Kelopak setelah hujan",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "9",
+      "Arketipe": "Modern Romantic",
+      "Frasa": "Mawar dengan embun pagi",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Berbunga",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "10",
+      "Arketipe": "Modern Romantic",
+      "Frasa": "Pelukan kain katun",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Krim",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "11",
+      "Arketipe": "Modern Romantic",
+      "Frasa": "Manis vanila yang lembut",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Manis, Krim",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "12",
+      "Arketipe": "Modern Romantic",
+      "Frasa": "Surat yang belum dikirim",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Romantis",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "13",
+      "Arketipe": "Modern Romantic",
+      "Frasa": "Sore di taman kota",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "14",
+      "Arketipe": "Modern Romantic",
+      "Frasa": "Bunga putih di meja",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Berbunga, Bunga Krim",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "15",
+      "Arketipe": "Night Strategist",
+      "Frasa": "Meja rapat lampu redup",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Formal",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "16",
+      "Arketipe": "Night Strategist",
+      "Frasa": "Rapat yang sudah siap",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Formal",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "17",
+      "Arketipe": "Night Strategist",
+      "Frasa": "Jaket sebelum keluar",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "18",
+      "Arketipe": "Night Strategist",
+      "Frasa": "Langkah di trotoar malam",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Malam",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "19",
+      "Arketipe": "Night Strategist",
+      "Frasa": "Kata yang dipikirkan dulu",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "20",
+      "Arketipe": "Night Strategist",
+      "Frasa": "Bayangan di dinding kantor",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Kantor",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "21",
+      "Arketipe": "Night Strategist",
+      "Frasa": "Selesai sebelum besok pagi",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "22",
+      "Arketipe": "Playful Gourmand",
+      "Frasa": "Sendok karamel hangat",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Manis",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "23",
+      "Arketipe": "Playful Gourmand",
+      "Frasa": "Kue dari oven kecil",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Manis",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "24",
+      "Arketipe": "Playful Gourmand",
+      "Frasa": "Gula tabur di atas",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Manis",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "25",
+      "Arketipe": "Playful Gourmand",
+      "Frasa": "Tawa setelah kopi",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Nostalgik",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "26",
+      "Arketipe": "Playful Gourmand",
+      "Frasa": "Busa susu manis",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Susu, Krim Kocok",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "27",
+      "Arketipe": "Playful Gourmand",
+      "Frasa": "Ceri di ujung lidah",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Ceri",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "28",
+      "Arketipe": "Playful Gourmand",
+      "Frasa": "Main-main di dapur",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "29",
+      "Arketipe": "Clean Minimalist",
+      "Frasa": "Kain setelah dijemur",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Bersih",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "30",
+      "Arketipe": "Clean Minimalist",
+      "Frasa": "Sabun di tangan bersih",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Bersih",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "31",
+      "Arketipe": "Clean Minimalist",
+      "Frasa": "Satu botol untuk harian",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Santai, Minimalis",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "32",
+      "Arketipe": "Clean Minimalist",
+      "Frasa": "Rak yang tidak penuh",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Minimalis",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "33",
+      "Arketipe": "Clean Minimalist",
+      "Frasa": "Pagi tanpa banyak pilihan",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Pagi",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "34",
+      "Arketipe": "Clean Minimalist",
+      "Frasa": "Hembusan tipis di leher",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Dekat Kulit, Ringan",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "35",
+      "Arketipe": "Clean Minimalist",
+      "Frasa": "Putih yang tidak berisik",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Minimalis",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "36",
+      "Arketipe": "Heritage Keeper",
+      "Frasa": "Resin yang disimpan lama",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Resin",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "37",
+      "Arketipe": "Heritage Keeper",
+      "Frasa": "Cerita dari lemari kayu",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Kayu, Nostalgik",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "38",
+      "Arketipe": "Heritage Keeper",
+      "Frasa": "Sore di rumah lama",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Nostalgik",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "39",
+      "Arketipe": "Heritage Keeper",
+      "Frasa": "Mawar dan damar berdampingan",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Resin, Berbunga",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "40",
+      "Arketipe": "Heritage Keeper",
+      "Frasa": "Kain songket di acara keluarga",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Lokal",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "41",
+      "Arketipe": "Heritage Keeper",
+      "Frasa": "Warisan yang dipakai lagi",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Nostalgik",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "42",
+      "Arketipe": "Heritage Keeper",
+      "Frasa": "Aroma attar yang dikenal",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Mewah",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "43",
+      "Arketipe": "Explorer",
+      "Frasa": "Peta di saku jaket",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "44",
+      "Arketipe": "Explorer",
+      "Frasa": "Pintu yang belum dibuka",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "45",
+      "Arketipe": "Explorer",
+      "Frasa": "Angin dari kota baru",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Lapang",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "46",
+      "Arketipe": "Explorer",
+      "Frasa": "Rasa penasaran di perjalanan",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "47",
+      "Arketipe": "Explorer",
+      "Frasa": "Aroma yang sulit ditebak",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Dramatis",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "48",
+      "Arketipe": "Explorer",
+      "Frasa": "Jalan masuk ke hutan",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Hijau Daun, Pinus",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "49",
+      "Arketipe": "Explorer",
+      "Frasa": "Kembali dengan cerita baru",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "50",
+      "Arketipe": "Soft Rebel",
+      "Frasa": "Aturan yang dilipat kecil",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "51",
+      "Arketipe": "Soft Rebel",
+      "Frasa": "Warna yang sengaja beda",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Dramatis",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "52",
+      "Arketipe": "Soft Rebel",
+      "Frasa": "Senyum di balik jaket",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "53",
+      "Arketipe": "Soft Rebel",
+      "Frasa": "Langkah yang tidak searah",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "54",
+      "Arketipe": "Soft Rebel",
+      "Frasa": "Lada di ujung manis",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Pedas, Segar-Manis",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "55",
+      "Arketipe": "Soft Rebel",
+      "Frasa": "Nada yang tidak ikut arus",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "56",
+      "Arketipe": "Soft Rebel",
+      "Frasa": "Gelap yang tetap ramah",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Hangat",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "57",
+      "Arketipe": "Ritualist",
+      "Frasa": "Cangkir teh masih hangat",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Teh",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "58",
+      "Arketipe": "Ritualist",
+      "Frasa": "Tiga napas sebelum mulai",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Tenang",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "59",
+      "Arketipe": "Ritualist",
+      "Frasa": "Lampu kecil di sudut",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Tenang",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "60",
+      "Arketipe": "Ritualist",
+      "Frasa": "Halaman yang dibuka pelan",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "61",
+      "Arketipe": "Ritualist",
+      "Frasa": "Rangkaian pagi yang sama",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Pagi",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "62",
+      "Arketipe": "Ritualist",
+      "Frasa": "Daun kering dalam cangkir",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Teh, Herbal",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "63",
+      "Arketipe": "Ritualist",
+      "Frasa": "Jeda antara dua rapat",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Kantor",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "64",
+      "Arketipe": "Collector",
+      "Frasa": "Rak yang bertambah satu",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Restock",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "65",
+      "Arketipe": "Collector",
+      "Frasa": "Botol kecil untuk dicoba",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Workshop",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "66",
+      "Arketipe": "Collector",
+      "Frasa": "Catatan di kertas kecil",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "67",
+      "Arketipe": "Collector",
+      "Frasa": "Sampel yang disimpan rapi",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Workshop",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "68",
+      "Arketipe": "Collector",
+      "Frasa": "Satu lagi yang berbeda",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "69",
+      "Arketipe": "Collector",
+      "Frasa": "Koleksi yang ikut bertumbuh",
+      "Status": "BARU",
+      "Mirip Deskriptor": "Restock",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    },
+    {
+      "#": "70",
+      "Arketipe": "Collector",
+      "Frasa": "Cukup untuk hari ini",
+      "Status": "BARU",
+      "Mirip Deskriptor": "—",
+      "Batasan": "Gambaran sensorik/suasana; bukan komposisi, performa, atau efek tubuh.",
+      "Sumber": "research/03_karakter_marketing.md",
+      "Tanggal Akses": "2026-11-27"
+    }
+  ],
+  "pagarKlaim": [
+    {
+      "Klaim Berisiko": "Tahan 24 jam / seharian penuh / 12 jam tanpa top up",
+      "Status": "Tanpa bukti; angka harus dari uji yang relevan dengan produk",
+      "Alternatif Aman": "Coba di kulit Anda dan amati sendiri; cocok untuk rutinitas panjang tanpa angka",
+      "Dasar": "S6 https://eur-lex.europa.eu/eli/reg/2013/655/oj/eng; S9 https://www.ftc.gov/legal-library/browse/ftc-policy-statement-regarding-advertising-substantiation",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (primer)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Bebas alergi / hypoallergenic / alergy tested / tidak mungkin gatal",
+      "Status": "Dilarang/tanpa jaminan",
+      "Alternatif Aman": "Coba sedikit lebih dulu; lihat daftar bahan pada kemasan",
+      "Dasar": "S7 https://www.fda.gov/cosmetics/cosmetics-labeling-claims/hypoallergenic-cosmetics; S5 https://ifrafragrance.org/about-fragrance/this-is-a-fragrance-2",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (primer + editorial)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Afrodisiak / memicu hasrat / pasangan pasti jatuh cinta",
+      "Status": "Dilarang sebagai efek tubuh/pikiran",
+      "Alternatif Aman": "Aroma bunga yang terasa personal; pilihan untuk malam yang rapi",
+      "Dasar": "S8 https://www.fda.gov/cosmetics/cosmetic-products/aromatherapy; S10 https://ads.tiktok.com/resources/help/article/tiktok-ads-policy-misleading-and-false-content",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (primer + platform)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Menghangatkan tubuh / mendinginkan suhu tubuh / menurunkan demam",
+      "Status": "Dilarang; masuk klaim fungsi tubuh/obat",
+      "Alternatif Aman": "Kesan resin hangat di hidung; sejuk kaca sebagai gambaran aroma",
+      "Dasar": "S8 https://www.fda.gov/cosmetics/cosmetic-products/aromatherapy",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (primer)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Halal tanpa sertifikat / attar halal hanya karena tradisi",
+      "Status": "Dilarang tanpa penunjukan resmi",
+      "Alternatif Aman": "Aroma tradisional berbasis attar; status sertifikasi dicek pada dokumen produk",
+      "Dasar": "S13 https://bpjph.halal.go.id/read/penyesuaian-penahapan-kewajiban-sertifikasi-halal-diatur-dalam-pp-40-tahun-2026-begini-rinciannya; S14 https://jdih.halal.go.id/api/jdih/pdf?path=jdih%2Fdokumen%2F1792631903741_salinan_-_370.2026._pedoman_pelaksanaan_sjph_kosmetik.pdf",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (primer; S14 cuplikan PDF)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "BPOM / disetujui BPOM / lolos uji pemerintah tanpa nomor",
+      "Status": "Dilarang; otoritas tidak memberi stempel klaim produk",
+      "Alternatif Aman": "Informasi Produk dan nomor notifikasi ditampilkan apa adanya; bila kosong, jangan disebut",
+      "Dasar": "S12 https://standar-otskk.pom.go.id/berita/siaran-pers-nomor-hm-01-1-2-05-25-104-tanggal-15-mei-2025; S6 https://eur-lex.europa.eu/eli/reg/2013/655/oj/eng",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (primer)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Harga resmi / harga brand / promo resmi tanpa sumber",
+      "Status": "Dilarang tanpa sumber; platform melarang info harga tidak konsisten",
+      "Alternatif Aman": "Harga dan stok dicek pada katalog/toko resmi saat LIVE; tidak menyebut angka",
+      "Dasar": "S10 https://ads.tiktok.com/resources/help/article/tiktok-ads-policy-misleading-and-false-content",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (platform) + prinsip internal",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Bersertifikat IFRA tanpa dokumen pembuat campuran wewangian",
+      "Status": "Tanpa bukti; jangan menyiratkan stempel IFRA",
+      "Alternatif Aman": "Dapat diminta: dokumen kesesuaian dari pembuat campuran wewangian, bila tersedia",
+      "Dasar": "S5 https://ifrafragrance.org/about-fragrance/this-is-a-fragrance-2",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (editorial)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Detoks / melancarkan peredaran darah / mengatasi stres / menyembuhkan insomnia",
+      "Status": "Dilarang; klaim terapi/obat",
+      "Alternatif Aman": "Suasana lembut, tidak mengganggu; ritual teh yang sederhana",
+      "Dasar": "S8 https://www.fda.gov/cosmetics/cosmetic-products/aromatherapy",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (primer)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "100% natural / chemical-free / non-toxic / organik tanpa dokumen",
+      "Status": "Dilarang/menyesatkan; istilah pemasaran tanpa definisi ketat",
+      "Alternatif Aman": "Terinspirasi bunga dan kayu; perpaduan note alami dan molekul wewangian",
+      "Dasar": "S5 https://ifrafragrance.org/about-fragrance/this-is-a-fragrance-2; S6 https://eur-lex.europa.eu/eli/reg/2013/655/oj/eng",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (editorial + primer)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Paling wangi / No. 1 di TikTok / terbaik di dunia",
+      "Status": "Dilarang sebagai istilah absolut",
+      "Alternatif Aman": "Salah satu opsi yang sering dipilih untuk malam; cocok untuk yang suka amber",
+      "Dasar": "S10 https://ads.tiktok.com/resources/help/article/tiktok-ads-policy-misleading-and-false-content; S6 https://eur-lex.europa.eu/eli/reg/2013/655/oj/eng",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (platform + primer)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Cocok untuk semua kulit / aman untuk bayi / aman untuk ibu hamil",
+      "Status": "Dilarang/tanpa bukti; sensitivitas individu berbeda",
+      "Alternatif Aman": "Coba dalam jumlah kecil sesuai petunjuk penggunaan; konsultasikan bila ada kekhawatiran",
+      "Dasar": "S7 https://www.fda.gov/cosmetics/cosmetics-labeling-claims/hypoallergenic-cosmetics; S5 https://ifrafragrance.org/about-fragrance/this-is-a-fragrance-2",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (primer + editorial)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "EDP pasti lebih tahan dari EDT / ekstrak 30% pasti lebih kuat",
+      "Status": "Tanpa bukti; jangan menjanjikan performa dari label saja",
+      "Alternatif Aman": "Bandingkan pada kulit Anda; sebutkan label konsentrasi apa adanya",
+      "Dasar": "S6 https://eur-lex.europa.eu/eli/reg/2013/655/oj/eng",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (primer) + prinsip internal",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Komposisi persis brand X / dupe identik / formula resmi pabrik",
+      "Status": "Dilarang tanpa data resmi",
+      "Alternatif Aman": "Terinspirasi keluarga aroma; daftar note bersifat edukatif",
+      "Dasar": "S6 https://eur-lex.europa.eu/eli/reg/2013/655/oj/eng; S9 https://www.ftc.gov/legal-library/browse/ftc-policy-statement-regarding-advertising-substantiation",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (primer)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Sebelum/sesudah dengan filter / warna botol membuktikan mutu",
+      "Status": "Dilarang; menyesatkan secara visual",
+      "Alternatif Aman": "Tampilkan kartu notes dan kondisi pencahayaan apa adanya",
+      "Dasar": "S10 https://ads.tiktok.com/resources/help/article/tiktok-ads-policy-misleading-and-false-content; S11 https://www.tiktok.com/community-guidelines/en/integrity-authenticity",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (platform)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Auto-DM dari komentar LIVE / DM massal / interaksi otomatis",
+      "Status": "Dilarang oleh alur platform",
+      "Alternatif Aman": "Penonton mengetik keyword; balasan dikirim dalam jalur DM yang sah",
+      "Dasar": "S11 https://www.tiktok.com/community-guidelines/en/integrity-authenticity; S16 dokumentasi internal LIVE",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (platform) + prinsip internal",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Aroma menenangkan pikiran / membuat tidur lebih nyenyak",
+      "Status": "Dilarang sebagai klaim terapi",
+      "Alternatif Aman": "Suasana lembut, tidak mengganggu; cocok untuk rutinitas malam",
+      "Dasar": "S8 https://www.fda.gov/cosmetics/cosmetic-products/aromatherapy",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (primer)",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    },
+    {
+      "Klaim Berisiko": "Gratis / diskon / angka stok atau ketersediaan belum dicek",
+      "Status": "Dilarang bila tidak cocok dengan katalog",
+      "Alternatif Aman": "CTA diarahkan ke pengecekan katalog; tidak menyebut angka",
+      "Dasar": "S10 https://ads.tiktok.com/resources/help/article/tiktok-ads-policy-misleading-and-false-content",
+      "Tanggal Akses": "2026-11-27",
+      "Status Verifikasi": "Terverifikasi (platform) + prinsip internal",
+      "Batasan": "Diterapkan pada narasi overlay/LIVE; bukan bukti mutu produk Alkaff."
+    }
   ]
 }

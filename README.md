@@ -14,9 +14,9 @@ Seluruh tulisan menggunakan bahasa Indonesia. Repository ini masih tahap fondasi
 |---|---|
 | `docs/` | Empat dokumen sumber sudah disalin, ditambah [`docs/ARSITEKTUR.md`](docs/ARSITEKTUR.md) |
 | `data/katalog-alkaff-odoo/` | XLSX, CSV siap import Odoo, README katalog, dan `tambah_parfum_lokal.py` sudah disalin |
-| `data/pengetahuan-parfum/` | Basis pengetahuan turunan: 14 keluarga, 135 notes, 78 deskriptor, 56 accord, 40 tema layanan |
+| `data/pengetahuan-parfum/` | Basis pengetahuan turunan: 14 keluarga, 135 notes, 78 deskriptor, 56 accord, 40 tema, 70 frasa sensorik, 18 pagar klaim |
 | `odoo/addons/alkaff_catalog/` | Addon Odoo 20: kategori, field aroma/notes, log, dan wizard import CSV (belum dijalankan di Odoo produksi) |
-| `services/live-bridge/` | Skeleton Python stdlib: normalisasi event, state machine, dedupe, dan overlay lokal (31 tes lulus) |
+| `services/live-bridge/` | Skeleton Python stdlib: normalisasi event, state machine, dedupe, dan overlay lokal (34 tes lulus) |
 | Interaksi TikTok LIVE | Punya rencana teknis + skeleton lokal; **belum terhubung ke API TikTok**, tanpa auto-DM |
 | Katalog parfum | 164 produk di sheet `IMPORT_odoo`; 42 `Sales Price` terisi dan 122 sengaja dikosongkan |
 
@@ -72,7 +72,10 @@ klaim produk. Riset lanjutan (perbendaharaan aroma, merek/karakter, kosakata
 marketing, dan audit katalog) ada di
 [`data/pengetahuan-parfum/research/`](data/pengetahuan-parfum/research/);
 semuanya memakai URL sumber, tanggal akses `2026-11-27`, dan status verifikasi.
-Laporan itu masih berupa usulan—belum dijadikan CSV/JSON resmi sebelum ditinjau.
+Setelah ditinjau, hanya frasa sensorik dan pagar klaim yang dipromosikan menjadi
+CSV/JSON; keputusan lengkapnya ada di
+[`research/05_keputusan_tinjauan.md`](data/pengetahuan-parfum/research/05_keputusan_tinjauan.md).
+Arketipe, ide positioning, usulan tema, dan perbaikan katalog tetap usulan.
 
 ### 4. Menjalankan skeleton yang sudah ada
 

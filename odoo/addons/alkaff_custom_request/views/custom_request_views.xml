@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_custom_request_form" model="ir.ui.view">
+        <field name="name">alkaff.custom.request.form</field>
+        <field name="model">alkaff.custom.request</field>
+        <field name="arch" type="xml">
+            <form string="Draft Custom Rebrand">
+                <header>
+                    <button name="action_submit_review" type="object" string="Kirim ke Review"
+                            class="oe_highlight" invisible="status != 'draft'"/>
+                    <button name="action_approve" type="object" string="Setujui"
+                            class="oe_highlight" groups="base.group_system"
+                            invisible="status not in ['draft', 'review']"/>
+                    <button name="action_reject" type="object" string="Tolak"
+                            groups="base.group_system"
+                            invisible="status not in ['draft', 'review']"/>
+                    <field name="status" widget="statusbar" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="draft_ref" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Permintaan">
+                            <field name="alias" readonly="1"/>
+                            <field name="consent_opt_in" readonly="1"/>
+                            <field name="label_name" readonly="1"/>
+                            <field name="consent_at" readonly="1"/>
+                            <field name="theme_ref" readonly="1"/>
+                            <field name="bottle_type" readonly="1"/>
+                            <field name="product_ref" readonly="1"/>
+                        </group>
+                        <group string="Keputusan">
+                            <field name="intent" readonly="1"/>
+                            <field name="reason" readonly="1"/>
+                            <field name="odoo_sync"/>
+                            <field name="reviewed_by" readonly="1"/>
+                            <field name="reviewed_at" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Notes aman (edukasi, bukan formula produksi)">
+                        <field name="notes_aman" readonly="1" nolabel="1"/>
+                    </group>
+                    <group string="Catatan admin">
+                        <field name="review_note" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_custom_request_tree" model="ir.ui.view">
+        <field name="name">alkaff.custom.request.list</field>
+        <field name="model">alkaff.custom.request</field>
+        <field name="arch" type="xml">
+            <list string="Draft Custom Rebrand">
+                <field name="draft_ref"/>
+                <field name="alias"/>
+                <field name="label_name"/>
+                <field name="theme_ref"/>
+                <field name="bottle_type"/>
+                <field name="status"/>
+                <field name="create_date" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_custom_request" model="ir.actions.act_window">
+        <field name="name">Draft Custom Rebrand</field>
+        <field name="res_model">alkaff.custom.request</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem id="menu_custom_request" name="Draft Custom Rebrand"
+              parent="alkaff_catalog.menu_alkaff_catalog_root"
+              action="action_custom_request" sequence="30" groups="base.group_user"/>
+</odoo>

@@ -114,6 +114,40 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
   String _chatTime = '';
   String _assetVersion = '1';
   String? _error;
+
+  /// Reward manual dari konsol. Token penuh hanya ada di URL PNG yang diminta
+  /// theater; state yang dipublikasikan memakai `qrCodeMasked` saja.
+  String _rewardId = '';
+  String _rewardTier = '';
+  String _rewardDelivery = '';
+  String _rewardPoints = '';
+  String _rewardName = '';
+  String _rewardRecipe = '';
+  String _rewardStatus = '';
+  /// `existing_product` memakai QR produk terverifikasi. `custom_draft`
+  /// hanya mengumumkan permintaan; tidak ada QR, harga, atau janji produk jadi.
+  String _rewardDecision = '';
+  String _draftRef = '';
+  bool _draftNoticeVisible = false;
+  String _draftNoticeRef = '';
+  String _draftNoticeName = '';
+  String _draftNoticeTheme = '';
+  String _draftNoticeNotes = '';
+  String _qrPngUrl = '';
+  String _qrCodeMasked = '';
+  int _qrWindowMs = 3000;
+  bool _qrVisible = false;
+  bool _qrLoading = false;
+  int _qrStartedAt = 0;
+  int _qrEndedAt = 0;
+  /// Saat QR tampil, animasi latar dan lip-sync dimatikan sementara supaya
+  /// jendela 3 detik tidak meleset karena repaint berat di browser/OBS.
+  bool _stageMotionPaused = false;
+  int _qrEpoch = 0;
+  String _bottleType = '';
+  String _bottlePhoto = '';
+  String _bottleName = '';
+
   final List<Timer> _timers = [];
   Timer? _controlTimer;
   int _controlCursor = -1;
@@ -322,6 +356,21 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
           _chatTime = '';
         });
         break;
+      case 'reward':
+        _showReward(payload, replay: false);
+        break;
+      case 'rewardReplay':
+        _showReward(payload, replay: true);
+        break;
+      case 'rewardClear':
+        _clearReward();
+        break;
+      case 'rewardRevoke':
+        _revokeReward(payload);
+        break;
+      case 'customDraft':
+        _showDraftNotice(payload);
+        break;
     }
   }
 
@@ -329,10 +378,20 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
     // Perintah sutradara manual menghentikan auto-sequence, termasuk bila
     // perintah datang sebelum katalog selesai dimuat.
     _autoPaused = true;
-    for (final timer in _timers) {
-      timer.cancel();
+    _qrEpoch++;
+    if (_qrVisible || _qrLoading) {
+      setState(() {
+        _qrVisible = false;
+        _qrLoading = false;
+        _qrStartedAt = 0;
+        _qrEndedAt = 0;
+        _rewardDecision = '';
+        _draftRef = '';
+        _draftNoticeVisible = false;
+      });
     }
-    _timers.clear();
+    _cancelTimers();
+    _resumeStageMotion();
     String status;
     switch (scene) {
       case 'scan':
@@ -354,6 +413,263 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
     _setScene(scene, status);
   }
 
+  void _cancelTimers() {
+    for (final timer in _timers) {
+      timer.cancel();
+    }
+    _timers.clear();
+  }
+
+  void _pauseStageMotion() {
+    if (_stageMotionPaused) return;
+    _stageMotionPaused = true;
+    _pulse.stop();
+    _mouthTimer?.cancel();
+    _mouthTimer = null;
+  }
+
+  void _resumeStageMotion() {
+    if (!_stageMotionPaused) return;
+    _stageMotionPaused = false;
+    if (!_pulse.isAnimating) _pulse.repeat();
+  }
+
+  /// Reward ditampilkan lebih dulu sebagai botol + foto + nama (5 poin), lalu
+  /// QR dimunculkan setelah PNG selesai dimuat dan hanya selama 3 detik nyata.
+  void _showReward(Map<String, dynamic> payload, {required bool replay}) {
+    final rewardId = '${payload['rewardId'] ?? ''}'.trim();
+    if (rewardId.isEmpty) return;
+    final png = '${payload['qrPngUrl'] ?? ''}'.trim();
+    final parsedWindow = int.tryParse('${payload['qrWindowMs'] ?? '3000'}') ?? 3000;
+    final windowMs = parsedWindow.clamp(1000, 10000);
+    final tier = '${payload['tier'] ?? ''}'.trim();
+    final delivery = '${payload['delivery'] ?? ''}'.trim();
+    const allowedBottles = {'rollon', 'spray', 'usap'};
+    final epoch = ++_qrEpoch;
+    _autoPaused = true;
+    _cancelTimers();
+    setState(() {
+      _rewardId = rewardId;
+      _rewardTier = tier == 'signature' ? 'signature' : 'basic';
+      _rewardDelivery = delivery;
+      _rewardPoints = '${payload['points'] ?? ''}'.trim();
+      _rewardRecipe = '${payload['recipeRef'] ?? ''}'.trim();
+      _rewardDecision = '${payload['decisionKind'] ?? 'existing_product'}'.trim();
+      _draftRef = '${payload['draftRef'] ?? ''}'.trim();
+      _rewardName = _rewardTier == 'signature'
+          ? '${payload['displayName'] ?? ''}'.trim()
+          : '';
+      _bottleType = allowedBottles.contains(delivery) ? delivery : '';
+      _bottlePhoto = '${payload['photoUrl'] ?? ''}'.trim();
+      _bottleName = _rewardName;
+      _qrPngUrl = png;
+      _qrWindowMs = windowMs;
+      _qrCodeMasked = rewardId.length > 5
+          ? '${rewardId.substring(rewardId.length - 5)}••••'
+          : '••••';
+      _qrVisible = false;
+      _qrLoading = false;
+      _qrStartedAt = 0;
+      _qrEndedAt = 0;
+      _rewardStatus = replay ? 'qr' : 'reveal';
+      _scene = 'result';
+      _status = replay ? 'QR' : 'REWARD';
+      if (_rewardRecipe.isNotEmpty) _themeName = _rewardRecipe;
+      if (_presenterMode != 'host') _robotAction = 'point';
+    });
+    _postState();
+
+    // Jika decision engine salah mengirim custom draft lewat perintah reward,
+    // jangan pernah menampilkan QR produk. Tampilkan kartu draft saja.
+    if (_rewardDecision == 'custom_draft') {
+      _showDraftNotice({
+        'draftRef': _draftRef.isNotEmpty ? _draftRef : rewardId,
+        'displayName': _rewardName,
+        'themeRef': _rewardRecipe,
+      });
+      return;
+    }
+
+    if (replay) {
+      _preloadQr(epoch);
+      return;
+    }
+    _timers.add(Timer(const Duration(milliseconds: 2200), () {
+      if (!mounted || epoch != _qrEpoch) return;
+      _preloadQr(epoch);
+    }));
+  }
+
+  void _preloadQr(int epoch) {
+    if (_qrPngUrl.isEmpty) {
+      _qrFailed(epoch);
+      return;
+    }
+    setState(() => _qrLoading = true);
+    final image = html.ImageElement();
+    image.onLoad.listen((_) {
+      if (!mounted || epoch != _qrEpoch) return;
+      _startQrWindow(epoch);
+    });
+    image.onError.listen((_) {
+      if (!mounted || epoch != _qrEpoch) return;
+      _qrFailed(epoch);
+    });
+    image.src = _qrPngUrl;
+  }
+
+  void _qrFailed(int epoch) {
+    if (!mounted || epoch != _qrEpoch) return;
+    setState(() {
+      _qrLoading = false;
+      _qrVisible = false;
+      _rewardStatus = 'qr-gagal';
+      _status = 'QR TIDAK TERSEDIA';
+    });
+    _resumeStageMotion();
+    _postState();
+  }
+
+  void _startQrWindow(int epoch) {
+    if (!mounted || epoch != _qrEpoch) return;
+    final started = DateTime.now().millisecondsSinceEpoch;
+    setState(() {
+      _qrLoading = false;
+      _qrVisible = true;
+      _qrStartedAt = started;
+      _qrEndedAt = 0;
+      _rewardStatus = 'qr';
+      _scene = 'result';
+      _status = 'QR';
+    });
+    _postState();
+    _pauseStageMotion();
+    // Timer Dart bisa tertunda di browser headless/OBS. Kami memakai frame
+    // browser (requestAnimationFrame) supaya jendela QR benar-benar ~3 detik
+    // sesuai jam dinding; setiap frame menjadwalkan frame berikutnya sampai
+    // deadline tercapai. Epoch membatalkan loop bila reward diganti/cabut.
+    final deadline = started + _qrWindowMs;
+    void frame(num _) {
+      if (!mounted || epoch != _qrEpoch) return;
+      final now = DateTime.now().millisecondsSinceEpoch;
+      if (now < deadline) {
+        html.window.requestAnimationFrame(frame);
+        return;
+      }
+      setState(() {
+        _qrVisible = false;
+        _qrEndedAt = now;
+        _rewardStatus = 'done';
+        _status = 'READY';
+      });
+      _resumeStageMotion();
+      _postState();
+    }
+    html.window.requestAnimationFrame(frame);
+  }
+
+  void _clearReward() {
+    _qrEpoch++;
+    _cancelTimers();
+    setState(() {
+      _qrVisible = false;
+      _qrLoading = false;
+      _qrStartedAt = 0;
+      _qrEndedAt = 0;
+      _qrPngUrl = '';
+      _rewardDecision = '';
+      _draftRef = '';
+      _draftNoticeVisible = false;
+      _rewardStatus = 'done';
+      _status = 'READY';
+    });
+    _resumeStageMotion();
+    _postState();
+  }
+
+  void _revokeReward(Map<String, dynamic> payload) {
+    final rewardId = '${payload['rewardId'] ?? ''}'.trim();
+    if (rewardId.isNotEmpty && rewardId != _rewardId) return;
+    _qrEpoch++;
+    _cancelTimers();
+    setState(() {
+      _qrVisible = false;
+      _qrLoading = false;
+      _qrStartedAt = 0;
+      _qrEndedAt = 0;
+      _qrPngUrl = '';
+      _rewardDecision = '';
+      _draftRef = '';
+      _draftNoticeVisible = false;
+      _rewardStatus = 'revoked';
+      _status = 'QR DICABUT';
+    });
+    _resumeStageMotion();
+    _postState();
+  }
+
+  /// Custom draft sengaja TIDAK memakai QR /a/<token>: belum ada produk jadi,
+  /// harga, atau URL terverifikasi. Layar hanya mengumumkan bahwa permintaan
+  /// dicatat dan menunggu tinjauan admin.
+  void _showDraftNotice(Map<String, dynamic> payload) {
+    final ref = '${payload['draftRef'] ?? ''}'.trim();
+    if (ref.isEmpty) return;
+    final epoch = ++_qrEpoch;
+    _autoPaused = true;
+    _cancelTimers();
+    _resumeStageMotion();
+    setState(() {
+      _qrVisible = false;
+      _qrLoading = false;
+      _qrStartedAt = 0;
+      _qrEndedAt = 0;
+      _rewardDecision = 'custom_draft';
+      _draftRef = ref;
+      _draftNoticeVisible = true;
+      _draftNoticeRef = ref;
+      _draftNoticeName = '${payload['displayName'] ?? ''}'.trim();
+      _draftNoticeTheme = '${payload['themeRef'] ?? ''}'.trim();
+      _draftNoticeNotes = '${payload['notesAman'] ?? ''}'.trim();
+      _rewardStatus = 'draft';
+      _scene = 'result';
+      _status = 'DRAFT';
+      if (_presenterMode != 'host') _robotAction = 'point';
+    });
+    _postState();
+    _timers.add(Timer(const Duration(seconds: 6), () {
+      if (!mounted || epoch != _qrEpoch) return;
+      setState(() {
+        _draftNoticeVisible = false;
+        _rewardStatus = 'done';
+        _status = 'READY';
+      });
+      _postState();
+    }));
+  }
+
+  /// Ringkasan reward untuk konsol. Tidak pernah memuat token QR penuh.
+  Map<String, dynamic> _rewardState() => {
+    'rewardId': _rewardId,
+    'rewardTier': _rewardTier,
+    'rewardDelivery': _rewardDelivery,
+    'rewardPoints': _rewardPoints,
+    'rewardName': _rewardName,
+    'rewardRecipe': _rewardRecipe,
+    'rewardStatus': _rewardStatus,
+    'rewardDecision': _rewardDecision,
+    'draftRef': _draftRef,
+    'draftNoticeVisible': _draftNoticeVisible,
+    'draftNoticeRef': _draftNoticeRef,
+    'qrVisible': _qrVisible,
+    'qrWindowMs': _qrWindowMs,
+    'qrCodeMasked': _qrCodeMasked,
+    'qrStartedAt': _qrStartedAt,
+    'qrEndedAt': _qrEndedAt,
+    'bottleType': _bottleType,
+    'bottlePhoto': _bottlePhoto,
+    'bottleName': _bottleName,
+  };
+
   void _postState() {
     final payload = jsonEncode({
       'source': 'alkaff-app',
@@ -367,6 +683,7 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
       'presenterMode': _presenterMode,
       'robotAction': _robotAction,
       'speaking': _speaking,
+      ..._rewardState(),
       'chat': {
         'username': _chatUser,
         'comment': _chatText,
@@ -390,6 +707,7 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
       'presenterMode': _presenterMode,
       'robotAction': _robotAction,
       'speaking': _speaking,
+      ..._rewardState(),
       'chat': {
         'username': _chatUser,
         'comment': _chatText,
@@ -620,10 +938,20 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
 
   void _startScenes() {
     if (_autoPaused) return;
-    for (final timer in _timers) {
-      timer.cancel();
+    _qrEpoch++;
+    if (_qrVisible || _qrLoading) {
+      setState(() {
+        _qrVisible = false;
+        _qrLoading = false;
+        _qrStartedAt = 0;
+        _qrEndedAt = 0;
+        _rewardDecision = '';
+        _draftRef = '';
+        _draftNoticeVisible = false;
+      });
     }
-    _timers.clear();
+    _cancelTimers();
+    _resumeStageMotion();
     _setScene('boot', 'MENYIAPKAN');
     _timers.add(Timer(const Duration(milliseconds: 900), () {
       _setScene('scan', 'MEMINDAI');
@@ -752,9 +1080,159 @@ class _LabScreenState extends State<LabScreen> with SingleTickerProviderStateMix
             action: _robotAction,
             speaking: _speaking,
             blink: _blink,
+            bottleType: _bottleType,
+            bottleTier: _rewardTier,
+            bottlePhoto: _bottlePhoto,
+            bottleName: _bottleName,
+            assetVersion: _assetVersion,
           ),
+        if (_qrVisible || _qrLoading) _rewardQrOverlay(),
+        if (_draftNoticeVisible) _draftNoticeOverlay(),
         if (_showControls) _controlDeck(),
       ],
+    );
+  }
+
+  /// Kartu QR bersifat diegetik: seluruh teks tercetak di kartu, tidak ada
+  /// teks melayang di atas panggung. Timer 3 detik dihitung setelah PNG siap.
+  Widget _rewardQrOverlay() {
+    return Positioned.fill(
+      child: IgnorePointer(
+        child: Container(
+          color: const Color(0xFFFFFFFF),
+          alignment: Alignment.center,
+          child: Container(
+            padding: const EdgeInsets.all(22),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xFF0C2F21), width: 2),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'ALKaff · QR NAMLAH',
+                  style: TextStyle(
+                    color: Color(0xFF0C2F21),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 2,
+                  ),
+                ),
+                const SizedBox(height: 14),
+                if (_qrLoading)
+                  const SizedBox(
+                    width: 340,
+                    height: 340,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0C2F21)),
+                      ),
+                    ),
+                  )
+                else
+                  SizedBox(
+                    width: 340,
+                    height: 340,
+                    child: Image.network(
+                      _qrPngUrl,
+                      fit: BoxFit.contain,
+                      filterQuality: FilterQuality.none,
+                      errorBuilder: (_, __, ___) => const Center(
+                        child: Text(
+                          'QR sedang disiapkan',
+                          style: TextStyle(color: Color(0xFF0C2F21), fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 14),
+                const Text(
+                  'Screenshot QR ini. Buka sendiri dari galeri.',
+                  style: TextStyle(
+                    color: Color(0xFF0C2F21),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Kode $_qrCodeMasked · $_qrWindowMs ms',
+                  style: const TextStyle(color: Color(0xFF50645A), fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Kartu kertas laboratorium untuk custom draft. Tidak ada QR, tidak ada
+  /// harga, tidak ada janji produk jadi — hanya status permintaan.
+  Widget _draftNoticeOverlay() {
+    return Positioned.fill(
+      child: IgnorePointer(
+        child: Container(
+          color: const Color(0xB30A1712),
+          alignment: Alignment.center,
+          child: Container(
+            width: 620,
+            padding: const EdgeInsets.all(26),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF4EFE2),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: const Color(0xFF0C2F21), width: 2),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'PERMINTAAN DICATAT',
+                  style: TextStyle(
+                    color: Color(0xFF0C2F21),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                const Text(
+                  'Menunggu tinjauan admin. Bukan produk jadi; belum bisa '
+                  'dipesan atau dibayar.',
+                  style: TextStyle(color: Color(0xFF50645A), fontSize: 14, height: 1.4),
+                ),
+                const SizedBox(height: 14),
+                Text(
+                  'Ref $_draftNoticeRef',
+                  style: const TextStyle(
+                    color: Color(0xFF0C2F21), fontSize: 13, fontWeight: FontWeight.w700,
+                  ),
+                ),
+                if (_draftNoticeName.isNotEmpty)
+                  Text(
+                    'Label: $_draftNoticeName',
+                    style: const TextStyle(color: Color(0xFF0C2F21), fontSize: 13),
+                  ),
+                if (_draftNoticeTheme.isNotEmpty)
+                  Text(
+                    'Tema: $_draftNoticeTheme',
+                    style: const TextStyle(color: Color(0xFF50645A), fontSize: 13),
+                  ),
+                if (_draftNoticeNotes.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    _draftNoticeNotes,
+                    style: const TextStyle(color: Color(0xFF50645A), fontSize: 12, height: 1.4),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 

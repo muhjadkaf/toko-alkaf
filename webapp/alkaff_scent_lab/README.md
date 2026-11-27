@@ -137,11 +137,19 @@ Contoh body perintah:
 ```
 
 Perintah yang diterima: `keyword`, `scene`, `play`, `reset`, `split`, `chat`,
-`clearChat`, `presenter`, `speak`, `robot`. Cursor `since=-1` berarti bootstrap:
-theater tidak memutar ulang perintah lama. `postMessage` lokal masih diterima
-sebagai fallback bila theater disematkan, tetapi bukan lagi jalur utama. Ini
-**simulasi manual**: bukan API TikTok, bukan auto-DM, dan tidak menyimpan data
-sensitif ke server.
+`clearChat`, `presenter`, `speak`, `robot`, `reward`, `rewardReplay`,
+`rewardClear`, `rewardRevoke`, `customDraft`. Cursor `since=-1` berarti
+bootstrap: theater tidak memutar ulang perintah lama. `postMessage` lokal masih
+diterima sebagai fallback bila theater disematkan, tetapi bukan lagi jalur
+utama. Ini **simulasi manual**: bukan API TikTok, bukan auto-DM, dan tidak
+menyimpan data sensitif ke server.
+
+Status yang dipublikasikan ke bus juga memuat `rewardId`, `rewardTier`,
+`rewardDelivery`, `rewardPoints`, `rewardName`, `rewardRecipe`,
+`rewardStatus`, `rewardDecision`, `draftRef`, `draftNoticeVisible`,
+`qrVisible`, `qrWindowMs`, `qrCodeMasked`, `qrStartedAt`, `qrEndedAt`,
+`bottleType`, `bottlePhoto`, dan `bottleName`. Token QR penuh tidak pernah
+dipublikasikan.
 
 ### Mode presenter
 
@@ -164,6 +172,33 @@ Aksi robot yang dikenal: `idle`, `scan`, `mix`, `qc`, `pour`, `point`. Status
 `/alkaff/control/state`. Rahang robot digerakkan dari perkiraan suku kata narasi;
 bila teks diketik di konsol, Web Speech `id-ID` dipakai bila tersedia dengan
 fallback ke perkiraan tersebut. Tidak ada subtitle dan tidak ada sosok manusia.
+
+## Reward, QR, dan draft custom
+
+1 poin menampilkan botol `basic` (`rollon`, foto kecil, tanpa nama); 5 poin
+menampilkan `signature` (`spray`, foto lebih besar + nama bila opt-in). Format
+`usap` juga tersedia. Botol lokal memakai placeholder bermerek `ALK` bila
+`photoUrl` kosong. Progres deterministik, saldo maksimal 5, cooldown 60 detik,
+idempotency first-seen-wins, tanpa janji hadiah/gratis/diskon.
+
+QR hanya muncul setelah PNG siap dan hilang setelah ~3 detik jam dinding.
+Selama jendela itu, animasi latar dan lip-sync dijeda supaya timing tidak
+meleset di browser headless/OBS. QR memakai `/a/<token>` (bukan `/q/<kode>`),
+token opaque TTL 24 jam, replay maksimal 2, dan bisa dicabut. Screenshot/scan
+sukarela; tidak ada auto-beli.
+
+Keputusan `POST /alkaff/reward/decide` menghasilkan salah satu dari:
+
+- `existing_product` → produk allowlist dengan URL terverifikasi; QR diperbolehkan.
+- `custom_draft` → kartu “permintaan dicatat, menunggu tinjauan admin”; **tanpa
+  QR, harga, atau janji produk jadi**. Nama penonton dipakai sebagai label hanya
+  dengan opt-in + approval admin.
+
+Klaim terlarang (`24 jam`, `bebas alergi`, `afrodisiak`, `menghangatkan tubuh`,
+`formula produksi`, `komposisi resmi`, `gratis`, `diskon`, `auto-DM`, `obat`,
+`menyembuhkan`, `dijamin`, `halal` tanpa bukti) ditolak 422. Kontrak lengkap,
+allowlist, token admin, dan QA ada di
+[`../../../docs/ALKAFF-REWARD-QR-DRAFT.md`](../../../docs/ALKAFF-REWARD-QR-DRAFT.md).
 
 ## Build
 

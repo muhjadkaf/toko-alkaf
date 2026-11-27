@@ -16,7 +16,8 @@ Seluruh tulisan menggunakan bahasa Indonesia. Dokumen, data, addon Odoo, skeleto
 | `data/katalog-alkaff-odoo/` | XLSX, CSV siap import Odoo, README katalog, dan `tambah_parfum_lokal.py` sudah disalin |
 | `data/pengetahuan-parfum/` | Basis pengetahuan turunan: 14 keluarga, 135 notes, 78 deskriptor, 56 accord, 40 tema, 70 frasa sensorik, 18 pagar klaim |
 | `odoo/addons/alkaff_catalog/` | Addon Odoo 20: kategori, field aroma/notes, log, wizard import CSV, dan API baca-saja; sudah di-install di `nml` |
-| `webapp/alkaff_scent_lab/` | Flutter Web Clean Lab dengan dunia pabrik maklon “Alkaff Maklon Hall”, narasi audio, dan bus kontrol; dipublish di `alkaf.lokal.or.id` / `alkaff.lokal.or.id` |
+| `odoo/addons/alkaff_custom_request/` | Addon Odoo 20 terpisah untuk draft custom/rebrand; tanpa harga/supplier/publish otomatis; sudah di-install hanya di `nml` |
+| `webapp/alkaff_scent_lab/` | Flutter Web Clean Lab dengan dunia pabrik maklon “Alkaff Maklon Hall”, narasi audio, bus kontrol, botol reward, dan QR 3 detik; dipublish di `alkaf.lokal.or.id` / `alkaff.lokal.or.id` |
 | `services/live-bridge/` | Skeleton Python stdlib: normalisasi event, state machine, dedupe, dan overlay lokal (34 tes lulus) |
 | Interaksi TikTok LIVE | Punya rencana teknis + skeleton lokal; **belum terhubung ke API TikTok**, tanpa auto-DM |
 | Katalog parfum | 164 produk di sheet `IMPORT_odoo`; 42 `Sales Price` terisi dan 122 sengaja dikosongkan |
@@ -134,6 +135,14 @@ tanpa iframe; theater dibuka terpisah di `https://alkaf.lokal.or.id` (alias
 auto-sequence sampai host menekan `Auto` atau mengubah keyword.
 Detail build, query string, generator aset, protokol pesan, dan pagar klaim ada di
 [`webapp/alkaff_scent_lab/README.md`](webapp/alkaff_scent_lab/README.md).
+
+Reward poin → QR `/a/<token>` → produk allowlist dan jalur custom → draft admin
+dijelaskan di
+[`docs/ALKAFF-REWARD-QR-DRAFT.md`](docs/ALKAFF-REWARD-QR-DRAFT.md). QR memakai
+token opaque TTL 24 jam, replay maksimal 2, bisa dicabut, dan tidak memakai
+`/q/<kode>`. `custom_draft` tidak punya QR, harga, atau janji produk jadi; nama
+penonton hanya dipakai sebagai label setelah opt-in dan approval admin.
+Token admin hanya dari environment `NAMLAH_WEB_ADMIN_TOKEN`, bukan repo.
 
 Sebelum produksi, tetap ikuti dokumentasi LIVE: endpoint `/internal/*` wajib dilindungi, token disimpan di secret manager, dan uji memakai akun TikTok uji dengan moderator manual.
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'reward_bottle.dart';
+
 /// Presenter robot mekanis di atas meja QC.
 ///
 /// Ini mesin, bukan sosok manusia. Mulut, kedip, dan lengan digerakkan dari
@@ -11,6 +13,11 @@ class RobotPresenter extends StatelessWidget {
     required this.action,
     required this.speaking,
     required this.blink,
+    this.bottleType = '',
+    this.bottleTier = '',
+    this.bottlePhoto = '',
+    this.bottleName = '',
+    this.assetVersion = '1',
   });
 
   /// 0 = tertutup, 1 = terbuka penuh.
@@ -19,6 +26,11 @@ class RobotPresenter extends StatelessWidget {
   final String action;
   final bool speaking;
   final bool blink;
+  final String bottleType;
+  final String bottleTier;
+  final String bottlePhoto;
+  final String bottleName;
+  final String assetVersion;
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +38,32 @@ class RobotPresenter extends StatelessWidget {
       right: 92,
       bottom: 118,
       child: IgnorePointer(
-        child: CustomPaint(
-          size: const Size(360, 300),
-          painter: _RobotPainter(
-            mouth: mouth,
-            action: action,
-            speaking: speaking,
-            blink: blink,
-          ),
+        child: Stack(
+          children: [
+            CustomPaint(
+              size: const Size(360, 300),
+              painter: _RobotPainter(
+                mouth: mouth,
+                action: action,
+                speaking: speaking,
+                blink: blink,
+              ),
+            ),
+            if (bottleType == 'rollon' ||
+                bottleType == 'spray' ||
+                bottleType == 'usap')
+              Positioned(
+                right: bottleType == 'spray' ? -4.0 : (bottleType == 'usap' ? 8.0 : 14.0),
+                bottom: bottleType == 'spray' ? 70.0 : (bottleType == 'usap' ? 112.0 : 96.0),
+                child: RewardBottle(
+                  type: bottleType,
+                  tier: bottleTier,
+                  photoUrl: bottlePhoto,
+                  name: bottleName,
+                  assetVersion: assetVersion,
+                ),
+              ),
+          ],
         ),
       ),
     );
